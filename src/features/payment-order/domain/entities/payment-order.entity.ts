@@ -1,5 +1,6 @@
 import { IPaymentOrder } from '../interfaces/payment-order.interface';
 import { DescriptiveEntity } from '../../../descriptive/domain/entities/descriptive.entity'
+import { SupplierEntity } from '../../../supplier/domain/entities/supplier.entity'
 
 export class PaymentOrderEntity implements IPaymentOrder {
   constructor(
@@ -49,13 +50,10 @@ export class PaymentOrderEntity implements IPaymentOrder {
     public NUMERO_COMPROBANTE3: number | null,
     public NUMERO_COMPROBANTE4: number | null,
     public SEARCH_TEXT: string | null,
-    public tipoOrdenPago?: DescriptiveEntity // Agrega esta propiedad
-  ) {}
+    public MONTO_LETRAS: string | null,
 
-  // Aquí puedes agregar métodos de dominio si es necesario
-  // Por ejemplo:
-  public isValid(): boolean {
-    // Implementa la lógica de validación
-    return true;
-  }
+    /* Por ahora se agregaran aqui, buscar una merjor manera */
+    public TIPO_ORDEN_PAGO?: DescriptiveEntity,
+    public PROVEEDOR?: SupplierEntity
+  ) {}
 }

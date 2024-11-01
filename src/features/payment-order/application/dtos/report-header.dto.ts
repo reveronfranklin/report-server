@@ -7,7 +7,7 @@ export class ReportHeaderDto {
 
   @IsString()
   @IsNotEmpty()
-  TIPO_ORDEN_PAGO: string;
+  NUMERO_ORDEN_PAGO: string;
 
   @IsDate()
   @IsNotEmpty()
@@ -47,5 +47,5 @@ export class ReportHeaderDto {
 
   @IsString()
   @IsNotEmpty()
-  FORMA_DE_PAGO: string;
+  MONTO_LETRAS: string;
 }

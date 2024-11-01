@@ -5,6 +5,7 @@ import { envSchema } from './config/env-schema';
 import { DatabaseModule } from './shared/modules/database.module';
 import { PaymentOrderModule } from './features/payment-order/payment-order.module';
 import { DescriptiveModule } from './features/descriptive/descriptive.module';
+import { SupplierModule } from './features/supplier/supplier.module';
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import { DescriptiveModule } from './features/descriptive/descriptive.module';
     /* Feactures or Modules */
     DatabaseModule,
     PaymentOrderModule,
-    DescriptiveModule
+    DescriptiveModule,
+    SupplierModule
   ],
 })
 export class AppModule {}

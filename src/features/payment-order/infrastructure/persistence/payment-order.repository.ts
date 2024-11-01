@@ -11,15 +11,13 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
     private paymentOrderModel: typeof PaymentOrderModel,
   ) {}
 
-
-
   async findById(id: number, options?: any): Promise<PaymentOrderEntity | null> {
     const order = await this.paymentOrderModel.findByPk(id, options);
     return order ? this.toEntity(order) : null;
   }
 
   private toEntity(model: PaymentOrderModel): PaymentOrderEntity {
-    return new PaymentOrderEntity(
+    const entity = new PaymentOrderEntity(
       model.CODIGO_ORDEN_PAGO,
       model.ANO,
       model.CODIGO_COMPROMISO,
@@ -65,7 +63,22 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
       model.NUMERO_COMPROBANTE2,
       model.NUMERO_COMPROBANTE3,
       model.NUMERO_COMPROBANTE4,
-      model.SEARCH_TEXT
+      model.SEARCH_TEXT,
+      model.MONTO_LETRAS,
     );
+
+    if (model.TIPO_ORDEN_PAGO) {
+      entity.TIPO_ORDEN_PAGO = {
+       ...model.TIPO_ORDEN_PAGO.get({ plain: true })
+      }
+    }
+
+    if (model.PROVEEDOR) {
+      entity.PROVEEDOR = {
+       ...model.PROVEEDOR.get({ plain: true })
+      }
+    }
+
+    return entity
   }
 }

@@ -3,6 +3,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { IPaymentOrderRepository, PAYMENT_ORDER_REPOSITORY } from '../../domain/repositories/payment-order.repository.interface';
 import { DescriptiveModel } from '../../../descriptive/infrastructure/persistence/descriptive.model';
+import { SupplierModel } from '../../../supplier/infrastructure/persistence/supplier.model';
 import { PaymentOrderEntity } from '../../domain/entities/payment-order.entity';
 import { ReportSchemeDto } from '../dtos/report-scheme.dto';
 import { ReportHeaderDto } from '../dtos/report-header.dto';
@@ -17,10 +18,18 @@ export class PaymentOrderService {
 
   async generateReport(id: number): Promise<ReportSchemeDto | null> {
     const order = await this.paymentOrderRepository.findById(id, {
-      include: [{
-        model: DescriptiveModel,
-        as: 'tipoOrdenPago' // Ensure this matches the alias used in the @BelongsTo decorator
-      }]
+      include: [
+        /* ADM_DESCRIPTIVAS */
+        {
+          model: DescriptiveModel,
+          as: 'TIPO_ORDEN_PAGO'
+        },
+        /* ADM_PROVEEDORES */
+        {
+          model: SupplierModel,
+          as: 'PROVEEDOR'
+        }
+      ]
     });
 
     console.log(order)
@@ -40,18 +49,18 @@ export class PaymentOrderService {
 
   private mapToReportHeader(order: PaymentOrderEntity): ReportHeaderDto {
     return {
-      DESCRIPCION: order.MOTIVO || '',
-      TIPO_ORDEN_PAGO: order.TIPO_ORDEN_PAGO_ID.toString(),
+      DESCRIPCION: order.TIPO_ORDEN_PAGO.DESCRIPCION,
+      NUMERO_ORDEN_PAGO: order.NUMERO_ORDEN_PAGO,
       FECHA_ORDEN_PAGO: order.FECHA_ORDEN_PAGO,
-      NOMBRE_PROVEEDOR: '', // Obtener de otra entidad o servicio
-      CEDULA_PROVEEDOR: '', // Obtener de otra entidad o servicio
-      RIF_PROVEEDOR: '', // Obtener de otra entidad o servicio
+      NOMBRE_PROVEEDOR: order.PROVEEDOR.NOMBRE_PROVEEDOR,
+      CEDULA_PROVEEDOR: order.PROVEEDOR.CEDULA,
+      RIF_PROVEEDOR: order.PROVEEDOR.RIF,
       NOMBRE_BENEFICIARIO: '', // Obtener de otra entidad o servicio
       APELLIDO_BENEFICIARIO: '', // Obtener de otra entidad o servicio
       CEDULA_BENEFICIARIO: '', // Obtener de otra entidad o servicio
       FECHA_PLAZO_DESDE: order.FECHA_PLAZO_DESDE,
       FECHA_PLAZO_HASTA: order.FECHA_PLAZO_HASTA,
-      FORMA_DE_PAGO: '', // Obtener de otra entidad o servicio
+      MONTO_LETRAS: order.MONTO_LETRAS
     };
   }
 

@@ -16,8 +16,12 @@ export class DescriptiveModel extends Model<DescriptiveModel> implements IDescri
   })
   DESCRIPCION_ID: number;
 
+  /* Associations */
+
   @HasMany(() => PaymentOrderModel, { foreignKey: 'TIPO_ORDEN_PAGO_ID' })
-  paymentOrders: PaymentOrderModel[];
+  PAYMENT_ORDERS: PaymentOrderModel[];
+
+  /* Associations */
 
   @Column({
     type: DataType.INTEGER,

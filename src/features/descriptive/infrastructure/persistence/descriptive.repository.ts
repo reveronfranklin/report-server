@@ -9,4 +9,9 @@ export class DescriptiveRepository implements IDescriptiveRepository {
     @InjectModel(DescriptiveModel)
     private descriptiveModel: typeof DescriptiveModel,
   ) {}
+
+  async findById(id: number, options?: any): Promise<DescriptiveModel | null> {
+    const order = await this.descriptiveModel.findByPk(id, options);
+    return order;
+  }
 }

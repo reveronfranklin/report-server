@@ -1,5 +1,6 @@
 import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
 import { DescriptiveModel } from '../../../descriptive/infrastructure/persistence/descriptive.model';
+import { SupplierModel } from '../../../supplier/infrastructure/persistence/supplier.model';
 import { IPaymentOrder } from '../../domain/interfaces/payment-order.interface';
 
 @Table({
@@ -16,6 +17,7 @@ export class PaymentOrderModel extends Model<PaymentOrderModel> implements IPaym
   })
   CODIGO_ORDEN_PAGO: number;
 
+  /* Foreing Keys */
   @ForeignKey(() => DescriptiveModel)
   @Column({
     type: DataType.INTEGER,
@@ -23,8 +25,30 @@ export class PaymentOrderModel extends Model<PaymentOrderModel> implements IPaym
   })
   TIPO_ORDEN_PAGO_ID: number;
 
-  @BelongsTo(() => DescriptiveModel, { foreignKey: 'TIPO_ORDEN_PAGO_ID', as: 'tipoOrdenPago' })
-  tipoOrdenPago: DescriptiveModel;
+  @ForeignKey(() => SupplierModel)
+  @Column({
+    type: DataType.INTEGER,
+    field: 'CODIGO_PROVEEDOR'
+  })
+  CODIGO_PROVEEDOR: number;
+
+  /* Foreing Keys */
+
+  /* Associations */
+
+  @BelongsTo(() => DescriptiveModel, { foreignKey: 'TIPO_ORDEN_PAGO_ID', as: 'TIPO_ORDEN_PAGO' })
+  TIPO_ORDEN_PAGO: DescriptiveModel;
+
+  @BelongsTo(() => SupplierModel, { foreignKey: 'CODIGO_PROVEEDOR', as: 'PROVEEDOR' })
+  PROVEEDOR: SupplierModel;
+
+  /* Associations */
+
+  @Column({
+    type: DataType.STRING,
+    field: 'MONTO_LETRAS'
+  })
+  MONTO_LETRAS: string;
 
   @Column({
     type: DataType.INTEGER,
@@ -53,12 +77,6 @@ export class PaymentOrderModel extends Model<PaymentOrderModel> implements IPaym
     allowNull: true
   })
   CODIGO_CONTRATO: number | null;
-
-  @Column({
-    type: DataType.INTEGER,
-    field: 'CODIGO_PROVEEDOR'
-  })
-  CODIGO_PROVEEDOR: number;
 
   @Column({
     type: DataType.STRING,
