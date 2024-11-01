@@ -31,6 +31,7 @@
     "class-validator": "^0.14.1",
     "joi": "^17.13.3",
     "pdfkit": "^0.15.0",
+    "pdfmake": "^0.2.14",
     "pg": "^8.13.1",
     "pg-hstore": "^2.3.4",
     "reflect-metadata": "^0.2.0",
