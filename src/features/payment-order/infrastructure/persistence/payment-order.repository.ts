@@ -73,6 +73,12 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
       }
     }
 
+    if (model.FRECUENCIA_PAGO) {
+      entity.FRECUENCIA_PAGO = {
+       ...model.FRECUENCIA_PAGO.get({ plain: true })
+      }
+    }
+
     if (model.PROVEEDOR) {
       entity.PROVEEDOR = {
        ...model.PROVEEDOR.get({ plain: true })

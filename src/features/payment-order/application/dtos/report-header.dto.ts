@@ -37,6 +37,10 @@ export class ReportHeaderDto {
   @IsNotEmpty()
   CEDULA_BENEFICIARIO: string;
 
+  @IsString()
+  @IsNotEmpty()
+  FORMA_DE_PAGO: string;
+
   @IsDate()
   @IsNotEmpty()
   FECHA_PLAZO_DESDE: Date;

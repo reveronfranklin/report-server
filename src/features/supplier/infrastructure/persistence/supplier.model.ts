@@ -1,6 +1,7 @@
 import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
 import { ISupplier } from '../../domain/interfaces/supplier.interface';
 import { PaymentOrderModel } from '../../../payment-order/infrastructure/persistence/payment-order.model';
+import { BeneficiaryModel } from '../../../beneficiary/infrastructure/persistence/beneficiary.model';
 
 @Table({
   schema: 'public',
@@ -20,6 +21,12 @@ export class SupplierModel extends Model<SupplierModel> implements ISupplier {
 
   @HasMany(() => PaymentOrderModel, { foreignKey: 'CODIGO_PROVEEDOR' })
   PAYMENT_ORDERS: PaymentOrderModel[];
+
+  @HasMany(() => BeneficiaryModel, {
+    foreignKey: 'CODIGO_PROVEEDOR',
+    as: 'BENEFICIARIES'
+  })
+  BENEFICIARIES: BeneficiaryModel[];
 
   /* Associations */
 

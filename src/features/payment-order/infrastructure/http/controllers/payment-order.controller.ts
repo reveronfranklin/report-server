@@ -14,8 +14,14 @@ export class PaymentOrderController {
   @ApiResponse({ status: 200, description: 'Report generated successfully' })
   @ApiResponse({ status: 400, description: 'Bad request' })
   async generateReport(@Res() res: Response, @Body() generateReportDto: GenerateReportDto) {
-    const result = await this.paymentOrderService.generateReport(generateReportDto.CodigoOrdenPago);
-    res.status(200).json(result);
-    //res.download(pdfPath);
+
+    const pdfDocument = await this.paymentOrderService.generateReport(generateReportDto.CodigoOrdenPago);
+
+    //res.status(200).json(pdfDocument);
+
+    res.setHeader('Content-Type', 'application/pdf');
+    pdfDocument.info.Title = 'test report';
+    pdfDocument.pipe(res)
+    pdfDocument.end()
   }
 }

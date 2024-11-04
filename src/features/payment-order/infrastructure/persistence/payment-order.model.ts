@@ -25,6 +25,13 @@ export class PaymentOrderModel extends Model<PaymentOrderModel> implements IPaym
   })
   TIPO_ORDEN_PAGO_ID: number;
 
+  @ForeignKey(() => DescriptiveModel)
+  @Column({
+    type: DataType.INTEGER,
+    field: 'FRECUENCIA_PAGO_ID'
+  })
+  FRECUENCIA_PAGO_ID: number;
+
   @ForeignKey(() => SupplierModel)
   @Column({
     type: DataType.INTEGER,
@@ -38,6 +45,9 @@ export class PaymentOrderModel extends Model<PaymentOrderModel> implements IPaym
 
   @BelongsTo(() => DescriptiveModel, { foreignKey: 'TIPO_ORDEN_PAGO_ID', as: 'TIPO_ORDEN_PAGO' })
   TIPO_ORDEN_PAGO: DescriptiveModel;
+
+  @BelongsTo(() => DescriptiveModel, { foreignKey: 'FRECUENCIA_PAGO_ID', as: 'FRECUENCIA_PAGO' })
+  FRECUENCIA_PAGO: DescriptiveModel;
 
   @BelongsTo(() => SupplierModel, { foreignKey: 'CODIGO_PROVEEDOR', as: 'PROVEEDOR' })
   PROVEEDOR: SupplierModel;
@@ -121,13 +131,6 @@ export class PaymentOrderModel extends Model<PaymentOrderModel> implements IPaym
     allowNull: true
   })
   NUMERO_PAGO: number | null;
-
-  @Column({
-    type: DataType.INTEGER,
-    field: 'FRECUENCIA_PAGO_ID',
-    allowNull: true
-  })
-  FRECUENCIA_PAGO_ID: number | null;
 
   @Column({
     type: DataType.INTEGER,

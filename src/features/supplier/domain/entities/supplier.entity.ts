@@ -1,6 +1,5 @@
-// src/features/supplier/domain/entities/supplier.entity.ts
-
 import { ISupplier } from '../interfaces/supplier.interface';
+import { BeneficiaryEntity } from '../../../beneficiary/domain/entities/beneficiary.entity';
 
 export class SupplierEntity implements ISupplier {
   constructor(
@@ -31,6 +30,7 @@ export class SupplierEntity implements ISupplier {
     public CODIGO_AUXILIAR_GASTO_X_PAGAR: string | null,
     public CODIGO_AUXILIAR_ORDEN_PAGO: string | null,
     public ESTATUS_FISCO_ID: number | null,
-    public NUMERO_CUENTA: string | null
+    public NUMERO_CUENTA: string | null,
+    public BENEFICIARIES?: BeneficiaryEntity[]
   ) {}
 }

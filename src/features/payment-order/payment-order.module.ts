@@ -5,10 +5,12 @@ import { PaymentOrderService } from './application/services/payment-order.servic
 import { PaymentOrderController } from './infrastructure/http/controllers/payment-order.controller';
 import { PAYMENT_ORDER_REPOSITORY } from './domain/repositories/payment-order.repository.interface';
 import { PaymentOrderModel } from './infrastructure/persistence/payment-order.model';
+import { PrinterModule } from 'src/shared/modules/printer/printer.module';
 
 @Module({
   imports: [
     SequelizeModule.forFeature([PaymentOrderModel]),
+    PrinterModule
   ],
   providers: [
     PaymentOrderService,

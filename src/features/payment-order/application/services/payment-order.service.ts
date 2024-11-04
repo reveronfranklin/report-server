@@ -1,22 +1,56 @@
-// src/features/payment-order/application/services/payment-order.service.ts
-
 import { Injectable, Inject } from '@nestjs/common';
 import { IPaymentOrderRepository, PAYMENT_ORDER_REPOSITORY } from '../../domain/repositories/payment-order.repository.interface';
 import { DescriptiveModel } from '../../../descriptive/infrastructure/persistence/descriptive.model';
 import { SupplierModel } from '../../../supplier/infrastructure/persistence/supplier.model';
+import { BeneficiaryModel } from '../../../beneficiary/infrastructure/persistence/beneficiary.model';
 import { PaymentOrderEntity } from '../../domain/entities/payment-order.entity';
 import { ReportSchemeDto } from '../dtos/report-scheme.dto';
 import { ReportHeaderDto } from '../dtos/report-header.dto';
 import { ReportBodyDto } from '../dtos/report-body.dto';
+import { PrinterService } from 'src/shared/modules/printer/printer.service';
+import type { TDocumentDefinitions } from 'pdfmake/interfaces';
 
 @Injectable()
 export class PaymentOrderService {
   constructor(
     @Inject(PAYMENT_ORDER_REPOSITORY)
-    private paymentOrderRepository: IPaymentOrderRepository
+    private paymentOrderRepository: IPaymentOrderRepository,
+    private readonly printerService: PrinterService
   ) {}
 
-  async generateReport(id: number): Promise<ReportSchemeDto | null> {
+  private mapToReportHeader(order: PaymentOrderEntity): ReportHeaderDto {
+    const paymentOrderType  = order.TIPO_ORDEN_PAGO ?? null
+    const methodOfPayment   = order.FRECUENCIA_PAGO ?? null
+    const supplier          = order.PROVEEDOR ?? null
+    const beneficiary       = supplier?.BENEFICIARIES[0] ?? null
+
+    return {
+      DESCRIPCION: paymentOrderType?.DESCRIPCION,
+      NUMERO_ORDEN_PAGO: order.NUMERO_ORDEN_PAGO,
+      FECHA_ORDEN_PAGO: order.FECHA_ORDEN_PAGO,
+      NOMBRE_PROVEEDOR: supplier?.NOMBRE_PROVEEDOR,
+      CEDULA_PROVEEDOR: supplier?.CEDULA,
+      RIF_PROVEEDOR: supplier?.RIF,
+      NOMBRE_BENEFICIARIO: beneficiary?.NOMBRE,
+      APELLIDO_BENEFICIARIO: beneficiary?.APELLIDO,
+      CEDULA_BENEFICIARIO: beneficiary?.IDENTIFICACION,
+      FECHA_PLAZO_DESDE: order.FECHA_PLAZO_DESDE,
+      FECHA_PLAZO_HASTA: order.FECHA_PLAZO_HASTA,
+      MONTO_LETRAS: order.MONTO_LETRAS,
+      FORMA_DE_PAGO: methodOfPayment?.DESCRIPCION
+    }
+  }
+
+  private mapToReportBody(order: PaymentOrderEntity): ReportBodyDto {
+    return {
+      CODIGO_ORDEN_PAGO: order.CODIGO_ORDEN_PAGO,
+      MONTO: order.CANTIDAD_PAGO || 0,
+      CONCEPTO: order.MOTIVO || '',
+      // ... mapear otros campos según sea necesario
+    };
+  }
+
+  async generateReport(id: number) /*Promise<ReportSchemeDto | null>*/ {
     const order = await this.paymentOrderRepository.findById(id, {
       include: [
         /* ADM_DESCRIPTIVAS */
@@ -24,15 +58,29 @@ export class PaymentOrderService {
           model: DescriptiveModel,
           as: 'TIPO_ORDEN_PAGO'
         },
+        {
+          model: DescriptiveModel,
+          as: 'FRECUENCIA_PAGO'
+        },
         /* ADM_PROVEEDORES */
         {
           model: SupplierModel,
-          as: 'PROVEEDOR'
+          as: 'PROVEEDOR',
+          include: [
+            /* CODIGO_CONTACTO_PROVEEDOR */
+            {
+              model: BeneficiaryModel,
+              as: 'BENEFICIARIES',
+              where: {
+                PRINCIPAL: 1
+              }
+            }
+          ]
         }
       ]
     });
 
-    console.log(order)
+    console.log('order', order)
 
     if (!order) {
       return null;
@@ -44,32 +92,17 @@ export class PaymentOrderService {
       body: this.mapToReportBody(order)
     };
 
-    return reportScheme;
-  }
+    console.log('reportScheme', reportScheme)
 
-  private mapToReportHeader(order: PaymentOrderEntity): ReportHeaderDto {
-    return {
-      DESCRIPCION: order.TIPO_ORDEN_PAGO.DESCRIPCION,
-      NUMERO_ORDEN_PAGO: order.NUMERO_ORDEN_PAGO,
-      FECHA_ORDEN_PAGO: order.FECHA_ORDEN_PAGO,
-      NOMBRE_PROVEEDOR: order.PROVEEDOR.NOMBRE_PROVEEDOR,
-      CEDULA_PROVEEDOR: order.PROVEEDOR.CEDULA,
-      RIF_PROVEEDOR: order.PROVEEDOR.RIF,
-      NOMBRE_BENEFICIARIO: '', // Obtener de otra entidad o servicio
-      APELLIDO_BENEFICIARIO: '', // Obtener de otra entidad o servicio
-      CEDULA_BENEFICIARIO: '', // Obtener de otra entidad o servicio
-      FECHA_PLAZO_DESDE: order.FECHA_PLAZO_DESDE,
-      FECHA_PLAZO_HASTA: order.FECHA_PLAZO_HASTA,
-      MONTO_LETRAS: order.MONTO_LETRAS
-    };
-  }
+    /* Por ahora el pdf se colocara aqui, luego optimizare el code */
+    const documentDefinitions: TDocumentDefinitions = {
+      content: ['payment-order test PDF']
+    }
 
-  private mapToReportBody(order: PaymentOrderEntity): ReportBodyDto {
-    return {
-      CODIGO_ORDEN_PAGO: order.CODIGO_ORDEN_PAGO,
-      MONTO: order.CANTIDAD_PAGO || 0,
-      CONCEPTO: order.MOTIVO || '',
-      // ... mapear otros campos según sea necesario
-    };
+    const document = this.printerService.createPdf(documentDefinitions)
+
+    console.log('document', document)
+
+    return document;
   }
 }

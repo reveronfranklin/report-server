@@ -54,6 +54,7 @@ export class PaymentOrderEntity implements IPaymentOrder {
 
     /* Por ahora se agregaran aqui, buscar una merjor manera */
     public TIPO_ORDEN_PAGO?: DescriptiveEntity,
+    public FRECUENCIA_PAGO?: DescriptiveEntity,
     public PROVEEDOR?: SupplierEntity
   ) {}
 }

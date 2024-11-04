@@ -1,5 +1,3 @@
-// src/features/supplier/infrastructure/persistence/supplier.repository.ts
-
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { SupplierModel } from './supplier.model';
