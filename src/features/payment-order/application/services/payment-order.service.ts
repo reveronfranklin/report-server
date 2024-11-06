@@ -8,14 +8,15 @@ import { ReportSchemeDto } from '../dtos/report-scheme.dto';
 import { ReportHeaderDto } from '../dtos/report-header.dto';
 import { ReportBodyDto } from '../dtos/report-body.dto';
 import { PrinterService } from 'src/shared/modules/printer/printer.service';
-import type { TDocumentDefinitions } from 'pdfmake/interfaces';
+import { IPdfGenerator } from '../../domain/interfaces/pdf-generator.interface';
 
 @Injectable()
 export class PaymentOrderService {
   constructor(
     @Inject(PAYMENT_ORDER_REPOSITORY)
     private paymentOrderRepository: IPaymentOrderRepository,
-    private readonly printerService: PrinterService
+    @Inject('IPdfGenerator')
+    private pdfGenerator: IPdfGenerator
   ) {}
 
   private mapToReportHeader(order: PaymentOrderEntity): ReportHeaderDto {
@@ -51,7 +52,7 @@ export class PaymentOrderService {
   }
 
   async generateReport(id: number) /*Promise<ReportSchemeDto | null>*/ {
-    const order = await this.paymentOrderRepository.findById(id, {
+    const paymentOrder = await this.paymentOrderRepository.findById(id, {
       include: [
         /* ADM_DESCRIPTIVAS */
         {
@@ -80,26 +81,21 @@ export class PaymentOrderService {
       ]
     });
 
-    console.log('order', order)
+    console.log('order', paymentOrder)
 
-    if (!order) {
+    if (!paymentOrder) {
       return null;
     }
 
     const reportScheme: ReportSchemeDto = {
       name: 'payment-order',
-      headers: this.mapToReportHeader(order),
-      body: this.mapToReportBody(order)
+      headers: this.mapToReportHeader(paymentOrder),
+      body: this.mapToReportBody(paymentOrder)
     };
 
     console.log('reportScheme', reportScheme)
 
-    /* Por ahora el pdf se colocara aqui, luego optimizare el code */
-    const documentDefinitions: TDocumentDefinitions = {
-      content: ['payment-order test PDF']
-    }
-
-    const document = this.printerService.createPdf(documentDefinitions)
+    const document = this.pdfGenerator.generatePdf(paymentOrder);
 
     console.log('document', document)
 
