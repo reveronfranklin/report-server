@@ -5,7 +5,7 @@ import { PaymentOrderService } from './application/services/payment-order.servic
 import { PaymentOrderController } from './infrastructure/http/controllers/payment-order.controller';
 import { PAYMENT_ORDER_REPOSITORY } from './domain/repositories/payment-order.repository.interface';
 import { PaymentOrderModel } from './infrastructure/persistence/payment-order.model';
-import { PdfGeneratorService } from './infrastructure/pdf/pdf-generator.service';
+import { PdfGeneratorAdapter } from './infrastructure/pdf/pdf-generator.adapter';
 import { PrinterModule } from 'src/shared/modules/printer/printer.module';
 
 @Module({
@@ -21,7 +21,7 @@ import { PrinterModule } from 'src/shared/modules/printer/printer.module';
     },
     {
       provide: 'IPdfGenerator',
-      useClass: PdfGeneratorService,
+      useClass: PdfGeneratorAdapter,
     }
   ],
   controllers: [PaymentOrderController],

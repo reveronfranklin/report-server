@@ -7,7 +7,6 @@ import { PaymentOrderEntity } from '../../domain/entities/payment-order.entity';
 import { ReportSchemeDto } from '../dtos/report-scheme.dto';
 import { ReportHeaderDto } from '../dtos/report-header.dto';
 import { ReportBodyDto } from '../dtos/report-body.dto';
-import { PrinterService } from 'src/shared/modules/printer/printer.service';
 import { IPdfGenerator } from '../../domain/interfaces/pdf-generator.interface';
 
 @Injectable()
@@ -95,7 +94,11 @@ export class PaymentOrderService {
 
     console.log('reportScheme', reportScheme)
 
-    const document = this.pdfGenerator.generatePdf(paymentOrder);
+    const data = {
+      logoPath: 'src/common/utils/images/LogoIzquierda.jpeg'
+    }
+
+    const document = this.pdfGenerator.generatePdf(data);
 
     console.log('document', document)
 

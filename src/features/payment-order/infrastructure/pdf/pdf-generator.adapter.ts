@@ -4,7 +4,7 @@ import { createPaymentOrderTemplate } from './templates/payment-order.template';
 import { PrinterService } from 'src/shared/modules/printer/printer.service';
 
 @Injectable()
-export class PdfGeneratorService implements IPdfGenerator {
+export class PdfGeneratorAdapter implements IPdfGenerator {
   constructor(private printerService: PrinterService) {}
 
   async generatePdf(data: any) {
