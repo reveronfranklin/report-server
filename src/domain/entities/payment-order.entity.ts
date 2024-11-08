@@ -1,6 +1,6 @@
 import { IPaymentOrder } from '../interfaces/payment-order.interface';
-import { DescriptiveEntity } from '../../../descriptive/domain/entities/descriptive.entity'
-import { SupplierEntity } from '../../../supplier/domain/entities/supplier.entity'
+import { DescriptiveEntity } from './descriptive.entity'
+import { SupplierEntity } from './supplier.entity'
 
 export class PaymentOrderEntity implements IPaymentOrder {
   constructor(

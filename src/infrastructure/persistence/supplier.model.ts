@@ -1,7 +1,7 @@
 import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
 import { ISupplier } from '../../domain/interfaces/supplier.interface';
-import { PaymentOrderModel } from '../../../payment-order/infrastructure/persistence/payment-order.model';
-import { BeneficiaryModel } from '../../../beneficiary/infrastructure/persistence/beneficiary.model';
+import { PaymentOrderModel } from './payment-order.model';
+import { BeneficiaryModel } from './beneficiary.model';
 
 @Table({
   schema: 'public',

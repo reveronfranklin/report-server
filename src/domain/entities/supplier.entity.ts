@@ -1,5 +1,5 @@
 import { ISupplier } from '../interfaces/supplier.interface';
-import { BeneficiaryEntity } from '../../../beneficiary/domain/entities/beneficiary.entity';
+import { BeneficiaryEntity } from './beneficiary.entity';
 
 export class SupplierEntity implements ISupplier {
   constructor(

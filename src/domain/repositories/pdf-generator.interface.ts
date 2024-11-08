@@ -1,3 +1,3 @@
 export interface IPdfGenerator {
-  generatePdf(data: any)
+  generatePdf(data: any): any
 }

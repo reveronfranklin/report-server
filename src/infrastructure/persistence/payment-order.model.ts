@@ -1,6 +1,6 @@
 import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
-import { DescriptiveModel } from '../../../descriptive/infrastructure/persistence/descriptive.model';
-import { SupplierModel } from '../../../supplier/infrastructure/persistence/supplier.model';
+import { DescriptiveModel } from './descriptive.model';
+import { SupplierModel } from './supplier.model';
 import { IPaymentOrder } from '../../domain/interfaces/payment-order.interface';
 
 @Table({

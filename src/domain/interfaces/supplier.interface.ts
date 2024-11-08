@@ -1,4 +1,3 @@
-import { IBeneficiary } from '../../../beneficiary/domain/interfaces/beneficiary.interface';
 export interface ISupplier {
   CODIGO_PROVEEDOR: number;
   NOMBRE_PROVEEDOR: string;
@@ -28,5 +27,4 @@ export interface ISupplier {
   CODIGO_AUXILIAR_ORDEN_PAGO: string | null;
   ESTATUS_FISCO_ID: number | null;
   NUMERO_CUENTA: string | null;
-  BENEFICIARIES?: IBeneficiary[];
 }
