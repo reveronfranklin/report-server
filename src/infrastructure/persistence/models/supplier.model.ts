@@ -1,5 +1,5 @@
 import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
-import { ISupplier } from '../../domain/interfaces/supplier.interface';
+import { ISupplier } from '../../../domain/interfaces/supplier.interface';
 import { PaymentOrderModel } from './payment-order.model';
 import { BeneficiaryModel } from './beneficiary.model';
 

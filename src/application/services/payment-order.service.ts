@@ -1,8 +1,8 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { IPaymentOrderRepository, PAYMENT_ORDER_REPOSITORY } from '../../domain/repositories/payment-order.repository.interface';
-import { DescriptiveModel } from '../../infrastructure/persistence/descriptive.model';
-import { SupplierModel } from '../../infrastructure/persistence/supplier.model';
-import { BeneficiaryModel } from '../../infrastructure/persistence/beneficiary.model';
+import { DescriptiveModel } from '../../infrastructure/persistence/models/descriptive.model';
+import { SupplierModel } from '../../infrastructure/persistence/models/supplier.model';
+import { BeneficiaryModel } from '../../infrastructure/persistence/models/beneficiary.model';
 import { PaymentOrderEntity } from '../../domain/entities/payment-order.entity';
 import { ReportSchemeDto } from '../dtos/report-scheme.dto';
 import { ReportHeaderDto } from '../dtos/report-header.dto';

@@ -1,5 +1,5 @@
 import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
-import { IDescriptive } from '../../domain/interfaces/descriptive.interface';
+import { IDescriptive } from '../../../domain/interfaces/descriptive.interface';
 import { PaymentOrderModel } from './payment-order.model';
 
 @Table({

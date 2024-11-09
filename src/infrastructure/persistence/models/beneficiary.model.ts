@@ -1,5 +1,5 @@
 import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
-import { IBeneficiary } from '../../domain/interfaces/beneficiary.interface';
+import { IBeneficiary } from '../../../domain/interfaces/beneficiary.interface';
 import { SupplierModel } from './supplier.model';
 
 @Table({

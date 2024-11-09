@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { PaymentOrderModel } from './payment-order.model';
-import { IPaymentOrderRepository } from '../../domain/repositories/payment-order.repository.interface';
-import { PaymentOrderEntity } from '../../domain/entities/payment-order.entity';
+import { PaymentOrderModel } from '../models/payment-order.model';
+import { IPaymentOrderRepository } from '../../../domain/repositories/payment-order.repository.interface';
+import { PaymentOrderEntity } from '../../../domain/entities/payment-order.entity';
 
 @Injectable()
 export class PaymentOrderRepository implements IPaymentOrderRepository {

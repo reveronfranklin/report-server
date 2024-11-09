@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { SupplierModel } from './supplier.model';
-import { ISupplierRepository } from '../../domain/repositories/supplier.repository.interface';
-import { SupplierEntity } from '../../domain/entities/supplier.entity';
+import { SupplierModel } from '../models/supplier.model';
+import { ISupplierRepository } from '../../../domain/repositories/supplier.repository.interface';
+import { SupplierEntity } from '../../../domain/entities/supplier.entity';
 
 @Injectable()
 export class SupplierRepository implements ISupplierRepository {
