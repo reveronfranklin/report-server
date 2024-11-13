@@ -9,19 +9,16 @@ import { envSchema } from './config/env-schema';
 import { DatabaseModule } from './shared/modules/db/database.module';
 
 /* Module Payment Order */
-import { PAYMENT_ORDER_REPOSITORY } from './domain/repositories/payment-order.repository.interface';
 import { PaymentOrderService } from './application/services/payment-order.service';
 import { PaymentOrderModel } from './infrastructure/persistence/models/payment-order.model';
 import { PaymentOrderRepository } from './infrastructure/persistence/repositories/payment-order.repository';
 import { PaymentOrderController } from './infrastructure/http/controllers/payment-order.controller';
 
 /* Module Descriptive */
-import { DESCRIPTIVE_REPOSITORY } from './domain/repositories/descriptive.repository.interface';
 import { DescriptiveModel } from './infrastructure/persistence/models/descriptive.model';
 import { DescriptiveRepository } from './infrastructure/persistence/repositories/descriptive.repository';
 
 /* Module Supplier */
-import { SUPPLIER_REPOSITORY } from './domain/repositories/supplier.repository.interface';
 import { SupplierModel } from './infrastructure/persistence/models/supplier.model';
 import { SupplierRepository } from './infrastructure/persistence/repositories/supplier.repository';
 
@@ -36,6 +33,10 @@ import { BalanceRepository } from './infrastructure/persistence/repositories/bal
 /* Module PucPaymentOrder */
 import { PucPaymentOrderModel } from './infrastructure/persistence/models/puc-payment-order.model';
 import { PucPaymentOrderRepository } from './infrastructure/persistence/repositories/puc-payment-order.repository';
+
+/* Module CommitmentModel */
+import { CommitmentModel } from './infrastructure/persistence/models/commitment.model';
+import { CommitmentRepository } from './infrastructure/persistence/repositories/commitment.repository';
 
 /* Resources */
 import { PdfGeneratorAdapter } from './infrastructure/pdf/pdf-generator.adapter';
@@ -56,22 +57,23 @@ import { PrinterModule } from 'src/shared/modules/printer/printer.module';
       SupplierModel,
       BeneficiaryModel,
       BalanceModel,
-      PucPaymentOrderModel
+      PucPaymentOrderModel,
+      CommitmentModel
     ]),
     PrinterModule
   ],
   providers: [
     PaymentOrderService,
     {
-      provide: PAYMENT_ORDER_REPOSITORY,
+      provide: 'IPaymentOrderRepository',
       useClass: PaymentOrderRepository
     },
     {
-      provide: DESCRIPTIVE_REPOSITORY,
+      provide: 'IDescriptiveRepository',
       useClass: DescriptiveRepository
     },
     {
-      provide: SUPPLIER_REPOSITORY,
+      provide: 'ISupplierRepository',
       useClass: SupplierRepository
     },
     {
@@ -85,6 +87,10 @@ import { PrinterModule } from 'src/shared/modules/printer/printer.module';
     {
       provide: 'IPucPaymentOrderRepository',
       useClass: PucPaymentOrderRepository
+    },
+    {
+      provide: 'ICommitmentRepository',
+      useClass: CommitmentRepository
     },
     {
       provide: 'IPdfGenerator',

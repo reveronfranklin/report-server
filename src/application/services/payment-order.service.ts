@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { IPaymentOrderRepository, PAYMENT_ORDER_REPOSITORY } from '../../domain/repositories/payment-order.repository.interface';
+import { IPaymentOrderRepository } from '../../domain/repositories/payment-order.repository.interface';
 import { DescriptiveModel } from '../../infrastructure/persistence/models/descriptive.model';
 import { SupplierModel } from '../../infrastructure/persistence/models/supplier.model';
 import { BeneficiaryModel } from '../../infrastructure/persistence/models/beneficiary.model';
@@ -12,7 +12,7 @@ import { IPdfGenerator } from '../../domain/repositories/pdf-generator.interface
 @Injectable()
 export class PaymentOrderService {
   constructor(
-    @Inject(PAYMENT_ORDER_REPOSITORY)
+    @Inject('IPaymentOrderRepository')
     private paymentOrderRepository: IPaymentOrderRepository,
     @Inject('IPdfGenerator')
     private pdfGenerator: IPdfGenerator
@@ -46,7 +46,6 @@ export class PaymentOrderService {
       CODIGO_ORDEN_PAGO: order.CODIGO_ORDEN_PAGO,
       MONTO: order.CANTIDAD_PAGO || 0,
       CONCEPTO: order.MOTIVO || '',
-      // ... mapear otros campos según sea necesario
     };
   }
 
@@ -92,7 +91,7 @@ export class PaymentOrderService {
       body: this.mapToReportBody(paymentOrder)
     };
 
-    console.log('reportScheme', reportScheme)
+    // console.log('reportScheme', reportScheme)
 
     const data = {
       logoPath: 'src/shared/utils/images/LogoIzquierda.jpeg'
@@ -100,7 +99,7 @@ export class PaymentOrderService {
 
     const document = this.pdfGenerator.generatePdf(data);
 
-    console.log('document', document)
+    // console.log('document', document)
 
     return document;
   }
