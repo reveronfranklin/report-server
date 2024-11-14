@@ -1,5 +1,7 @@
-import { Table, Column, Model, DataType } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
 import { ICommitment } from '../../../domain/interfaces/commitment.interface';
+import { PaymentOrderModel } from './payment-order.model';
+import { PreCommitmentModel } from './pre-commitment.model';
 
 @Table({
   schema: 'public',
@@ -15,24 +17,39 @@ export class CommitmentModel extends Model<CommitmentModel> implements ICommitme
   })
   CODIGO_COMPROMISO_OP: number;
 
+  /* Foreing Keys */
+
+  @ForeignKey(() => PaymentOrderModel)
   @Column({
     type: DataType.INTEGER,
-    field: 'ORIGEN_COMPROMISO_ID'
+    field: 'CODIGO_ORDEN_PAGO'
   })
-  ORIGEN_COMPROMISO_ID: number;
+  CODIGO_ORDEN_PAGO: number;
 
+  @ForeignKey(() => PreCommitmentModel)
   @Column({
     type: DataType.STRING,
     field: 'CODIGO_IDENTIFICADOR'
   })
   CODIGO_IDENTIFICADOR: string;
 
+  /* Foreing Keys */
+
+  /* Associations */
+
+  @BelongsTo(() => PaymentOrderModel, { foreignKey: 'CODIGO_ORDEN_PAGO', as: 'ORDEN_PAGO' })
+  ORDEN_PAGO: PaymentOrderModel;
+
+  @BelongsTo(() => PreCommitmentModel, { foreignKey: 'CODIGO_IDENTIFICADOR', as: 'PRE_COMMITMENT' })
+  PRE_COMMITMENT: PreCommitmentModel;
+
+  /* Associations */
+
   @Column({
     type: DataType.INTEGER,
-    field: 'CODIGO_ORDEN_PAGO',
-    allowNull: true
+    field: 'ORIGEN_COMPROMISO_ID'
   })
-  CODIGO_ORDEN_PAGO: number | null;
+  ORIGEN_COMPROMISO_ID: number;
 
   @Column({
     type: DataType.INTEGER,

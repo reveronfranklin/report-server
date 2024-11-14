@@ -1,6 +1,6 @@
 import { IPucPaymentOrder } from '../interfaces/puc-payment-order.interface';
 
-export class PucPaymentOrder implements IPucPaymentOrder {
+export class PucPaymentOrderEntity implements IPucPaymentOrder {
   constructor(
     public CODIGO_PUC_ORDEN_PAGO: number,
     public CODIGO_ORDEN_PAGO: number,

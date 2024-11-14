@@ -1,7 +1,9 @@
-import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, ForeignKey, BelongsTo, HasOne, HasMany } from 'sequelize-typescript';
+import { IPaymentOrder } from '../../../domain/interfaces/payment-order.interface';
 import { DescriptiveModel } from './descriptive.model';
 import { SupplierModel } from './supplier.model';
-import { IPaymentOrder } from '../../../domain/interfaces/payment-order.interface';
+import { PucPaymentOrderModel } from './puc-payment-order.model';
+import { CommitmentModel } from './commitment.model';
 
 @Table({
   schema: 'public',
@@ -18,6 +20,7 @@ export class PaymentOrderModel extends Model<PaymentOrderModel> implements IPaym
   CODIGO_ORDEN_PAGO: number;
 
   /* Foreing Keys */
+
   @ForeignKey(() => DescriptiveModel)
   @Column({
     type: DataType.INTEGER,
@@ -51,6 +54,12 @@ export class PaymentOrderModel extends Model<PaymentOrderModel> implements IPaym
 
   @BelongsTo(() => SupplierModel, { foreignKey: 'CODIGO_PROVEEDOR', as: 'PROVEEDOR' })
   PROVEEDOR: SupplierModel;
+
+  @HasMany(() => PucPaymentOrderModel, { foreignKey: 'CODIGO_ORDEN_PAGO' })
+  PUC_PAYMENT_ORDERS: PucPaymentOrderModel[];
+
+  @HasOne(() => CommitmentModel, { foreignKey: 'CODIGO_ORDEN_PAGO' })
+  COMMITMENT: CommitmentModel;
 
   /* Associations */
 

@@ -1,5 +1,6 @@
-import { Table, Column, Model, DataType } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
 import { IPucPaymentOrder } from '../../../domain/interfaces/puc-payment-order.interface';
+import { PaymentOrderModel } from './payment-order.model';
 
 @Table({
   schema: 'public',
@@ -15,11 +16,22 @@ export class PucPaymentOrderModel extends Model<PucPaymentOrderModel> implements
   })
   CODIGO_PUC_ORDEN_PAGO: number;
 
+  /* Foreing Keys */
+
+  @ForeignKey(() => PaymentOrderModel)
   @Column({
     type: DataType.INTEGER,
     field: 'CODIGO_ORDEN_PAGO'
   })
   CODIGO_ORDEN_PAGO: number;
+  /* Foreing Keys */
+
+  /* Associations */
+
+  @BelongsTo(() => PaymentOrderModel, { foreignKey: 'CODIGO_ORDEN_PAGO', as: 'ORDEN_PAGO' })
+  ORDEN_PAGO: PaymentOrderModel;
+
+  /* Associations */
 
   @Column({
     type: DataType.INTEGER,

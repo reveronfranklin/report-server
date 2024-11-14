@@ -1,6 +1,6 @@
 import { IBalance } from '../interfaces/balance.interface';
 
-export class Balance implements IBalance {
+export class BalanceEntity implements IBalance {
   constructor(
     public CODIGO_SALDO: number,
     public ANO: number,

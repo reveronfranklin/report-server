@@ -7,11 +7,19 @@ export class ReportHeaderDto {
 
   @IsString()
   @IsNotEmpty()
+  NUMERO_COMPROMISO: string;
+
+  @IsString()
+  @IsNotEmpty()
   NUMERO_ORDEN_PAGO: string;
 
   @IsDate()
   @IsNotEmpty()
   FECHA_ORDEN_PAGO: Date;
+
+  @IsDate()
+  @IsNotEmpty()
+  FECHA_COMPROMISO: Date;
 
   @IsString()
   @IsNotEmpty()

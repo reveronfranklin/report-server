@@ -1,6 +1,8 @@
 import { IPaymentOrder } from '../interfaces/payment-order.interface';
 import { DescriptiveEntity } from './descriptive.entity'
 import { SupplierEntity } from './supplier.entity'
+import { PucPaymentOrderEntity } from './puc-payment-order.entity';
+import { CommitmentEntity} from './commitment.entity';
 
 export class PaymentOrderEntity implements IPaymentOrder {
   constructor(
@@ -55,6 +57,8 @@ export class PaymentOrderEntity implements IPaymentOrder {
     /* Por ahora se agregaran aqui, buscar una merjor manera */
     public TIPO_ORDEN_PAGO?: DescriptiveEntity,
     public FRECUENCIA_PAGO?: DescriptiveEntity,
-    public PROVEEDOR?: SupplierEntity
+    public PROVEEDOR?: SupplierEntity,
+    public COMMITMENT?: CommitmentEntity,
+    public PUC_PAYMENT_ORDERS?: PucPaymentOrderEntity[]
   ) {}
 }

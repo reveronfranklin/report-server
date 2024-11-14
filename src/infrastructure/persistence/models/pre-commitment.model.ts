@@ -1,14 +1,27 @@
-import { Table, Column, Model, DataType } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, BelongsTo, HasOne } from 'sequelize-typescript';
 import { IPreCommitment } from '../../../domain/interfaces/pre-commitment.interface';
+import { CommitmentModel } from './commitment.model';
 
-@Table({ tableName: 'PRE_V_SALDOS', timestamps: false })
+@Table({
+  schema: 'public',
+  tableName: 'PRE_COMPROMISOS',
+  timestamps: false
+})
 export class PreCommitmentModel extends Model<PreCommitmentModel> implements IPreCommitment {
   @Column({
     type: DataType.INTEGER,
     primaryKey: true,
-    field: 'CODIGO_SALDO'
+    autoIncrement: true,
+    field: 'CODIGO_COMPROMISO'
   })
-  CODIGO_SALDO: number;
+  CODIGO_COMPROMISO: number;
+
+  /* Associations */
+
+  @HasOne(() => CommitmentModel, { foreignKey: 'CODIGO_IDENTIFICADOR', as: 'COMMITMENT' })
+  PRE_COMMITMENT: CommitmentModel;
+
+  /* Associations */
 
   @Column({
     type: DataType.INTEGER,
@@ -18,213 +31,103 @@ export class PreCommitmentModel extends Model<PreCommitmentModel> implements IPr
 
   @Column({
     type: DataType.INTEGER,
-    field: 'FINANCIADO_ID'
+    field: 'CODIGO_SOLICITUD'
   })
-  FINANCIADO_ID: number;
+  CODIGO_SOLICITUD: number;
 
   @Column({
     type: DataType.STRING,
-    field: 'CODIGO_FINANCIADO'
+    field: 'NUMERO_COMPROMISO'
   })
-  CODIGO_FINANCIADO: string;
+  NUMERO_COMPROMISO: string;
+
+  @Column({
+    type: DataType.DATE,
+    field: 'FECHA_COMPROMISO'
+  })
+  FECHA_COMPROMISO: Date;
+
+  @Column({
+    type: DataType.INTEGER,
+    field: 'CODIGO_PROVEEDOR'
+  })
+  CODIGO_PROVEEDOR: number;
+
+  @Column({
+    type: DataType.DATE,
+    field: 'FECHA_ENTREGA'
+  })
+  FECHA_ENTREGA: Date;
+
+  @Column({
+    type: DataType.INTEGER,
+    field: 'CODIGO_DIR_ENTREGA'
+  })
+  CODIGO_DIR_ENTREGA: number;
+
+  @Column({
+    type: DataType.INTEGER,
+    field: 'TIPO_PAGO_ID'
+  })
+  TIPO_PAGO_ID: number;
 
   @Column({
     type: DataType.STRING,
-    field: 'DESCRIPCION_FINANCIADO'
+    field: 'MOTIVO'
   })
-  DESCRIPCION_FINANCIADO: string;
+  MOTIVO: string;
 
   @Column({
     type: DataType.STRING,
-    field: 'CODIGO_ICP'
+    field: 'STATUS'
   })
-  CODIGO_ICP: string;
+  STATUS: string;
 
   @Column({
     type: DataType.STRING,
-    field: 'CODIGO_SECTOR'
+    field: 'EXTRA1',
+    allowNull: true
   })
-  CODIGO_SECTOR: string;
+  EXTRA1: string | null;
 
   @Column({
     type: DataType.STRING,
-    field: 'CODIGO_PROGRAMA'
+    field: 'EXTRA2',
+    allowNull: true
   })
-  CODIGO_PROGRAMA: string;
+  EXTRA2: string | null;
 
   @Column({
-    type: DataType.STRING,
-    field: 'CODIGO_SUBPROGRAMA'
+    type:
+    DataType.STRING,
+    field: 'EXTRA3',
+    allowNull: true
   })
-  CODIGO_SUBPROGRAMA: string;
+  EXTRA3: string | null;
 
   @Column({
-    type: DataType.STRING,
-    field: 'CODIGO_PROYECTO'
+    type: DataType.INTEGER,
+    field: 'USUARIO_INS'
   })
-  CODIGO_PROYECTO: string;
+  USUARIO_INS: number;
 
   @Column({
-    type: DataType.STRING,
-    field: 'CODIGO_ACTIVIDAD'
+    type: DataType.DATE,
+    field: 'FECHA_INS'
   })
-  CODIGO_ACTIVIDAD: string;
+  FECHA_INS: Date;
 
   @Column({
-    type: DataType.STRING,
-    field: 'CODIGO_OFICINA'
+    type: DataType.INTEGER,
+    field: 'USUARIO_UPD'
   })
-  CODIGO_OFICINA: string;
+  USUARIO_UPD: number;
 
   @Column({
-    type: DataType.STRING,
-    field: 'CODIGO_ICP_CONCAT'
+    type: DataType.DATE,
+    field: 'FECHA_UPD'
   })
-  CODIGO_ICP_CONCAT: string;
-
-  @Column({
-    type: DataType.STRING,
-    field: 'DENOMINACION_ICP'
-  })
-  DENOMINACION_ICP: string;
-
-  @Column({
-    type: DataType.STRING,
-    field: 'UNIDAD_EJECUTORA'
-  })
-  UNIDAD_EJECUTORA: string;
-
-  @Column({
-    type: DataType.STRING,
-    field: 'CODIGO_PUC'
-  })
-  CODIGO_PUC: string;
-
-  @Column({
-    type: DataType.STRING,
-    field: 'CODIGO_GRUPO'
-  })
-  CODIGO_GRUPO: string;
-
-  @Column({
-    type: DataType.STRING,
-    field: 'CODIGO_PARTIDA'
-  })
-  CODIGO_PARTIDA: string;
-
-  @Column({
-    type: DataType.STRING,
-    field: 'CODIGO_GENERICA'
-  })
-  CODIGO_GENERICA: string;
-
-  @Column({
-    type: DataType.STRING,
-    field: 'CODIGO_ESPECIFICA'
-  })
-  CODIGO_ESPECIFICA: string;
-
-  @Column({
-    type: DataType.STRING,
-    field: 'CODIGO_SUBESPECIFICA'
-  })
-  CODIGO_SUBESPECIFICA: string;
-
-  @Column({
-    type: DataType.STRING,
-    field: 'CODIGO_NIVEL5'
-  })
-  CODIGO_NIVEL5: string;
-
-  @Column({
-    type: DataType.STRING,
-    field: 'CODIGO_PUC_CONCAT'
-  })
-  CODIGO_PUC_CONCAT: string;
-
-  @Column({
-    type: DataType.STRING,
-    field: 'DENOMINACION_PUC'
-  })
-  DENOMINACION_PUC: string;
-
-  @Column({
-    type: DataType.DECIMAL(18, 2),
-    field: 'PRESUPUESTADO'
-  })
-  PRESUPUESTADO: number;
-
-  @Column({
-    type: DataType.DECIMAL(18, 2),
-    field: 'ASIGNACION'
-  })
-  ASIGNACION: number;
-
-  @Column({
-    type: DataType.DECIMAL(18, 2),
-    field: 'BLOQUEADO'
-  })
-  BLOQUEADO: number;
-
-  @Column({
-    type: DataType.DECIMAL(18, 2),
-    field: 'MODIFICADO'
-  })
-  MODIFICADO: number;
-
-  @Column({
-    type: DataType.DECIMAL(18, 2),
-    field: 'AJUSTADO'
-  })
-  AJUSTADO: number;
-
-  @Column({
-    type: DataType.DECIMAL(18, 2),
-    field: 'VIGENTE'
-  })
-  VIGENTE: number;
-
-  @Column({
-    type: DataType.DECIMAL(18, 2),
-    field: 'COMPROMETIDO'
-  })
-  COMPROMETIDO: number;
-
-  @Column({
-    type: DataType.DECIMAL(18, 2),
-    field: 'POR_COMPROMETIDO'
-  })
-  POR_COMPROMETIDO: number;
-
-  @Column({
-    type: DataType.DECIMAL(18, 2),
-    field: 'DISPONIBLE'
-  })
-  DISPONIBLE: number;
-
-  @Column({
-    type: DataType.DECIMAL(18, 2),
-    field: 'CAUSADO'
-  })
-  CAUSADO: number;
-
-  @Column({
-    type: DataType.DECIMAL(18, 2),
-    field: 'POR_CAUSADO'
-  })
-  POR_CAUSADO: number;
-
-  @Column({
-    type: DataType.DECIMAL(18, 2),
-    field: 'PAGADO'
-  })
-  PAGADO: number;
-
-  @Column({
-    type: DataType.DECIMAL(18, 2),
-    field: 'POR_PAGADO'
-  })
-  POR_PAGADO: number;
+  FECHA_UPD: Date;
 
   @Column({
     type: DataType.INTEGER,
@@ -239,20 +142,32 @@ export class PreCommitmentModel extends Model<PreCommitmentModel> implements IPr
   CODIGO_PRESUPUESTO: number;
 
   @Column({
-    type: DataType.DATE,
-    field: 'FECHA_SOLICITUD'
+    type: DataType.INTEGER,
+    field: 'TIPO_RENGLON_ID'
   })
-  FECHA_SOLICITUD: Date;
+  TIPO_RENGLON_ID: number;
 
   @Column({
     type: DataType.STRING,
-    field: 'DESCRIPTIVA_FINANCIADO'
+    field: 'NUMERO_ORDEN'
   })
-  DESCRIPTIVA_FINANCIADO: string;
+  NUMERO_ORDEN: string;
 
   @Column({
     type: DataType.STRING,
     field: 'SEARCH_TEXT'
   })
   SEARCH_TEXT: string;
+
+  @Column({
+    type: DataType.STRING,
+    field: 'MONTO_LETRAS'
+  })
+  MONTO_LETRAS: string;
+
+  @Column({
+    type: DataType.STRING,
+    field: 'FIRMANTE'
+  })
+  FIRMANTE: string;
 }

@@ -1,6 +1,7 @@
 import { ICommitment } from '../interfaces/commitment.interface';
+import { PreCommitmentEntity } from './pre-commitment.entity';
 
-export class Commitment implements ICommitment {
+export class CommitmentEntity implements ICommitment {
   constructor(
     public CODIGO_COMPROMISO_OP: number,
     public ORIGEN_COMPROMISO_ID: number,
@@ -16,6 +17,7 @@ export class Commitment implements ICommitment {
     public FECHA_UPD: Date,
     public CODIGO_EMPRESA: number,
     public CODIGO_PRESUPUESTO: number,
-    public CODIGO_VAL_CONTRATO: number | null
+    public CODIGO_VAL_CONTRATO: number | null,
+    public PRE_COMMITMENT?: PreCommitmentEntity,
   ) {}
 }

@@ -85,6 +85,26 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
       }
     }
 
+    if (model.COMMITMENT) {
+      entity.COMMITMENT = {
+       ...model.COMMITMENT.get({ plain: true })
+      }
+    }
+
+    if (model.PUC_PAYMENT_ORDERS) {
+      const pucPaymentOrders = model.PUC_PAYMENT_ORDERS
+
+      if (pucPaymentOrders.length > 0) {
+        pucPaymentOrders.map((pucPaymentOrder) => {
+          return {
+            ...pucPaymentOrder.get({ plain: true })
+          }
+        })
+      }
+
+      entity.PUC_PAYMENT_ORDERS = pucPaymentOrders
+    }
+
     return entity
   }
 }

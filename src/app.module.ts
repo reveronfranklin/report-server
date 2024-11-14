@@ -9,9 +9,9 @@ import { envSchema } from './config/env-schema';
 import { DatabaseModule } from './shared/modules/db/database.module';
 
 /* Module Payment Order */
-import { PaymentOrderService } from './application/services/payment-order.service';
 import { PaymentOrderModel } from './infrastructure/persistence/models/payment-order.model';
 import { PaymentOrderRepository } from './infrastructure/persistence/repositories/payment-order.repository';
+import { PaymentOrderService } from './application/services/payment-order.service';
 import { PaymentOrderController } from './infrastructure/http/controllers/payment-order.controller';
 
 /* Module Descriptive */
@@ -38,6 +38,10 @@ import { PucPaymentOrderRepository } from './infrastructure/persistence/reposito
 import { CommitmentModel } from './infrastructure/persistence/models/commitment.model';
 import { CommitmentRepository } from './infrastructure/persistence/repositories/commitment.repository';
 
+/* Module PreCommitmentModel */
+import { PreCommitmentModel } from './infrastructure/persistence/models/pre-commitment.model';
+import { PreCommitmentRepository } from './infrastructure/persistence/repositories/pre-commitment.repository';
+
 /* Resources */
 import { PdfGeneratorAdapter } from './infrastructure/pdf/pdf-generator.adapter';
 import { PrinterModule } from 'src/shared/modules/printer/printer.module';
@@ -58,7 +62,8 @@ import { PrinterModule } from 'src/shared/modules/printer/printer.module';
       BeneficiaryModel,
       BalanceModel,
       PucPaymentOrderModel,
-      CommitmentModel
+      CommitmentModel,
+      PreCommitmentModel
     ]),
     PrinterModule
   ],
@@ -91,6 +96,10 @@ import { PrinterModule } from 'src/shared/modules/printer/printer.module';
     {
       provide: 'ICommitmentRepository',
       useClass: CommitmentRepository
+    },
+    {
+      provide: 'IPreCommitmentRepository',
+      useClass: PreCommitmentRepository
     },
     {
       provide: 'IPdfGenerator',

@@ -1,9 +1,12 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { IPaymentOrderRepository } from '../../domain/repositories/payment-order.repository.interface';
+import { PaymentOrderEntity } from '../../domain/entities/payment-order.entity';
 import { DescriptiveModel } from '../../infrastructure/persistence/models/descriptive.model';
 import { SupplierModel } from '../../infrastructure/persistence/models/supplier.model';
 import { BeneficiaryModel } from '../../infrastructure/persistence/models/beneficiary.model';
-import { PaymentOrderEntity } from '../../domain/entities/payment-order.entity';
+import { PucPaymentOrderModel } from '../../infrastructure/persistence/models/puc-payment-order.model';
+import { CommitmentModel } from '../../infrastructure/persistence/models/commitment.model';
+import { PreCommitmentModel } from 'src/infrastructure/persistence/models/pre-commitment.model';
 import { ReportSchemeDto } from '../dtos/report-scheme.dto';
 import { ReportHeaderDto } from '../dtos/report-header.dto';
 import { ReportBodyDto } from '../dtos/report-body.dto';
@@ -23,11 +26,15 @@ export class PaymentOrderService {
     const methodOfPayment   = order.FRECUENCIA_PAGO ?? null
     const supplier          = order.PROVEEDOR ?? null
     const beneficiary       = supplier?.BENEFICIARIES[0] ?? null
+    const commitment        = order?.COMMITMENT ?? null
+    const preCommitment     = commitment?.PRE_COMMITMENT ?? null
 
     return {
       DESCRIPCION: paymentOrderType?.DESCRIPCION,
+      NUMERO_COMPROMISO: preCommitment?.NUMERO_COMPROMISO,
       NUMERO_ORDEN_PAGO: order.NUMERO_ORDEN_PAGO,
       FECHA_ORDEN_PAGO: order.FECHA_ORDEN_PAGO,
+      FECHA_COMPROMISO: preCommitment?.FECHA_COMPROMISO,
       NOMBRE_PROVEEDOR: supplier?.NOMBRE_PROVEEDOR,
       CEDULA_PROVEEDOR: supplier?.CEDULA,
       RIF_PROVEEDOR: supplier?.RIF,
@@ -75,6 +82,23 @@ export class PaymentOrderService {
               }
             }
           ]
+        },
+        /* ADM_PUC_ORDEN_PAGO */
+        {
+          model: PucPaymentOrderModel,
+          as: 'PUC_PAYMENT_ORDERS'
+        },
+        /* ADM_COMPROMISO_OP */
+        {
+          model: CommitmentModel,
+          as: 'COMMITMENT',
+          include: [
+            /* ADM_PRE_COMPROMISOS */
+            {
+              model: PreCommitmentModel,
+              as: 'PRE_COMMITMENT'
+            }
+          ]
         }
       ]
     });
@@ -91,7 +115,7 @@ export class PaymentOrderService {
       body: this.mapToReportBody(paymentOrder)
     };
 
-    // console.log('reportScheme', reportScheme)
+    console.log('reportScheme -> headers', reportScheme.headers)
 
     const data = {
       logoPath: 'src/shared/utils/images/LogoIzquierda.jpeg'
