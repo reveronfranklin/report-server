@@ -1,3 +1,3 @@
 export interface IPdfGenerator {
-  generatePdf(data: any): any
+  generatePdf(reportScheme: any, data: { logoPath: string }): Promise<PDFKit.PDFDocument>;
 }

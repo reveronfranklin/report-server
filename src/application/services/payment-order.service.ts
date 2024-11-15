@@ -22,8 +22,12 @@ export class PaymentOrderService {
     private pdfGenerator: IPdfGenerator
   ) {}
 
-  async generateReport(id: number) /*Promise<ReportSchemeDto | null> */{
+  async generateReport(id: number): Promise<PDFKit.PDFDocument> {
     const paymentOrder = await this.paymentOrderRepository.findByIdWithRelations(id);
+
+    if (!paymentOrder) {
+      throw new Error('Payment order not found');
+    }
 
     const data = {
       logoPath: 'src/shared/utils/images/LogoIzquierda.jpeg'
@@ -38,15 +42,15 @@ export class PaymentOrderService {
 
       console.log('reportScheme -> headers', reportScheme.headers)
       console.log('reportScheme -> body', reportScheme.body)
+
+      // Generar el documento PDF
+      const pdfDocument = this.pdfGenerator.generatePdf(reportScheme, data);
+
+      return pdfDocument;
     } catch (error) {
       console.error('generateReport -> error', error)
+      throw error;
     }
-
-    const document = this.pdfGenerator.generatePdf(data);
-
-    console.log('document', document)
-
-    return document;
   }
 
   private mapToReportHeader(order: PaymentOrderEntity): ReportHeaderDto {
