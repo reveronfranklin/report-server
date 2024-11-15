@@ -1,15 +1,16 @@
+/* Dependencies */
 import { Injectable, Inject } from '@nestjs/common';
 import { IPaymentOrderRepository } from '../../domain/repositories/payment-order.repository.interface';
+
+/* Entities */
 import { PaymentOrderEntity } from '../../domain/entities/payment-order.entity';
-import { DescriptiveModel } from '../../infrastructure/persistence/models/descriptive.model';
-import { SupplierModel } from '../../infrastructure/persistence/models/supplier.model';
-import { BeneficiaryModel } from '../../infrastructure/persistence/models/beneficiary.model';
-import { PucPaymentOrderModel } from '../../infrastructure/persistence/models/puc-payment-order.model';
-import { CommitmentModel } from '../../infrastructure/persistence/models/commitment.model';
-import { PreCommitmentModel } from 'src/infrastructure/persistence/models/pre-commitment.model';
+
+/* Dtos */
 import { ReportSchemeDto } from '../dtos/report-scheme.dto';
 import { ReportHeaderDto } from '../dtos/report-header.dto';
 import { ReportBodyDto } from '../dtos/report-body.dto';
+
+/* Services Pdf */
 import { IPdfGenerator } from '../../domain/repositories/pdf-generator.interface';
 
 @Injectable()
@@ -20,6 +21,33 @@ export class PaymentOrderService {
     @Inject('IPdfGenerator')
     private pdfGenerator: IPdfGenerator
   ) {}
+
+  async generateReport(id: number) /*Promise<ReportSchemeDto | null> */{
+    const paymentOrder = await this.paymentOrderRepository.findByIdWithRelations(id);
+
+    const data = {
+      logoPath: 'src/shared/utils/images/LogoIzquierda.jpeg'
+    }
+
+    try {
+      const reportScheme: ReportSchemeDto = {
+        name: 'payment-order',
+        headers: this.mapToReportHeader(paymentOrder),
+        body: this.mapToReportBody(paymentOrder)
+      };
+
+      console.log('reportScheme -> headers', reportScheme.headers)
+      console.log('reportScheme -> body', reportScheme.body)
+    } catch (error) {
+      console.error('generateReport -> error', error)
+    }
+
+    const document = this.pdfGenerator.generatePdf(data);
+
+    console.log('document', document)
+
+    return document;
+  }
 
   private mapToReportHeader(order: PaymentOrderEntity): ReportHeaderDto {
     const paymentOrderType  = order.TIPO_ORDEN_PAGO ?? null
@@ -48,83 +76,24 @@ export class PaymentOrderService {
     }
   }
 
-  private mapToReportBody(order: PaymentOrderEntity): ReportBodyDto {
-    return {
-      CODIGO_ORDEN_PAGO: order.CODIGO_ORDEN_PAGO,
-      MONTO: order.CANTIDAD_PAGO || 0,
-      CONCEPTO: order.MOTIVO || '',
-    };
-  }
+  private mapToReportBody(order: PaymentOrderEntity): ReportBodyDto[] {
+    const body = []
+    const pucOrders = order?.PUC_PAYMENT_ORDERS ?? []
 
-  async generateReport(id: number) /*Promise<ReportSchemeDto | null>*/ {
-    const paymentOrder = await this.paymentOrderRepository.findById(id, {
-      include: [
-        /* ADM_DESCRIPTIVAS */
-        {
-          model: DescriptiveModel,
-          as: 'TIPO_ORDEN_PAGO'
-        },
-        {
-          model: DescriptiveModel,
-          as: 'FRECUENCIA_PAGO'
-        },
-        /* ADM_PROVEEDORES */
-        {
-          model: SupplierModel,
-          as: 'PROVEEDOR',
-          include: [
-            /* CODIGO_CONTACTO_PROVEEDOR */
-            {
-              model: BeneficiaryModel,
-              as: 'BENEFICIARIES',
-              where: {
-                PRINCIPAL: 1
-              }
-            }
-          ]
-        },
-        /* ADM_PUC_ORDEN_PAGO */
-        {
-          model: PucPaymentOrderModel,
-          as: 'PUC_PAYMENT_ORDERS'
-        },
-        /* ADM_COMPROMISO_OP */
-        {
-          model: CommitmentModel,
-          as: 'COMMITMENT',
-          include: [
-            /* ADM_PRE_COMPROMISOS */
-            {
-              model: PreCommitmentModel,
-              as: 'PRE_COMMITMENT'
-            }
-          ]
-        }
-      ]
-    });
+    pucOrders.forEach((pucOrder) => {
+      const balance = pucOrder?.BALANCE ?? null
 
-    console.log('order', paymentOrder)
+      const data = {
+        ANO: balance?.ANO,
+        DESCRIPCION_FINANCIADO: balance?.DESCRIPCION_FINANCIADO,
+        CODIGO_ICP_CONCAT: balance?.CODIGO_ICP_CONCAT,
+        CODIGO_PUC_CONCAT: balance.CODIGO_PUC_CONCAT,
+        MONTO: pucOrder.MONTO,
+        PERIODICO: (pucOrder.MONTO / order.CANTIDAD_PAGO)
+      }
+      body.push(data)
+    })
 
-    if (!paymentOrder) {
-      return null;
-    }
-
-    const reportScheme: ReportSchemeDto = {
-      name: 'payment-order',
-      headers: this.mapToReportHeader(paymentOrder),
-      body: this.mapToReportBody(paymentOrder)
-    };
-
-    console.log('reportScheme -> headers', reportScheme.headers)
-
-    const data = {
-      logoPath: 'src/shared/utils/images/LogoIzquierda.jpeg'
-    }
-
-    const document = this.pdfGenerator.generatePdf(data);
-
-    // console.log('document', document)
-
-    return document;
+    return body
   }
 }

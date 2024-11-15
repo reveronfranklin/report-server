@@ -5,15 +5,25 @@ import { IsNumber, IsPositive, IsString, IsNotEmpty } from 'class-validator';
 export class ReportBodyDto {
   @IsNumber()
   @IsPositive()
-  CODIGO_ORDEN_PAGO: number;
+  MONTO: number;
 
   @IsNumber()
   @IsPositive()
-  MONTO: number;
+  ANO: number;
+
+  @IsNumber()
+  @IsPositive()
+  PERIODICO: number;
 
   @IsString()
   @IsNotEmpty()
-  CONCEPTO: string;
+  DESCRIPCION_FINANCIADO: string;
 
-  // Puedes agregar más campos según sea necesario, siguiendo el mismo patrón
+  @IsString()
+  @IsNotEmpty()
+  CODIGO_ICP_CONCAT: string;
+
+  @IsString()
+  @IsNotEmpty()
+  CODIGO_PUC_CONCAT: string;
 }

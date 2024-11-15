@@ -14,5 +14,5 @@ export class ReportSchemeDto {
 
   @ValidateNested()
   @Type(() => ReportBodyDto)
-  body: ReportBodyDto;
+  body: ReportBodyDto[];
 }

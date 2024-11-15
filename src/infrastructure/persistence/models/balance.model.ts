@@ -1,5 +1,6 @@
-import { Table, Column, Model, DataType } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, HasOne } from 'sequelize-typescript';
 import { IBalance } from '../../../domain/interfaces/balance.interface';
+import { PucPaymentOrderModel } from './puc-payment-order.model';
 
 @Table({
   schema: 'public',
@@ -14,6 +15,13 @@ export class BalanceModel extends Model<BalanceModel> implements IBalance {
     field: 'CODIGO_SALDO'
   })
   CODIGO_SALDO: number;
+
+  /* Associations */
+
+  @HasOne(() => PucPaymentOrderModel, { foreignKey: 'CODIGO_SALDO', as: 'PUC_PAYMENT_ORDER' })
+  PUC_PAYMENT_ORDER: PucPaymentOrderModel;
+
+  /* Associations */
 
   @Column({
     type: DataType.INTEGER,

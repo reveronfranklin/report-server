@@ -1,6 +1,7 @@
-import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, ForeignKey, BelongsTo, HasOne } from 'sequelize-typescript';
 import { IPucPaymentOrder } from '../../../domain/interfaces/puc-payment-order.interface';
 import { PaymentOrderModel } from './payment-order.model';
+import { BalanceModel } from './balance.model';
 
 @Table({
   schema: 'public',
@@ -24,12 +25,23 @@ export class PucPaymentOrderModel extends Model<PucPaymentOrderModel> implements
     field: 'CODIGO_ORDEN_PAGO'
   })
   CODIGO_ORDEN_PAGO: number;
+
+  @ForeignKey(() => BalanceModel)
+  @Column({
+    type: DataType.INTEGER,
+    field: 'CODIGO_SALDO'
+  })
+  CODIGO_SALDO: number;
+
   /* Foreing Keys */
 
   /* Associations */
 
   @BelongsTo(() => PaymentOrderModel, { foreignKey: 'CODIGO_ORDEN_PAGO', as: 'ORDEN_PAGO' })
   ORDEN_PAGO: PaymentOrderModel;
+
+  @BelongsTo(() => BalanceModel, { foreignKey: 'CODIGO_SALDO', as: 'BALANCE' })
+  BALANCE: BalanceModel;
 
   /* Associations */
 
@@ -63,12 +75,6 @@ export class PucPaymentOrderModel extends Model<PucPaymentOrderModel> implements
     field: 'CODIGO_FINANCIADO'
   })
   CODIGO_FINANCIADO: string;
-
-  @Column({
-    type: DataType.INTEGER,
-    field: 'CODIGO_SALDO'
-  })
-  CODIGO_SALDO: number;
 
   @Column({
     type: DataType.DECIMAL(18, 2),

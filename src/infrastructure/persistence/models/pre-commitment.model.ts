@@ -19,7 +19,7 @@ export class PreCommitmentModel extends Model<PreCommitmentModel> implements IPr
   /* Associations */
 
   @HasOne(() => CommitmentModel, { foreignKey: 'CODIGO_IDENTIFICADOR', as: 'COMMITMENT' })
-  PRE_COMMITMENT: CommitmentModel;
+  COMMITMENT: CommitmentModel;
 
   /* Associations */
 

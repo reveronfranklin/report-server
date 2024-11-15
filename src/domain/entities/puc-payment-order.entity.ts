@@ -1,4 +1,5 @@
 import { IPucPaymentOrder } from '../interfaces/puc-payment-order.interface';
+import { BalanceEntity } from './balance.entity';
 
 export class PucPaymentOrderEntity implements IPucPaymentOrder {
   constructor(
@@ -23,6 +24,7 @@ export class PucPaymentOrderEntity implements IPucPaymentOrder {
     public CODIGO_EMPRESA: number,
     public CODIGO_COMPROMISO_OP: number | null,
     public CODIGO_PRESUPUESTO: number,
-    public MONTO_COMPROMISO: number
+    public MONTO_COMPROMISO: number,
+    public BALANCE?: BalanceEntity
   ) {}
 }

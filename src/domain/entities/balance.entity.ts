@@ -1,4 +1,5 @@
 import { IBalance } from '../interfaces/balance.interface';
+import { PucPaymentOrderEntity } from './puc-payment-order.entity';
 
 export class BalanceEntity implements IBalance {
   constructor(
@@ -43,6 +44,7 @@ export class BalanceEntity implements IBalance {
     public CODIGO_PRESUPUESTO: number,
     public FECHA_SOLICITUD: Date,
     public DESCRIPTIVA_FINANCIADO: string,
-    public SEARCH_TEXT: string
+    public SEARCH_TEXT: string,
+    public PUC_PAYMENT_ORDER?: PucPaymentOrderEntity
   ) {}
 }
