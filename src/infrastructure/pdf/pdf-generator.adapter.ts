@@ -8,8 +8,15 @@ import { ReportSchemeDto } from '../../application/dtos/report-scheme.dto';
 export class PdfGeneratorAdapter implements IPdfGenerator {
   constructor(private printerService: PrinterService) {}
 
-  async generatePdf(reportScheme: ReportSchemeDto, data: { logoPath: string }): Promise<PDFKit.PDFDocument> {
-    const documentDefinition = createPaymentOrderTemplate(data);
+  async generatePdf(reportScheme: ReportSchemeDto): Promise<PDFKit.PDFDocument> {
+
+    console.log('generating PDF...')
+
+    console.log('reportScheme -> headers', reportScheme.headers)
+    console.log('reportScheme -> body', reportScheme.body)
+
+
+    const documentDefinition = createPaymentOrderTemplate(reportScheme)
     return this.printerService.createPdf(documentDefinition);
   }
 }

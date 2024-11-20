@@ -29,22 +29,16 @@ export class PaymentOrderService {
       throw new Error('Payment order not found');
     }
 
-    const data = {
-      logoPath: 'src/shared/utils/images/LogoIzquierda.jpeg'
-    }
-
     try {
       const reportScheme: ReportSchemeDto = {
         name: 'payment-order',
+        logoPath: 'src/shared/utils/images/LogoIzquierda.jpeg',
         headers: this.mapToReportHeader(paymentOrder),
         body: this.mapToReportBody(paymentOrder)
       };
 
-      console.log('reportScheme -> headers', reportScheme.headers)
-      console.log('reportScheme -> body', reportScheme.body)
-
       // Generar el documento PDF
-      const pdfDocument = this.pdfGenerator.generatePdf(reportScheme, data);
+      const pdfDocument = this.pdfGenerator.generatePdf(reportScheme);
 
       return pdfDocument;
     } catch (error) {

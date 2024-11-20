@@ -8,6 +8,10 @@ export class ReportSchemeDto {
   @IsNotEmpty()
   name: string;
 
+  @IsString()
+  @IsNotEmpty()
+  logoPath: string;
+
   @ValidateNested()
   @Type(() => ReportHeaderDto)
   headers: ReportHeaderDto;
