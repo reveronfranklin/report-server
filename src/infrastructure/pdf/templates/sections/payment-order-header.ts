@@ -7,11 +7,11 @@ import type {
 
 const logo: Content = {
   image: null,
-  width: 25,
-  //height: 100,
-  alignment: 'center',
-  fit: [200, 100],
-  margin: [10, 10, 0, 0]
+  width: 120, // Aumenta el tamaño del logo
+  height: 60,
+  alignment: 'left',
+  fit: [130, 70], // Ajusta el tamaño de la imagen
+  margin: [4, 4, 10, 0]
 }
 
 interface HeaderOptions {
@@ -22,34 +22,31 @@ interface HeaderOptions {
 export const headerSection = (options: HeaderOptions): Content => {
   const { logoPath, headers  } = options
 
+  const darkColor = '#444444'; // Cambiamos a negro para las líneas
+  const lineWidth = 0.5; // Grosor de línea más fino
+
   logo.image = logoPath
 
   const contentPdf: Content = {
-    //margin: [15, 15, 15, 15],
+    style: 'header',
     table: {
       widths: ['*', '*', '*', '*', '*', '*'],
+      heights: [25, 25, 25, 25, 25, 25], // Aumenta la altura de las filas
       body: [
         [
           {
+            // Combina el logo y el texto en la misma celda
+            stack: [
+              logo,
+              {
+                text: 'ORDEN DE PAGO', // Texto que acompaña al logo
+                style: 'orderTitle',
+              }
+            ],
             rowSpan: 3,
             colSpan: 3,
-            text: [
-              logo,
-              { text: 'Logo', style: 'tableHeader' },
-              { text: 'ORDEN DE PAGO', style: 'orderTitle' }
-            ]
           },
-          {
-            rowSpan: 3,
-            text: []
-          },
-          {
-            rowSpan: 3,
-            text: [
-              { text: '', style: 'tableHeader' },
-              { text: '', style: 'tableContent' }
-            ]
-          },
+          {}, {},
           {
             text: [
               { text: 'TIPO DE ORDEN\n', style: 'tableHeader' },
@@ -70,17 +67,14 @@ export const headerSection = (options: HeaderOptions): Content => {
           }
         ],
         [
-          {},
-          {},
-          {},
+          {}, {}, {},
           {
             colSpan: 2,
             text: [
               { text: 'NUMERO COMPROMISO #\n', style: 'tableHeader' },
               { text: `${headers.NUMERO_COMPROMISO}`, style: 'tableContent' }
             ]
-          },
-          {},
+          }, {},
           {
             text: [
               { text: 'FECHA COMPROMISO\n', style: 'tableHeader' },
@@ -89,38 +83,23 @@ export const headerSection = (options: HeaderOptions): Content => {
           }
         ],
         [
-          {
-            colSpan: 2,
-            text: []
-          },
-          {
-            colSpan: 2,
-            text: []
-          },
-          {
-            colSpan: 2,
-            text: []
-          },
-          {
-            colSpan: 2,
-            text: []
-          },
-          {},
-          {}
+          {}, {}, {},
+          { colSpan: 2, text: [] },
+          {}, {}
         ]
       ]
     },
-    /* layout: {
-      hLineWidth: (i, node) => 1,
-      vLineWidth: (i, node) => 1,
-      hLineColor: (i, node) => '#000000',
-      vLineColor: (i, node) => '#000000',
-      paddingLeft: (i, node) => 10,
-      paddingRight: (i, node) => 10,
+    layout: {
+      hLineWidth: (i, node) => lineWidth,
+      vLineWidth: (i, node) => lineWidth,
+      hLineColor: (i, node) => darkColor,
+      vLineColor: (i, node) => darkColor,
       paddingTop: (i, node) => 10,
       paddingBottom: (i, node) => 10,
-    } */
-  } as Column // Cast to Column type
+      paddingLeft: (i, node) => 10,
+      paddingRight: (i, node) => 10
+    }
+  } as Column
 
   return {
     columns: [contentPdf]
