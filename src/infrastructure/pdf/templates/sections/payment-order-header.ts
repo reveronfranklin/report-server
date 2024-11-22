@@ -1,8 +1,4 @@
-
-import type {
-  Content,
-  Column
-} from 'pdfmake/interfaces';
+import type { Content } from 'pdfmake/interfaces';
 
 
 const logo: Content = {
@@ -99,9 +95,7 @@ export const headerSection = (options: HeaderOptions): Content => {
       paddingLeft: (i, node) => 10,
       paddingRight: (i, node) => 10
     }
-  } as Column
-
-  return {
-    columns: [contentPdf]
   }
+
+  return contentPdf
 }
