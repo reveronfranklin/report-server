@@ -1,11 +1,11 @@
 import type { Content } from 'pdfmake/interfaces';
 
 interface HeaderOptions {
-  headers?: any;
+  subHeader?: any;
 }
 
 export const subHeaderSection = (options: HeaderOptions): Content => {
-  const { headers  } = options
+  const { subHeader  } = options
 
   const darkColor = '#444444'; // Cambiamos a negro para las líneas
   const lineWidth = 0.5; // Grosor de línea más fino
@@ -21,7 +21,7 @@ export const subHeaderSection = (options: HeaderOptions): Content => {
             colSpan: 6,
             text: [
               { text: 'NOMBRE APELLIDO O RAZON SOCIAL DEL PROVEEDOR:\n', style: 'tableSubHeader' },
-              { text: `${headers.NOMBRE_PROVEEDOR}`, style: 'tableContentSubHeader' }
+              { text: `${subHeader.NOMBRE_PROVEEDOR ?? ''}`, style: 'tableContentSubHeader' }
             ]
           },
           {}, {}, {}, {}, {},
@@ -29,7 +29,7 @@ export const subHeaderSection = (options: HeaderOptions): Content => {
             colSpan: 4,
             text: [
               { text: 'CÉDULA o RIF:\n', style: 'tableSubHeader' },
-              { text: `${headers.RIF_PROVEEDOR}`, style: 'tableContentSubHeader' }
+              { text: `${subHeader.RIF_PROVEEDOR ?? ''}`, style: 'tableContentSubHeader' }
             ]
           },
           {},
@@ -41,13 +41,13 @@ export const subHeaderSection = (options: HeaderOptions): Content => {
             colSpan: 4,
             text: [
               { text: 'APELLIDOS Y NOMBRES:\n', style: 'tableSubHeader' },
-              { text: `${headers.NOMBRE_BENEFICIARIO} ${headers.APELLIDO_BENEFICIARIO}`, style: 'tableContentSubHeader' }
+              { text: `${subHeader.NOMBRE_BENEFICIARIO ?? ''} ${subHeader.APELLIDO_BENEFICIARIO ?? ''}`, style: 'tableContentSubHeader' }
             ]
           }, {}, {}, {},
           {
             text: [
               { text: 'CÉDULA:\n', style: 'tableSubHeader' },
-              { text: `${headers.CEDULA_BENEFICIARIO ?? ''}`, style: 'tableContentSubHeader' }
+              { text: `${subHeader.CEDULA_BENEFICIARIO ?? ''}`, style: 'tableContentSubHeader' }
             ]
           },
           {
@@ -71,7 +71,7 @@ export const subHeaderSection = (options: HeaderOptions): Content => {
           {
             text: [
               { text: 'FORMA DE PAGO\n', style: 'tableSubHeader' },
-              { text: `${headers.FORMA_DE_PAGO}`, style: 'tableContentSubHeader' }
+              { text: `${subHeader.FORMA_DE_PAGO}`, style: 'tableContentSubHeader' }
             ]
           },
           {
@@ -84,7 +84,7 @@ export const subHeaderSection = (options: HeaderOptions): Content => {
             colSpan: 7,
             text: [
               { text: 'ÚNICO O PERIÓDICO (BOLÍVARES EN LETRAS)\n', style: 'tableSubHeaderAmountLetters' },
-              { text: `${headers.MONTO_LETRAS}`, style: 'tableContentSubHeaderAmountLetters' }
+              { text: `${subHeader.MONTO_LETRAS}`, style: 'tableContentSubHeaderAmountLetters' }
             ]
           }, {}, {}, {}, {}, {}, {}
         ]

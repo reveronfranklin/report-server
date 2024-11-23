@@ -11,10 +11,9 @@ export class PdfGeneratorAdapter implements IPdfGenerator {
   async generatePdf(reportScheme: ReportSchemeDto): Promise<PDFKit.PDFDocument> {
 
     console.log('generating PDF...')
-
-    console.log('reportScheme -> headers', reportScheme.headers)
+    console.log('reportScheme -> header', reportScheme.header)
+    console.log('reportScheme -> subHeader', reportScheme.subHeader)
     console.log('reportScheme -> body', reportScheme.body)
-
 
     const documentDefinition = createPaymentOrderTemplate(reportScheme)
     return this.printerService.createPdf(documentDefinition);

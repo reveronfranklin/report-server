@@ -1,8 +1,7 @@
 import type { Content } from 'pdfmake/interfaces';
 
-
 const logo: Content = {
-  image: null,
+  image: 'src/assets/LogoIzquierda.jpeg',
   width: 120, // Aumenta el tamaño del logo
   height: 60,
   alignment: 'left',
@@ -11,17 +10,14 @@ const logo: Content = {
 }
 
 interface HeaderOptions {
-  logoPath?: string;
-  headers?: any;
+  header?: any;
 }
 
 export const headerSection = (options: HeaderOptions): Content => {
-  const { logoPath, headers  } = options
+  const { header  } = options
 
   const darkColor = '#444444'; // Cambiamos a negro para las líneas
   const lineWidth = 0.5; // Grosor de línea más fino
-
-  logo.image = logoPath
 
   const contentPdf: Content = {
     style: 'header',
@@ -46,19 +42,19 @@ export const headerSection = (options: HeaderOptions): Content => {
           {
             text: [
               { text: 'TIPO DE ORDEN\n', style: 'tableHeader' },
-              { text: `${headers.DESCRIPCION}`, style: 'tableContent' }
+              { text: `${header.DESCRIPCION}`, style: 'tableContent' }
             ]
           },
           {
             text: [
               { text: 'ORDEN DE PAGO #\n', style: 'tableHeader' },
-              { text: `${headers.NUMERO_ORDEN_PAGO}`, style: 'tableContent' }
+              { text: `${header.NUMERO_ORDEN_PAGO}`, style: 'tableContent' }
             ]
           },
           {
             text: [
               { text: 'FECHA ORDEN DE PAGO\n', style: 'tableHeader' },
-              { text: `${headers.FECHA_COMPROMISO}`, style: 'tableContent' }
+              { text: `${header.FECHA_ORDEN_PAGO}`, style: 'tableContent' }
             ]
           }
         ],
@@ -68,13 +64,13 @@ export const headerSection = (options: HeaderOptions): Content => {
             colSpan: 2,
             text: [
               { text: 'NUMERO COMPROMISO #\n', style: 'tableHeader' },
-              { text: `${headers.NUMERO_COMPROMISO}`, style: 'tableContent' }
+              { text: `${header.NUMERO_COMPROMISO}`, style: 'tableContent' }
             ]
           }, {},
           {
             text: [
               { text: 'FECHA COMPROMISO\n', style: 'tableHeader' },
-              { text: `${headers.FECHA_COMPROMISO}`, style: 'tableContent' }
+              { text: `${header.FECHA_COMPROMISO}`, style: 'tableContent' }
             ]
           }
         ],

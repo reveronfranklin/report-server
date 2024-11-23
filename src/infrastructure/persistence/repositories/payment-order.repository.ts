@@ -35,7 +35,8 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
             {
               model: BeneficiaryModel,
               as: 'BENEFICIARIES',
-              where: { PRINCIPAL: 1 }
+              where: { PRINCIPAL: 1 },
+              required: false  // This makes it a LEFT OUTER JOIN
             }
           ]
         },
