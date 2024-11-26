@@ -11,6 +11,10 @@ export class ReportHeaderDto {
 
   @IsString()
   @IsNotEmpty()
+  TITULO: string;
+
+  @IsString()
+  @IsNotEmpty()
   NUMERO_ORDEN_PAGO: string;
 
   @IsDate()

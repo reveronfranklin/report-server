@@ -1,7 +1,7 @@
 import type { Content } from 'pdfmake/interfaces';
 
 interface HeaderOptions {
-  subHeader?: any;
+  subHeader: any;
 }
 
 export const subHeaderSection = (options: HeaderOptions): Content => {
@@ -65,7 +65,7 @@ export const subHeaderSection = (options: HeaderOptions): Content => {
           {
             text: [
               { text: 'Nº DE PAGO\n', style: 'tableSubHeaderNPay' },
-              { text: `1`, style: 'tableContentSubHeaderNPay' }
+              { text: `${subHeader.CANTIDAD_PAGO}`, style: 'tableContentSubHeaderNPay' }
             ]
           },
           {
@@ -89,16 +89,6 @@ export const subHeaderSection = (options: HeaderOptions): Content => {
           }, {}, {}, {}, {}, {}, {}
         ]
       ]
-    },
-    layout: {
-      hLineWidth: (i, node) => lineWidth,
-      vLineWidth: (i, node) => lineWidth,
-      hLineColor: (i, node) => darkColor,
-      vLineColor: (i, node) => darkColor,
-      paddingTop: (i, node) => 10,
-      paddingBottom: (i, node) => 10,
-      paddingLeft: (i, node) => 10,
-      paddingRight: (i, node) => 10
     }
   }
 

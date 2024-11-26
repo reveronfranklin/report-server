@@ -7,6 +7,7 @@ import type {
 import { ReportSchemeDto } from '../../../application/dtos/report-scheme.dto';
 import { headerSection } from './sections/payment-order-header';
 import { subHeaderSection } from './sections/payment-order-sub-header';
+import { bodySection } from './sections/payment-order-body';
 
 import { headerStyles } from './styles/header-styles';
 import { subHeaderStyles } from './styles/sub-header-styles';
@@ -23,6 +24,8 @@ const styles: StyleDictionary = {
 export function createPaymentOrderTemplate(data: ReportSchemeDto): TDocumentDefinitions {
   const { header, subHeader, body } = data
 
+  console.log('createPaymentOrderTemplate', body)
+
   // Execute the sections before the return statement
   const headerContent: Content = headerSection({
     header
@@ -32,9 +35,13 @@ export function createPaymentOrderTemplate(data: ReportSchemeDto): TDocumentDefi
     subHeader
   })
 
+  const bodyContent: Content = bodySection({
+    body
+  })
+
   return {
     pageSize: 'LETTER',
-    pageMargins: [40, 215, 40, 60],
+    pageMargins: [20, 215, 60, 60],
     styles: styles,
 
     header: {
@@ -48,10 +55,7 @@ export function createPaymentOrderTemplate(data: ReportSchemeDto): TDocumentDefi
       ]
     },
 
-    content: [{
-      text: 'test',
-      style: 'body'
-    }],
+    content: bodyContent,
 
     footer: {
       text: 'Este es un ejemplo de documento PDF',

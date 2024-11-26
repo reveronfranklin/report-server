@@ -40,4 +40,8 @@ export class ReportSubHeaderDto {
   @IsString()
   @IsNotEmpty()
   MONTO_LETRAS: string;
+
+  @IsString()
+  @IsNotEmpty()
+  CANTIDAD_PAGO: number;
 }

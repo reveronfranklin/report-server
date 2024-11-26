@@ -10,7 +10,7 @@ const logo: Content = {
 }
 
 interface HeaderOptions {
-  header?: any;
+  header: any;
 }
 
 export const headerSection = (options: HeaderOptions): Content => {
@@ -31,7 +31,7 @@ export const headerSection = (options: HeaderOptions): Content => {
             stack: [
               logo,
               {
-                text: 'ORDEN DE PAGO', // Texto que acompaña al logo
+                text: `${header.TITULO}`, // Texto que acompaña al logo
                 style: 'orderTitle',
               }
             ],
@@ -80,16 +80,6 @@ export const headerSection = (options: HeaderOptions): Content => {
           {}, {}
         ]
       ]
-    },
-    layout: {
-      hLineWidth: (i, node) => lineWidth,
-      vLineWidth: (i, node) => lineWidth,
-      hLineColor: (i, node) => darkColor,
-      vLineColor: (i, node) => darkColor,
-      paddingTop: (i, node) => 10,
-      paddingBottom: (i, node) => 10,
-      paddingLeft: (i, node) => 10,
-      paddingRight: (i, node) => 10
     }
   }
 
