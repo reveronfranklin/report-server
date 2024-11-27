@@ -27,5 +27,33 @@ export const bodyStyles: StyleDictionary = {
   tableBodyAmount: {
     fontSize: 7,
     alignment: 'right',
+  },
+  tableHeaderReason: {
+    bold: true,
+    fontSize: 7,
+    lineHeight: 3,
+    alignment: 'left',
+  },
+  tableReason: {
+    fontSize: 7,
+    alignment: 'left'
+  },
+  tableFooter: {
+    fontSize: 7,
+    alignment: 'left'
+  },
+  tableHeaderFooter: {
+    bold: true,
+    fontSize: 7,
+    alignment: 'left'
+  },
+  tableHeaderTotal: {
+    bold: true,
+    fontSize: 7,
+    alignment: 'center'
+  },
+  tableTotal: {
+    fontSize: 7,
+    alignment: 'right'
   }
 }

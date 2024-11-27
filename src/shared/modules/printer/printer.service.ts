@@ -4,10 +4,10 @@ import { BufferOptions, TDocumentDefinitions } from 'pdfmake/interfaces';
 
 const fonts = {
   Roboto: {
-    normal: 'src/shared/utils/fonts/Roboto-Regular.ttf',
-    bold: 'src/shared/utils/fonts/Roboto-Medium.ttf',
-    italics: 'src/shared/utils/fonts/Roboto-Italic.ttf',
-    bolditalics: 'src/shared/utils/fonts/Roboto-MediumItalic.ttf',
+    normal: 'src/assets/fonts/Roboto-Regular.ttf',
+    bold: 'src/assets/fonts/Roboto-Medium.ttf',
+    italics: 'src/assets/fonts/Roboto-Italic.ttf',
+    bolditalics: 'src/assets/fonts/Roboto-MediumItalic.ttf',
   }
 }
 
