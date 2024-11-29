@@ -4,11 +4,16 @@ import type {
   Content
 } from 'pdfmake/interfaces';
 
+/* Dtos */
 import { ReportSchemeDto } from '../../../application/dtos/report-scheme.dto';
+
+/* Sections */
 import { headerSection } from './sections/payment-order-header';
 import { subHeaderSection } from './sections/payment-order-sub-header';
 import { bodySection } from './sections/payment-order-body';
+import { footerSection } from './sections/payment-order-footer';
 
+/* Styles */
 import { headerStyles } from './styles/header-styles';
 import { subHeaderStyles } from './styles/sub-header-styles';
 import { bodyStyles } from './styles/body-styles';
@@ -39,11 +44,12 @@ export function createPaymentOrderTemplate(data: ReportSchemeDto): TDocumentDefi
     body
   })
 
+  const footerContent: Content = footerSection()
+
   return {
     pageSize: 'LETTER',
-    pageMargins: [20, 215, 60, 60],
+    pageMargins: [20, 215, 60, 100],
     styles: styles,
-
     header: {
       columns: [
         {
@@ -54,12 +60,7 @@ export function createPaymentOrderTemplate(data: ReportSchemeDto): TDocumentDefi
         }
       ]
     },
-
     content: bodyContent,
-
-    footer: {
-      text: 'Este es un ejemplo de documento PDF',
-      style: 'footer'
-    }
+    footer: footerContent
   }
 }

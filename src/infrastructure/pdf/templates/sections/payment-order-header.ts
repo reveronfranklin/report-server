@@ -16,9 +16,6 @@ interface HeaderOptions {
 export const headerSection = (options: HeaderOptions): Content => {
   const { header  } = options
 
-  const darkColor = '#444444'; // Cambiamos a negro para las líneas
-  const lineWidth = 0.5; // Grosor de línea más fino
-
   const contentPdf: Content = {
     style: 'header',
     table: {

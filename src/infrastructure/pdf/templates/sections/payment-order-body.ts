@@ -85,8 +85,6 @@ const getTableBody = (body: HeaderOptions['body']): TableCell[][] => {
     tableBody.push(data);
   }
 
-  console.log(totals, annualTotal)
-
   return tableBody;
 };
 
@@ -95,13 +93,11 @@ export const bodySection = (options: HeaderOptions): Content => {
 
   const tableBody = getTableBody(body)
 
-  console.log('bodySection', tableBody)
-
   const contentPdf: Content = {
     style: 'body',
     table: {
       widths: ['*', '*', '*', '*', 30, 30, 30, 30, '*', '*', '*', '*'],
-      heights: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+      heights: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 100, 10, 100],
       body: [
         /* header table */
         [
@@ -227,6 +223,50 @@ export const bodySection = (options: HeaderOptions): Content => {
           }
         ],
         /* Retenciones */
+        [
+          {
+            colSpan: 2,
+            text: 'TOTAL ORDEN PAGO',
+            style: 'tableHeaderWithholdings'
+          }, {},
+          {
+            colSpan: 6,
+            text: 'TOTAL RETENCIONES',
+            style: 'tableHeaderWithholdings'
+          }, {}, {}, {}, {}, {},
+          {
+            colSpan: 2,
+            text: 'MONTO RETENIDO',
+            style: 'tableHeaderWithholdings'
+          }, {},
+          {
+            colSpan: 2,
+            text: 'MONTO A PAGAR',
+            style: 'tableHeaderWithholdings'
+          }, {}
+        ],
+        [
+          {
+            colSpan: 2,
+            text: '76.114,11',
+            style: 'tableBodyWithholdings'
+          }, {},
+          {
+            colSpan: 6,
+            text: 'IMPUESTO AL VALOR AGREGADO (I.V.A.)\n ,1% LEY DE TIMBRE FISCAL\n 2% IMPUESTO SOBRE LA RENTA (I.S.L.R.)',
+            style: 'withholdings'
+          }, {}, {}, {}, {}, {},
+          {
+            colSpan: 2,
+            text: '10.497,22\n 65,62\n 1.312,34',
+            style: 'tableBodyWithholdings'
+          }, {},
+          {
+            colSpan: 2,
+            text: ' 64.238,93',
+            style: 'tableBodyWithholdings'
+          }, {}
+        ]
       ]
     }
   }

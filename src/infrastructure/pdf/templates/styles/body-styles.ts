@@ -55,5 +55,19 @@ export const bodyStyles: StyleDictionary = {
   tableTotal: {
     fontSize: 7,
     alignment: 'right'
+  },
+  tableHeaderWithholdings: {
+    bold: true,
+    fontSize: 7,
+    fillColor: '#d1d1d1',
+    alignment: 'center'
+  },
+  tableBodyWithholdings: {
+    fontSize: 7,
+    alignment: 'right'
+  },
+  withholdings: {
+    fontSize: 7,
+    alignment: 'left'
   }
 }
