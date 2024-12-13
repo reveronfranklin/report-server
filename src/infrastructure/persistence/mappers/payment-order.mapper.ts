@@ -53,6 +53,7 @@ export class PaymentOrderMapper {
       paymentOrderModel.NUMERO_COMPROBANTE4,
       paymentOrderModel.SEARCH_TEXT,
       paymentOrderModel.MONTO_LETRAS,
+      paymentOrderModel.TITULO_REPORTE,
 
       /* Relations */
       paymentOrderModel?.TIPO_ORDEN_PAGO.get({ plain: true }),

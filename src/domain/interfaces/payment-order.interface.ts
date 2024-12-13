@@ -46,4 +46,5 @@ export interface IPaymentOrder {
   NUMERO_COMPROBANTE4: number | null;
   SEARCH_TEXT: string | null;
   MONTO_LETRAS: string | null;
+  TITULO_REPORTE: string | null;
 }

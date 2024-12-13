@@ -7,7 +7,7 @@ export const footerSection = (): Content => {
     table: {
       headerRows: 1,
       widths: ['*', '*', '*'],
-      heights: [10, 10, 10], // Aumenta la altura de las filas
+      heights: [10, 10], // Aumenta la altura de las filas
       body: [
         [
           {
@@ -23,6 +23,14 @@ export const footerSection = (): Content => {
             text: 'DIRECTOR(A) DE ADMINISTRACIÓN',
             style: 'footerSignature',
             border: [false, true, false, false]
+          }
+        ],
+        [
+          {
+            colSpan: 3,
+            text: 'FORMA: OSSMMASOFT C.A.',
+            style: 'footerText',
+            border: [false, false]
           }
         ]
       ]

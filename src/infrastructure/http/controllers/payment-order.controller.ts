@@ -19,11 +19,11 @@ export class PaymentOrderController {
 
   /* @Res() res: Response */
 
-  async generateReport(@Body() generateReportDto: GenerateReportDto): Promise<ResponseDto<string>> {
+  async generateReport(@Res() res: Response, @Body() generateReportDto: GenerateReportDto): Promise<ResponseDto<string>> {
     try {
       const pdfDocument = await this.paymentOrderService.generateReport(generateReportDto.CodigoOrdenPago);
 
-/*       // Set the response headers for PDF
+      // Set the response headers for PDF
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', 'attachment; filename="report.pdf"');
 
@@ -31,7 +31,7 @@ export class PaymentOrderController {
       pdfDocument.info.Title = 'test report';
       pdfDocument.pipe(res);
       pdfDocument.end();
- */
+
       // Convert PDF document to a base64 string or buffer
       const pdfBuffer = pdfDocument.save(); // Assuming pdfDocument has a save method
       const pdfBase64 = pdfBuffer.toString();

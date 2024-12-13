@@ -70,6 +70,12 @@ export class PaymentOrderModel extends Model<PaymentOrderModel> implements IPaym
   MONTO_LETRAS: string;
 
   @Column({
+    type: DataType.STRING,
+    field: 'TITULO_REPORTE'
+  })
+  TITULO_REPORTE: string;
+
+  @Column({
     type: DataType.INTEGER,
     field: 'ANO',
     allowNull: true

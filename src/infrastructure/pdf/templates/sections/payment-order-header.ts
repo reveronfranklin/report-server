@@ -16,6 +16,25 @@ interface HeaderOptions {
 export const headerSection = (options: HeaderOptions): Content => {
   const { header  } = options
 
+  const words = header.TITULO.trim().split(/\s+/);
+  const wordCount = words.length;
+  const titleStyle = wordCount > 3 ? 'orderTitleVariable' : 'orderTitle';
+
+  let formattedTitle: Content;
+
+  if (wordCount > 3) {
+    const firstLine = words.slice(0, 3).join(' ');
+    const secondLine = words.slice(3).join(' ');
+    formattedTitle = {
+      stack: [
+        { text: firstLine, style: titleStyle },
+        { text: secondLine, style: 'orderTitleTwo' }
+      ]
+    };
+  } else {
+    formattedTitle = { text: header.TITULO, style: titleStyle };
+  }
+
   const contentPdf: Content = {
     style: 'header',
     table: {
@@ -27,10 +46,7 @@ export const headerSection = (options: HeaderOptions): Content => {
             // Combina el logo y el texto en la misma celda
             stack: [
               logo,
-              {
-                text: `${header.TITULO}`, // Texto que acompaña al logo
-                style: 'orderTitle',
-              }
+              formattedTitle
             ],
             rowSpan: 3,
             colSpan: 3,

@@ -53,6 +53,7 @@ export class PaymentOrderEntity implements IPaymentOrder {
     public NUMERO_COMPROBANTE4: number | null,
     public SEARCH_TEXT: string | null,
     public MONTO_LETRAS: string | null,
+    public TITULO_REPORTE: string | null,
 
     /* Por ahora se agregaran aqui, buscar una merjor manera */
     public TIPO_ORDEN_PAGO?: DescriptiveEntity,

@@ -66,7 +66,7 @@ export class PaymentOrderService {
 
     return {
       DESCRIPCION: paymentOrderType?.DESCRIPCION,
-      TITULO: 'ORDEN DE PAGO',
+      TITULO: order.TITULO_REPORTE,
       NUMERO_COMPROMISO: preCommitment?.NUMERO_COMPROMISO,
       NUMERO_ORDEN_PAGO: order.NUMERO_ORDEN_PAGO,
       FECHA_ORDEN_PAGO: dateOrderPayment,

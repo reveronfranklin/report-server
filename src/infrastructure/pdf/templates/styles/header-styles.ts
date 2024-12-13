@@ -11,6 +11,18 @@ export const headerStyles: StyleDictionary = {
     alignment: 'right',
     margin: [0, -25, 10, 0]
   },
+  orderTitleVariable: {
+    fontSize: 13,
+    bold: true,
+    alignment: 'right',
+    margin: [0, -35, 10, 0]
+  },
+  orderTitleTwo: {
+    fontSize: 13,
+    bold: true,
+    alignment: 'right',
+    margin: [0, 0, 30, 0]
+  },
   tableHeader: {
     fontSize: 7,
     bold: true,
