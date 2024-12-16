@@ -12,6 +12,7 @@ import { PucPaymentOrderModel } from '../models/puc-payment-order.model';
 import { CommitmentModel } from '../models/commitment.model';
 import { PreCommitmentModel } from '../models/pre-commitment.model';
 import { BalanceModel } from '../models/balance.model';
+import { WithholdingModel } from '../models/withholding.model';
 
 /* Mappers */
 import { PaymentOrderMapper } from '../mappers/payment-order.mapper';
@@ -43,6 +44,7 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
         {
           model: PucPaymentOrderModel,
           as: 'PUC_PAYMENT_ORDERS',
+          //order: [['CODIGO_PUC_ORDEN_PAGO', 'DESC']],
           include: [
             { model: BalanceModel, as: 'BALANCE' }
           ]
@@ -52,6 +54,13 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
           as: 'COMMITMENT',
           include: [
             { model: PreCommitmentModel, as: 'PRE_COMMITMENT' }
+          ]
+        },
+        {
+          model: WithholdingModel,
+          as: 'WITHHOLDINGS',
+          include: [
+            { model: DescriptiveModel, as: 'DESCRIPCION' }
           ]
         }
       ]

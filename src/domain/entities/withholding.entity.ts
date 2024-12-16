@@ -1,11 +1,10 @@
 import { IWithholding } from '../interfaces/withholding.interface';
-import { DescriptiveEntity } from './descriptive.entity'
-
+import { DescriptiveEntity } from './descriptive.entity';
 
 export class WithholdingEntity implements IWithholding {
   constructor(
     public codigoRetencionOp: string,
-    public codigoOrdenPago: string,
+    public codigoOrdenPago: number,
     public tipoRetencionId: string,
     public codigoRetencion: string,
     public porRetencion: number,

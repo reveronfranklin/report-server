@@ -29,8 +29,6 @@ const styles: StyleDictionary = {
 export function createPaymentOrderTemplate(data: ReportSchemeDto): TDocumentDefinitions {
   const { header, subHeader, body } = data
 
-  console.log('createPaymentOrderTemplate', body)
-
   // Execute the sections before the return statement
   const headerContent: Content = headerSection({
     header
@@ -41,7 +39,7 @@ export function createPaymentOrderTemplate(data: ReportSchemeDto): TDocumentDefi
   })
 
   const bodyContent: Content = bodySection({
-    body
+    body,
   })
 
   const footerContent: Content = footerSection()

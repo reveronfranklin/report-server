@@ -11,6 +11,8 @@ import { ReportSchemeDto } from '../dtos/report-scheme.dto';
 import { ReportHeaderDto } from '../dtos/report-header.dto';
 import { ReportSubHeaderDto } from '../dtos/report-sub-header.dto';
 import { ReportBodyDto } from '../dtos/report-body.dto';
+import { FundsDto } from '../dtos/funds.dto';
+import { WithholdingDto } from '../dtos/withholding.dto';
 
 /* Services Pdf */
 import { IPdfGenerator } from '../../domain/repositories/pdf-generator.interface';
@@ -97,10 +99,15 @@ export class PaymentOrderService {
     }
   }
 
+  private mapToReportBody(order: PaymentOrderEntity): ReportBodyDto {
+    let total: number = 0
+    let totalRetenciones: number = 0
 
-  private mapToReportBody(order: PaymentOrderEntity): ReportBodyDto[] {
-    const body = []
+    const listPucOrder: FundsDto[] = [];
+    const listWithholding: WithholdingDto[] = [];
+
     const pucOrders = order?.PUC_PAYMENT_ORDERS ?? []
+    const withholdings = order?.WITHHOLDINGS ?? []
 
     pucOrders.forEach((pucOrder) => {
       const balance = pucOrder?.BALANCE ?? null
@@ -113,8 +120,29 @@ export class PaymentOrderService {
         MONTO: pucOrder.MONTO,
         PERIODICO: (pucOrder.MONTO / order.CANTIDAD_PAGO)
       }
-      body.push(data)
+
+      total += Number(pucOrder.MONTO)
+
+      listPucOrder.push(data)
     })
+
+    withholdings.forEach((withholding) => {
+      const data = {
+        DESCRIPCION:`${withholding.porRetencion ?? ''}% ${withholding?.descripcion?.DESCRIPCION ?? ''}`,
+        MONTO_RETENIDO: withholding.montoRetencion ?? 0
+      }
+
+      totalRetenciones += Number(withholding.montoRetencion)
+
+      listWithholding.push(data)
+    })
+
+    const body = {
+      FUNDS: listPucOrder,
+      WITHHOLDING: listWithholding,
+      TOTAL_ORDEN_PAGO: total,
+      MONTO_PAGAR: (total - totalRetenciones)
+    }
 
     return body
   }

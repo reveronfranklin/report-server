@@ -3,6 +3,7 @@ import { DescriptiveEntity } from './descriptive.entity'
 import { SupplierEntity } from './supplier.entity'
 import { PucPaymentOrderEntity } from './puc-payment-order.entity';
 import { CommitmentEntity} from './commitment.entity';
+import { WithholdingEntity } from './withholding.entity';
 
 export class PaymentOrderEntity implements IPaymentOrder {
   constructor(
@@ -60,6 +61,7 @@ export class PaymentOrderEntity implements IPaymentOrder {
     public FRECUENCIA_PAGO?: DescriptiveEntity,
     public PROVEEDOR?: SupplierEntity,
     public COMMITMENT?: CommitmentEntity,
-    public PUC_PAYMENT_ORDERS?: PucPaymentOrderEntity[]
+    public PUC_PAYMENT_ORDERS?: PucPaymentOrderEntity[],
+    public WITHHOLDINGS?: WithholdingEntity[]
   ) {}
 }

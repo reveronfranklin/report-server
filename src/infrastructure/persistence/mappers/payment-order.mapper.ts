@@ -2,6 +2,7 @@ import { PaymentOrderModel } from '../models/payment-order.model';
 import { PaymentOrderEntity } from '../../../domain/entities/payment-order.entity';
 import { PucPaymentOrderEntity } from '../../../domain/entities/puc-payment-order.entity';
 import { BalanceEntity } from '../../../domain/entities/balance.entity';
+import { WithholdingEntity } from '../../../domain/entities/withholding.entity';
 
 export class PaymentOrderMapper {
   static toDomain(paymentOrderModel: PaymentOrderModel): PaymentOrderEntity {
@@ -128,6 +129,27 @@ export class PaymentOrderMapper {
           pucOrder.BALANCE.DESCRIPTIVA_FINANCIADO,
           pucOrder.BALANCE.SEARCH_TEXT
         ) : null
+      )) || [],
+
+      paymentOrderModel?.WITHHOLDINGS?.map(withholding => new WithholdingEntity(
+        withholding.codigoRetencionOp,
+        withholding.codigoOrdenPago,
+        withholding.tipoRetencionId,
+        withholding.codigoRetencion,
+        withholding.porRetencion,
+        withholding.montoRetencion,
+        withholding.extra1,
+        withholding.extra2,
+        withholding.extra3,
+        withholding.usuarioIns,
+        withholding.fechaIns,
+        withholding.usuarioUpd,
+        withholding.fechaUpd,
+        withholding.codigoEmpresa,
+        withholding.codigoPresupuesto,
+        withholding.extra4,
+        withholding.baseImponible,
+        withholding?.DESCRIPCION.get({ plain: true })
       )) || []
     )
   }

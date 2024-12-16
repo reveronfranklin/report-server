@@ -1,6 +1,7 @@
 import { Model, Column, ForeignKey, BelongsTo, Table, DataType } from 'sequelize-typescript';
 import { IWithholding } from '../../../domain/interfaces/withholding.interface';
 import { DescriptiveModel } from './descriptive.model';
+import { PaymentOrderModel } from './payment-order.model';
 
 @Table({
   schema: 'public',
@@ -11,15 +12,27 @@ export class WithholdingModel extends Model<WithholdingModel> implements IWithho
   @Column({ primaryKey: true, field: 'CODIGO_RETENCION_OP' })
   codigoRetencionOp!: string;
 
+  /* Foreing Keys */
+  @ForeignKey(() => PaymentOrderModel)
   @Column({ field: 'CODIGO_ORDEN_PAGO' })
-  codigoOrdenPago!: string;
+  codigoOrdenPago!: number;
+
 
   @ForeignKey(() => DescriptiveModel)
   @Column({ field: 'TIPO_RETENCION_ID' })
   tipoRetencionId!: string;
 
+  /* Foreing Keys */
+
+  /* Associations */
+
   @BelongsTo(() => DescriptiveModel, { foreignKey: 'TIPO_RETENCION_ID', as: 'DESCRIPCION' })
   DESCRIPCION: DescriptiveModel;
+
+  @BelongsTo(() => PaymentOrderModel, { foreignKey: 'CODIGO_ORDEN_PAGO', as: 'PAYMENT_ORDER' })
+  PAYMENT_ORDER: PaymentOrderModel;
+
+  /* Associations */
 
   @Column({ field: 'CODIGO_RETENCION' })
   codigoRetencion!: string;

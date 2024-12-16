@@ -42,6 +42,10 @@ import { CommitmentRepository } from './infrastructure/persistence/repositories/
 import { PreCommitmentModel } from './infrastructure/persistence/models/pre-commitment.model';
 import { PreCommitmentRepository } from './infrastructure/persistence/repositories/pre-commitment.repository';
 
+/* Module PreCommitmentModel */
+import { WithholdingModel } from './infrastructure/persistence/models/withholding.model';
+import { WithholdingRepository } from './infrastructure/persistence/repositories/withholding.repository';
+
 /* Resources */
 import { PdfGeneratorAdapter } from './infrastructure/pdf/pdf-generator.adapter';
 import { PrinterModule } from 'src/shared/modules/printer/printer.module';
@@ -63,7 +67,8 @@ import { PrinterModule } from 'src/shared/modules/printer/printer.module';
       BalanceModel,
       PucPaymentOrderModel,
       CommitmentModel,
-      PreCommitmentModel
+      PreCommitmentModel,
+      WithholdingModel
     ]),
     PrinterModule
   ],
@@ -100,6 +105,10 @@ import { PrinterModule } from 'src/shared/modules/printer/printer.module';
     {
       provide: 'IPreCommitmentRepository',
       useClass: PreCommitmentRepository
+    },
+    {
+      provide: 'IWithholdingRepository',
+      useClass: WithholdingRepository
     },
     {
       provide: 'IPdfGenerator',

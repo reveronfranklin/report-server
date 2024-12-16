@@ -1,10 +1,11 @@
 import type { Content, TableCell } from 'pdfmake/interfaces';
 
 interface HeaderOptions {
-  body: any[];
+  body: any;
 }
 
-const numberOfRowForTableBody: number = 10;
+const numberOfRowForTableFunds: number = 10;
+const numberOfRowForTableWithholdings: number = 8;
 
 const formatPrice = (price: number, currency: string) => {
   const formattedPrice = new Intl.NumberFormat('es-ES', {
@@ -19,16 +20,56 @@ const formatPrice = (price: number, currency: string) => {
   return formattedPrice.replace(/\s*VES$/, '').trim();
 }
 
-//export default formatPrice
+const getTableWithholdings = (body: HeaderOptions['body']): TableCell[][] => {
+  const tableBody: TableCell[][] = [];
 
-/* totales */
-let totals: number = 0;
-let annualTotal: number = 0;
+  for (let i = 0; i < numberOfRowForTableWithholdings; i++) {
+    const row = body.WITHHOLDING[i] || {};
 
-const getTableBody = (body: HeaderOptions['body']): TableCell[][] => {
+    const firstRow = (i === 0);
+    const lastRow = (i === (numberOfRowForTableWithholdings - 1));
+
+    const data: TableCell[] = [
+      {
+        colSpan: 2,
+        text: firstRow ? formatPrice(body.TOTAL_ORDEN_PAGO, 'VES') : '',
+        style: firstRow ? 'tableBodyWithholdings' : '',
+        border: [true, firstRow, true, lastRow]
+      },
+      {},
+      {
+        colSpan: 6,
+        text: row.DESCRIPCION ?? '',
+        style: 'withholdings',
+        border: [true, firstRow, true, lastRow]
+      },
+      {}, {}, {}, {}, {},
+      {
+        colSpan: 2,
+        text: row.MONTO_RETENIDO ? formatPrice(row.MONTO_RETENIDO, 'VES') : '',
+        style: 'tableBodyWithholdings',
+        border: [true, firstRow, true, lastRow]
+      },
+      {},
+      {
+        colSpan: 2,
+        text: firstRow ? formatPrice(body.MONTO_PAGAR, 'VES') : '',
+        style: firstRow ? 'tableBodyWithholdings' : '',
+        border: [true, firstRow, true, lastRow]
+      },
+      {}
+    ];
+
+    tableBody.push(data);
+  }
+
+  return tableBody;
+};
+
+const getTableFunds = (body: HeaderOptions['body']): TableCell[][] => {
   const tableBody: TableCell[][] = []
 
-  for (let i = 0; i < numberOfRowForTableBody; i++) {
+  for (let i = 0; i < numberOfRowForTableFunds; i++) {
     const row = body[i] || {};
 
     const data: TableCell[] = [
@@ -74,14 +115,6 @@ const getTableBody = (body: HeaderOptions['body']): TableCell[][] => {
       {}
     ]
 
-    if (row.PERIODICO) {
-      annualTotal += parseFloat(row.PERIODICO)
-    }
-
-    if (row.MONTO) {
-      totals += parseFloat(row.MONTO)
-    }
-
     tableBody.push(data);
   }
 
@@ -91,13 +124,14 @@ const getTableBody = (body: HeaderOptions['body']): TableCell[][] => {
 export const bodySection = (options: HeaderOptions): Content => {
   const { body  } = options
 
-  const tableBody = getTableBody(body)
+  const tableFunds = getTableFunds(body.FUNDS)
+  const tableWithholdings = getTableWithholdings(body)
 
   const contentPdf: Content = {
     style: 'body',
     table: {
       widths: ['*', '*', '*', '*', 30, 30, 30, 30, '*', '*', '*', '*'],
-      heights: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 100, 10, 100],
+      heights: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 100, 10, 10, 10, 10, 10, 10, 10, 10, 10],
       body: [
         /* header table */
         [
@@ -161,7 +195,7 @@ export const bodySection = (options: HeaderOptions): Content => {
           {}
         ],
         /* Body table */
-        ...tableBody,
+        ...tableFunds,
         /* Footer or totals table */
         [
           {
@@ -173,13 +207,13 @@ export const bodySection = (options: HeaderOptions): Content => {
           }, {}, {}, {}, {}, {}, {}, {},
           {
             colSpan: 2,
-            text: formatPrice(totals, 'VES'),
+            text: formatPrice(body.TOTAL_ORDEN_PAGO, 'VES'),
             style: 'tableTotal'
           },
           {},
           {
             colSpan: 2,
-            text: formatPrice(annualTotal, 'VES'),
+            text: formatPrice(body.TOTAL_ORDEN_PAGO, 'VES'),
             style: 'tableTotal'
           },
           {}
@@ -245,28 +279,7 @@ export const bodySection = (options: HeaderOptions): Content => {
             style: 'tableHeaderWithholdings'
           }, {}
         ],
-        [
-          {
-            colSpan: 2,
-            text: '76.114,11',
-            style: 'tableBodyWithholdings'
-          }, {},
-          {
-            colSpan: 6,
-            text: 'IMPUESTO AL VALOR AGREGADO (I.V.A.)\n ,1% LEY DE TIMBRE FISCAL\n 2% IMPUESTO SOBRE LA RENTA (I.S.L.R.)',
-            style: 'withholdings'
-          }, {}, {}, {}, {}, {},
-          {
-            colSpan: 2,
-            text: '10.497,22\n 65,62\n 1.312,34',
-            style: 'tableBodyWithholdings'
-          }, {},
-          {
-            colSpan: 2,
-            text: ' 64.238,93',
-            style: 'tableBodyWithholdings'
-          }, {}
-        ]
+        ...tableWithholdings
       ]
     }
   }

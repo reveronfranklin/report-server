@@ -1,6 +1,6 @@
 export interface IWithholding {
   codigoRetencionOp: string;
-  codigoOrdenPago: string;
+  codigoOrdenPago: number;
   tipoRetencionId: string;
   codigoRetencion: string;
   porRetencion: number;

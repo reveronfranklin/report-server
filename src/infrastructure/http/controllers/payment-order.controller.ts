@@ -1,6 +1,6 @@
 import { Controller, Post, Body, Res, UseInterceptors } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { Response } from 'express';
+//import { Response } from 'express';
 import { PaymentOrderService } from '../../../application/services/payment-order.service';
 import { GenerateReportDto } from '../dtos/generate-report.dto';
 import { ApiResponseInterceptor } from '../../../shared/interceptors/response.interceptor';
@@ -19,18 +19,18 @@ export class PaymentOrderController {
 
   /* @Res() res: Response */
 
-  async generateReport(@Res() res: Response, @Body() generateReportDto: GenerateReportDto): Promise<ResponseDto<string>> {
+  async generateReport(/*@Res() res: Response, */ @Body() generateReportDto: GenerateReportDto): Promise<ResponseDto<string>> {
     try {
       const pdfDocument = await this.paymentOrderService.generateReport(generateReportDto.CodigoOrdenPago);
 
       // Set the response headers for PDF
-      res.setHeader('Content-Type', 'application/pdf');
+      /* res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', 'attachment; filename="report.pdf"');
 
       // Pipe the PDF document to the response
       pdfDocument.info.Title = 'test report';
       pdfDocument.pipe(res);
-      pdfDocument.end();
+      pdfDocument.end(); */
 
       // Convert PDF document to a base64 string or buffer
       const pdfBuffer = pdfDocument.save(); // Assuming pdfDocument has a save method
