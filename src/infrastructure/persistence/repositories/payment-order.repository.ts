@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { Sequelize } from 'sequelize-typescript';
 import { PaymentOrderModel } from '../models/payment-order.model';
 import { IPaymentOrderRepository } from '../../../domain/repositories/payment-order.repository.interface';
 import { PaymentOrderEntity } from '../../../domain/entities/payment-order.entity';
@@ -22,6 +23,7 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
   constructor(
     @InjectModel(PaymentOrderModel)
     private paymentOrderModel: typeof PaymentOrderModel,
+    private sequelize: Sequelize
   ) {}
 
   async findByIdWithRelations(id: number): Promise<PaymentOrderEntity | null> {
@@ -44,6 +46,15 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
         {
           model: PucPaymentOrderModel,
           as: 'PUC_PAYMENT_ORDERS',
+          required: false,
+          // Testear
+          where: this.sequelize.literal(`
+            "CODIGO_PUC_ORDEN_PAGO" IN (
+              SELECT DISTINCT ON ("CODIGO_SALDO") "CODIGO_PUC_ORDEN_PAGO"
+              FROM public."ADM_PUC_ORDEN_PAGO"
+              ORDER BY "CODIGO_SALDO", "CODIGO_PUC_ORDEN_PAGO"
+            )
+          `),
           //order: [['CODIGO_PUC_ORDEN_PAGO', 'DESC']],
           include: [
             { model: BalanceModel, as: 'BALANCE' }
