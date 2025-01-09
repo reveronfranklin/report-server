@@ -18,5 +18,10 @@ export const configLoader = () => ({
       logging: process.env.DB_LOGGING,
       autoLoadModels: process.env.DB_AUTO_LOAD_MODELS
     }
+  },
+  api: {
+    ossmmasoft: {
+      authUrl: process.env.API_AUTH_URL
+    }
   }
 })

@@ -1,12 +1,23 @@
 /* Dependencies */
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { HttpModule } from '@nestjs/axios';
 
 /* Config */
 import { configLoader } from './config/config-loader';
 import { envSchema } from './config/env-schema';
 import { DatabaseModule } from './shared/modules/db/database.module';
+
+/* Middleware Auth */
+import { AuthRepository } from './domain/repositories/auth.repository';
+import { AuthAdapter } from './infrastructure/http/adapters/auth.adapter';
+import { AuthMiddleware } from './infrastructure/http/middleware/auth.middleware';
+
+/* Middleware Replicate Payment Order */
+import { ReplicatePaymentOrderRepository } from './domain/repositories/replicate-payment-order.repository';
+import { ReplicatePaymentOrderAdapter } from './infrastructure/http/adapters/replicate-payment-order.adapter';
+import { ReplicatePaymentOrderMiddleware } from './infrastructure/http/middleware/replicate-payment-order.middleware';
 
 /* Module Payment Order */
 import { PaymentOrderModel } from './infrastructure/persistence/models/payment-order.model';
@@ -59,6 +70,7 @@ import { PrinterModule } from 'src/shared/modules/printer/printer.module';
       validationSchema: envSchema
     }),
     DatabaseModule,
+    HttpModule,
     SequelizeModule.forFeature([
       PaymentOrderModel,
       DescriptiveModel,
@@ -74,6 +86,14 @@ import { PrinterModule } from 'src/shared/modules/printer/printer.module';
   ],
   providers: [
     PaymentOrderService,
+    {
+      provide: AuthRepository,
+      useClass: AuthAdapter
+    },
+    {
+      provide: ReplicatePaymentOrderRepository,
+      useClass: ReplicatePaymentOrderAdapter
+    },
     {
       provide: 'IPaymentOrderRepository',
       useClass: PaymentOrderRepository
@@ -117,4 +137,10 @@ import { PrinterModule } from 'src/shared/modules/printer/printer.module';
   ],
   controllers: [PaymentOrderController]
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthMiddleware, ReplicatePaymentOrderMiddleware)
+      .forRoutes({ path: '*', method: RequestMethod.POST });
+  }
+}
