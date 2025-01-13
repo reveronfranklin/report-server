@@ -3,6 +3,7 @@ import * as Joi from 'joi'
 export const envSchema = Joi.object({
   NODE_ENV: Joi.string().default('development'),
   PREFIX: Joi.string(),
+  ALLOWED_ORIGINS: Joi.string().required(),
   SERVER_PORT: Joi.number().required(),
   DB_CONNECTION: Joi.string(),
   DB_HOST: Joi.string(),

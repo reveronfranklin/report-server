@@ -1,7 +1,8 @@
 export const configLoader = () => ({
   server: {
     port: process.env.SERVER_PORT,
-    prefix: process.env.PREFIX
+    prefix: process.env.PREFIX,
+    allowedOrigins: process.env.ALLOWED_ORIGINS
   },
   environment: 'development',
   database: {
