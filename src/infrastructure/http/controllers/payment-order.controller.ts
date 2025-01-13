@@ -19,7 +19,7 @@ export class PaymentOrderController {
 
   /* @Res() res: Response */
 
-  async generateReport(/*@Res() res: Response, */ @Body() generateReportDto: GenerateReportDto): Promise<ResponseDto<string>> {
+  async generateReport(/*@Res() res: Response, */ @Body() generateReportDto: GenerateReportDto): Promise<ResponseDto<PDFKit.PDFDocument>> {
     try {
       const pdfDocument = await this.paymentOrderService.generateReport(generateReportDto.CodigoOrdenPago);
 
@@ -33,11 +33,11 @@ export class PaymentOrderController {
       pdfDocument.end(); */
 
       // Convert PDF document to a base64 string or buffer
-      const pdfBuffer = pdfDocument.save(); // Assuming pdfDocument has a save method
-      const pdfBase64 = pdfBuffer.toString();
+      /* const pdfBuffer = pdfDocument.save(); // Assuming pdfDocument has a save method
+      const pdfBase64 = pdfBuffer.toString(); */
 
-      return new ResponseDto<string>({
-        data: pdfBase64,
+      return new ResponseDto<PDFKit.PDFDocument>({
+        data: pdfDocument,
         isValid: true,
         message: 'PDF generated successfully',
         page: 1,
