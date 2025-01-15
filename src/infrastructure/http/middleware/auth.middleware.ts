@@ -2,8 +2,8 @@ import { Injectable, NestMiddleware, UseInterceptors } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { AuthRepository } from '../../../domain/repositories/auth.repository';
 import { RefreshToken } from '../../../domain/entities/refresh-token.entity';
-import { ApiResponseInterceptor } from '../../../shared/interceptors/response.interceptor';
-import { ResponseDto } from '../../../shared/interceptors/response.dto';
+import { ApiResponseInterceptor } from '../../../interceptors/response.interceptor';
+import { ResponseDto } from '../../../interceptors/response.dto';
 
 @Injectable()
 @UseInterceptors(ApiResponseInterceptor)

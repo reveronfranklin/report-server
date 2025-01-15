@@ -82,4 +82,14 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
     /* responses */
     return paymentOrderModel ? PaymentOrderMapper.toDomain(paymentOrderModel) : null
   }
+
+  async existPaymentOrder(id: number): Promise<boolean> {
+    const paymentOrderModel = await this.paymentOrderModel.findByPk(id)
+
+    /* console.log('paymentOrderModel', paymentOrderModel) */
+
+    console.log('exist payment order', !!paymentOrderModel)
+
+    return !!paymentOrderModel
+  }
 }

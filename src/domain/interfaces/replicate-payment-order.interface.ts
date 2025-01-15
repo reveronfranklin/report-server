@@ -1,5 +1,6 @@
 export interface IReplicatePaymentOrder {
   replicatePaymentOrder(codigoOrdenPago: number): Promise<ReplicatePaymentOrderResult>;
+  existCodigoOrdenPago(codigoOrdenPago: number): Promise<boolean>;
 }
 
 export interface ReplicatePaymentOrderResult {

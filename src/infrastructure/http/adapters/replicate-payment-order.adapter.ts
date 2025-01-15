@@ -1,15 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { ReplicatePaymentOrderRepository } from '../../../domain/repositories/replicate-payment-order.repository';
 import { ReplicatePaymentOrderResult } from '../../../domain/interfaces/replicate-payment-order.interface';
+import { PaymentOrderRepository } from '../../persistence/repositories/payment-order.repository';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class ReplicatePaymentOrderAdapter implements ReplicatePaymentOrderRepository {
   constructor(
     private httpService: HttpService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    @Inject('IPaymentOrderRepository') private paymentOrderRepository: PaymentOrderRepository
   ) {}
 
   async replicatePaymentOrder(codigoOrdenPago: number): Promise<ReplicatePaymentOrderResult> {
@@ -36,6 +38,16 @@ export class ReplicatePaymentOrderAdapter implements ReplicatePaymentOrderReposi
         total3: 0,
         total4: 0
       }
+    }
+  }
+
+  async existCodigoOrdenPago(codigoOrdenPago: number): Promise<boolean> {
+    try {
+      const result = await this.paymentOrderRepository.existPaymentOrder(codigoOrdenPago)
+      return result
+    } catch (error) {
+      console.error('Error al verificar si existe el código de la orden de pago:', error)
+      return false
     }
   }
 }

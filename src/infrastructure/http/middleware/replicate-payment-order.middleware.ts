@@ -1,8 +1,8 @@
 import { Injectable, NestMiddleware, UseInterceptors } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { ReplicatePaymentOrderRepository } from '../../../domain/repositories/replicate-payment-order.repository';
-import { ApiResponseInterceptor } from '../../../shared/interceptors/response.interceptor';
-import { ResponseDto } from '../../../shared/interceptors/response.dto';
+import { ApiResponseInterceptor } from '../../../interceptors/response.interceptor';
+import { ResponseDto } from '../../../interceptors/response.dto';
 
 @Injectable()
 @UseInterceptors(ApiResponseInterceptor)
@@ -14,14 +14,35 @@ export class ReplicatePaymentOrderMiddleware implements NestMiddleware {
       const codigoOrdenPago = req.body.CodigoOrdenPago
 
       try {
-        const result = await this.replicatePaymentOrderRepository.replicatePaymentOrder(codigoOrdenPago)
-
-        if (!result.isValid) {
-          result.message = 'No se pudo replicar la orden de pago';
-          return res.status(404).json(result);
+        if (!codigoOrdenPago) {
+          const response = new ResponseDto<string>({
+            data: null,
+            isValid: false,
+            message: 'Falta el código de la orden de pago',
+            page: 1,
+            totalPage: 1,
+            cantidadRegistros: 1,
+            total1: 0,
+            total2: 0,
+            total3: 0,
+            total4: 0
+          })
+          return res.status(403).json(response)
         }
 
-        req['paymentOrderReplication'] = result
+        let result = null
+        const existCodigoOrdenPago = await this.replicatePaymentOrderRepository.existCodigoOrdenPago(codigoOrdenPago)
+
+        if (!existCodigoOrdenPago) {
+          result = await this.replicatePaymentOrderRepository.replicatePaymentOrder(codigoOrdenPago)
+
+          if (!result.isValid) {
+            result.message = 'No se pudo replicar la orden de pago';
+            return res.status(404).json(result);
+          }
+        }
+
+        req['paymentOrderReplication'] = result ?? existCodigoOrdenPago
       } catch (error) {
         console.error('Error al replicar la orden de pago:', error)
 
