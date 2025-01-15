@@ -57,10 +57,10 @@ export class PaymentOrderMapper {
       paymentOrderModel.TITULO_REPORTE,
 
       /* Relations */
-      paymentOrderModel?.TIPO_ORDEN_PAGO.get({ plain: true }),
-      paymentOrderModel?.FRECUENCIA_PAGO.get({ plain: true }),
+      paymentOrderModel?.TIPO_ORDEN_PAGO?.get({ plain: true }),
+      paymentOrderModel?.FRECUENCIA_PAGO?.get({ plain: true }),
       paymentOrderModel?.PROVEEDOR?.get({ plain: true }),
-      paymentOrderModel?.COMMITMENT.get({ plain: true }),
+      paymentOrderModel?.COMMITMENT?.get({ plain: true }),
 
       paymentOrderModel?.PUC_PAYMENT_ORDERS?.map(pucOrder => new PucPaymentOrderEntity(
         pucOrder.CODIGO_PUC_ORDEN_PAGO,
@@ -149,7 +149,7 @@ export class PaymentOrderMapper {
         withholding.codigoPresupuesto,
         withholding.extra4,
         withholding.baseImponible,
-        withholding?.DESCRIPCION.get({ plain: true })
+        withholding?.DESCRIPCION?.get({ plain: true })
       )) || []
     )
   }
