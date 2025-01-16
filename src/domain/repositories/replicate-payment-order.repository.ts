@@ -3,5 +3,4 @@ import { IReplicatePaymentOrder, ReplicatePaymentOrderResult } from '../interfac
 
 export abstract class ReplicatePaymentOrderRepository implements IReplicatePaymentOrder {
   abstract replicatePaymentOrder(codigoOrdenPago: number): Promise<ReplicatePaymentOrderResult>;
-  abstract existCodigoOrdenPago(codigoOrdenPago: number): Promise<boolean>;
 }
