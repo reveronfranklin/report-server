@@ -1,5 +1,5 @@
 import { IsArray, IsNumber } from 'class-validator';
-import { FundsDto } from './funds.dto';
+import { FundsDto } from './paymentOrder/funds.dto';
 import { WithholdingDto } from './withholding.dto';
 
 export class ReportBodyDto {

@@ -18,7 +18,7 @@ import { WithholdingDto } from '../dtos/paymentOrder/withholding.dto';
 import { IPdfGenerator } from '../../domain/repositories/pdf-generator.interface';
 
 @Injectable()
-export class PaymentOrderService {
+export class IncomeTaxWithholdingVoucherService {
   constructor(
     @Inject('IPaymentOrderRepository')
     private paymentOrderRepository: IPaymentOrderRepository,

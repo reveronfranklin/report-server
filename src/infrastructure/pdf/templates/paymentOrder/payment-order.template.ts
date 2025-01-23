@@ -5,7 +5,7 @@ import type {
 } from 'pdfmake/interfaces';
 
 /* Dtos */
-import { ReportSchemeDto } from '../../../application/dtos/report-scheme.dto';
+import { ReportSchemeDto } from '../../../../application/dtos/paymentOrder/report-scheme.dto';
 
 /* Sections */
 import { headerSection } from './sections/payment-order-header';

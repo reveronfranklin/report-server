@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { IPdfGenerator } from '../../domain/repositories/pdf-generator.interface';
-import { createPaymentOrderTemplate } from './templates/payment-order.template';
+import { createPaymentOrderTemplate } from './templates/paymentOrder/payment-order.template';
 import { PrinterService } from 'src/shared/modules/printer/printer.service';
-import { ReportSchemeDto } from '../../application/dtos/report-scheme.dto';
+import { ReportSchemeDto } from '../../application/dtos/paymentOrder/report-scheme.dto';
 
 @Injectable()
 export class PdfGeneratorAdapter implements IPdfGenerator {
@@ -11,6 +11,8 @@ export class PdfGeneratorAdapter implements IPdfGenerator {
   async generatePdf(reportScheme: ReportSchemeDto): Promise<PDFKit.PDFDocument> {
 
     console.log('generating PDF...')
+
+    /* hacerlo independiente del tipo de reporte */
 
     /* console.log('reportScheme -> header', reportScheme.header)
     console.log('reportScheme -> subHeader', reportScheme.subHeader)
