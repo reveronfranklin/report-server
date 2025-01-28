@@ -7,12 +7,9 @@ import moment from 'moment-timezone';
 import { PaymentOrderEntity } from '../../domain/entities/payment-order.entity';
 
 /* Dtos */
-import { ReportSchemeDto } from '../dtos/paymentOrder/report-scheme.dto';
-import { ReportHeaderDto } from '../dtos/paymentOrder/report-header.dto';
-import { ReportSubHeaderDto } from '../dtos/paymentOrder/report-sub-header.dto';
-import { ReportBodyDto } from '../dtos/paymentOrder/report-body.dto';
-import { FundsDto } from '../dtos/paymentOrder/funds.dto';
-import { WithholdingDto } from '../dtos/paymentOrder/withholding.dto';
+import { ReportSchemeDto } from '../dtos/incomeTaxWithholdingVoucher/report-scheme.dto';
+import { ReportHeaderDto } from '../dtos/incomeTaxWithholdingVoucher/report-header.dto';
+import { ReportBodyDto } from '../dtos/incomeTaxWithholdingVoucher/report-body.dto';
 
 /* Services Pdf */
 import { IPdfGenerator } from '../../domain/repositories/pdf-generator.interface';
@@ -37,7 +34,6 @@ export class IncomeTaxWithholdingVoucherService {
       const reportScheme: ReportSchemeDto = {
         name: 'payment-order',
         header: this.mapToReportHeader(paymentOrder),
-        subHeader: this.mapToReportSubHeader(paymentOrder),
         body: this.mapToReportBody(paymentOrder)
       }
 
@@ -73,29 +69,6 @@ export class IncomeTaxWithholdingVoucherService {
       NUMERO_ORDEN_PAGO: order.NUMERO_ORDEN_PAGO,
       FECHA_ORDEN_PAGO: dateOrderPayment,
       FECHA_COMPROMISO: dateCommitment
-    }
-  }
-
-  private mapToReportSubHeader(order: PaymentOrderEntity): ReportSubHeaderDto {
-    const methodOfPayment   = order.FRECUENCIA_PAGO ?? null
-    const supplier          = order.PROVEEDOR ?? null
-    const beneficiary       = supplier?.BENEFICIARIES[0] ?? null
-
-    const dateSince = this.isValidDate(order.FECHA_PLAZO_DESDE) ? order.FECHA_PLAZO_DESDE : null
-    const dateUntil = this.isValidDate(order.FECHA_PLAZO_HASTA) ? order.FECHA_PLAZO_HASTA : null
-
-    return {
-      NOMBRE_PROVEEDOR: supplier?.NOMBRE_PROVEEDOR,
-      CEDULA_PROVEEDOR: supplier?.CEDULA,
-      RIF_PROVEEDOR: supplier?.RIF,
-      NOMBRE_BENEFICIARIO: beneficiary?.NOMBRE,
-      APELLIDO_BENEFICIARIO: beneficiary?.APELLIDO,
-      CEDULA_BENEFICIARIO: beneficiary?.IDENTIFICACION,
-      FECHA_PLAZO_DESDE: dateSince,
-      FECHA_PLAZO_HASTA: dateUntil,
-      MONTO_LETRAS: order.MONTO_LETRAS,
-      FORMA_DE_PAGO: methodOfPayment?.DESCRIPCION,
-      CANTIDAD_PAGO: order.CANTIDAD_PAGO
     }
   }
 
