@@ -102,6 +102,7 @@ export class PaymentOrderService {
   private mapToReportBody(order: PaymentOrderEntity): ReportBodyDto {
     let total: number = 0
     let totalRetenciones: number = 0
+    let titleEspecifica: string = ''
 
     const listPucOrder: FundsDto[] = [];
     const listWithholding: WithholdingDto[] = [];
@@ -111,6 +112,7 @@ export class PaymentOrderService {
 
     pucOrders.forEach((pucOrder) => {
       const balance = pucOrder?.BALANCE ?? null
+      titleEspecifica= balance?.DENOMINACION_PUC ?? ''
 
       const data = {
         ANO: balance?.ANO,
@@ -141,7 +143,9 @@ export class PaymentOrderService {
       FUNDS: listPucOrder,
       WITHHOLDING: listWithholding,
       TOTAL_ORDEN_PAGO: total,
-      MONTO_PAGAR: (total - totalRetenciones)
+      MONTO_PAGAR: (total - totalRetenciones),
+      TITULO_ESPECIFICA: titleEspecifica,
+      MOTIVO: order.MOTIVO
     }
 
     return body

@@ -221,7 +221,7 @@ export const bodySection = (options: HeaderOptions): Content => {
         [
           {
             colSpan: 8,
-            text: 'SERVICIOS DE TELEFONÍA PRESTADOS POR INSTITUCIONES PRIVADAS',
+            text: body?.TITULO_ESPECIFICA ? body?.TITULO_ESPECIFICA.trim() : '',
             style: 'tableFooter',
             margin: [5, 0],
             border: [true, false, true, true]
@@ -249,7 +249,7 @@ export const bodySection = (options: HeaderOptions): Content => {
                 style: 'tableHeaderReason'
               },
               {
-                text: "PAGO POR SERVICIO DE TELEFONIA MOVIL 4G LTE PARA LAS DIFERENTES DEPENDENCIAS DEL CONCEJO MUNICIPAL DEL MUNICIPIO CHACAO, DEL PERIODO DEL 01/02/2024 AL 29/02/2024 SEGUN FACTURA N°76304665 META: TRAMITACION DE LOS PROCEDIMIENTOS DE CONTRATACION DE LAS COMPRAS Y SERVICIOS SOLICITADOS POR LAS DEPENDENCIAS DEL CONCEJO MUNICIPAL DEL MUNICIPIO CHACAO. TODO LO ANTES EXPUESTO ES PARA DAR CUMPLIMIENTO AL POAM DEL EJERCICIO FISCAL AÑO 2024.",
+                text: body?.MOTIVO ? body?.MOTIVO.trim() : '',
                 style: 'tableReason'
               }
             ],

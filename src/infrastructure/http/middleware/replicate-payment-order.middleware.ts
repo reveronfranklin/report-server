@@ -10,7 +10,7 @@ export class ReplicatePaymentOrderMiddleware implements NestMiddleware {
   constructor(private replicatePaymentOrderRepository: ReplicatePaymentOrderRepository) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
-    if (req['tokenValidationResult'].isValid) {
+    /* if (req['tokenValidationResult'].isValid) {
       const codigoOrdenPago = req.body.CodigoOrdenPago
 
       try {
@@ -56,7 +56,7 @@ export class ReplicatePaymentOrderMiddleware implements NestMiddleware {
         })
         return res.status(500).json(response)
       }
-    }
+    } */
 
     next()
   }
