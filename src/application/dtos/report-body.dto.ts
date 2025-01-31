@@ -1,4 +1,4 @@
-import { IsArray, IsNumber } from 'class-validator';
+import { IsArray, IsNumber, IsString } from 'class-validator';
 import { FundsDto } from './funds.dto';
 import { WithholdingDto } from './withholding.dto';
 
@@ -14,4 +14,10 @@ export class ReportBodyDto {
 
   @IsNumber()
   MONTO_PAGAR: number;
+
+  @IsString()
+  TITULO_ESPECIFICA: string;
+
+  @IsString()
+  MOTIVO: string;
 }
