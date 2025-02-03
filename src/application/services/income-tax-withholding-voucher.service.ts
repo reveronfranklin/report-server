@@ -31,11 +31,13 @@ export class IncomeTaxWithholdingVoucherService {
     }
 
     try {
-      const reportScheme: ReportSchemeDto = {
+      /* const reportScheme: ReportSchemeDto = {
         name: 'payment-order',
         header: this.mapToReportHeader(paymentOrder),
         body: this.mapToReportBody(paymentOrder)
-      }
+      } */
+
+        const reportScheme = {}
 
       // Generar el documento PDF
       const pdfDocument = this.pdfGenerator.generatePdf(reportScheme);
@@ -55,7 +57,7 @@ export class IncomeTaxWithholdingVoucherService {
     return formattedDate.tz('UTC').format('DD/MM/YYYY')
   }
 
-  private mapToReportHeader(order: PaymentOrderEntity): ReportHeaderDto {
+/*   private mapToReportHeader(order: PaymentOrderEntity): ReportHeaderDto {
     const paymentOrderType  = order.TIPO_ORDEN_PAGO ?? null
     const commitment        = order?.COMMITMENT ?? null
     const preCommitment     = commitment?.PRE_COMMITMENT ?? null
@@ -70,9 +72,9 @@ export class IncomeTaxWithholdingVoucherService {
       FECHA_ORDEN_PAGO: dateOrderPayment,
       FECHA_COMPROMISO: dateCommitment
     }
-  }
+  } */
 
-  private mapToReportBody(order: PaymentOrderEntity): ReportBodyDto {
+  /* private mapToReportBody(order: PaymentOrderEntity): ReportBodyDto {
     let total: number = 0
     let totalRetenciones: number = 0
 
@@ -118,5 +120,5 @@ export class IncomeTaxWithholdingVoucherService {
     }
 
     return body
-  }
+  } */
 }
