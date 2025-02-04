@@ -151,8 +151,8 @@ import { PrinterModule } from 'src/shared/modules/printer/printer.module';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-   /*  consumer
+    consumer
       .apply(AuthMiddleware, ReplicatePaymentOrderMiddleware)
-      .forRoutes({ path: '*', method: RequestMethod.POST }); */
+      .forRoutes({ path: '*', method: RequestMethod.POST });
   }
 }
