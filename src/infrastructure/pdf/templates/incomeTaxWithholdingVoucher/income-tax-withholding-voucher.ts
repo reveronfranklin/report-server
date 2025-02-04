@@ -6,6 +6,7 @@ import type {
 
 /* Dtos */
 import { ReportSchemeDto } from '../../../../application/dtos/paymentOrder/report-scheme.dto';
+//import { ReportSchemeDto } from '../../application/dtos/incomeTaxWithholdingVoucher/report-scheme.dto';
 
 /* Sections */
 import { headerSection } from './sections/payment-order-header';
@@ -26,11 +27,11 @@ const styles: StyleDictionary = {
   ...footerStyles
 };
 
-export function createPaymentOrderTemplate(data: ReportSchemeDto): TDocumentDefinitions {
+export function createIncomeTaxWithholdingVoucherTemplate(data: ReportSchemeDto): TDocumentDefinitions {
   const { header, subHeader, body } = data
 
   // Execute the sections before the return statement
-  const headerContent: Content = headerSection({
+ /*  const headerContent: Content = headerSection({
     header
   })
 
@@ -40,26 +41,26 @@ export function createPaymentOrderTemplate(data: ReportSchemeDto): TDocumentDefi
 
   const bodyContent: Content = bodySection({
     body,
-  })
+  }) */
 
   const footerContent: Content = footerSection()
 
   return {
     pageSize: 'LETTER',
-    pageOrientation: 'portrait',
+    pageOrientation: 'landscape',
     pageMargins: [20, 215, 60, 100],
     styles: styles,
     header: {
       columns: [
         {
           stack: [
-            headerContent,
-            subHeaderContent
+            'header content',
+            'subHeader content'
           ]
         }
       ]
     },
-    content: bodyContent,
+    content: 'body content',
     footer: footerContent
   }
 }

@@ -11,7 +11,7 @@ export class AuthMiddleware implements NestMiddleware {
   constructor(private authRepository: AuthRepository) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
-   /*  const refreshTokenValue = req.headers['x-refresh-token'] as string
+    const refreshTokenValue = req.headers['x-refresh-token'] as string
 
     if (!refreshTokenValue) {
       const response = new ResponseDto<string>({
@@ -37,7 +37,7 @@ export class AuthMiddleware implements NestMiddleware {
       return res.status(401).json(results)
     }
 
-    req['tokenValidationResult'] = results */
+    req['tokenValidationResult'] = results
 
     next()
   }

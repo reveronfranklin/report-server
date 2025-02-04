@@ -57,8 +57,15 @@ import { PreCommitmentRepository } from './infrastructure/persistence/repositori
 import { WithholdingModel } from './infrastructure/persistence/models/withholding.model';
 import { WithholdingRepository } from './infrastructure/persistence/repositories/withholding.repository';
 
+/* Module IncomeTaxWithholdingVoucherModel */
+//import { IncomeTaxWithholdingVoucherModel } from './infrastructure/persistence/models/income-tax-withholding-voucher.model';
+//import { IncomeTaxWithholdingVoucherRepository } from './infrastructure/persistence/repositories/income-tax-withholding-voucher.repository';
+import { IncomeTaxWithholdingVoucherController} from './infrastructure/http/controllers/income-tax-withholding-voucher.controller';
+import { IncomeTaxWithholdingVoucherService } from './application/services/income-tax-withholding-voucher.service';
+
 /* Resources */
-import { PdfGeneratorAdapter } from './infrastructure/pdf/pdf-generator.adapter';
+import { PdfGeneratorAdapterPaymentOrder } from './infrastructure/pdf/pdf-generator-payment-order.adapter';
+import { PdfGeneratorAdapterIncomeTaxWithholdingVoucher } from './infrastructure/pdf/pdf-generator-income-tax-withholding-voucher';
 import { PrinterModule } from 'src/shared/modules/printer/printer.module';
 
 @Module({
@@ -86,6 +93,7 @@ import { PrinterModule } from 'src/shared/modules/printer/printer.module';
   ],
   providers: [
     PaymentOrderService,
+    IncomeTaxWithholdingVoucherService,
     {
       provide: AuthRepository,
       useClass: AuthAdapter
@@ -132,15 +140,19 @@ import { PrinterModule } from 'src/shared/modules/printer/printer.module';
     },
     {
       provide: 'IPdfGenerator',
-      useClass: PdfGeneratorAdapter
+      useClass: PdfGeneratorAdapterPaymentOrder
+    },
+    {
+      provide: 'IPdfGenerator',
+      useClass: PdfGeneratorAdapterIncomeTaxWithholdingVoucher
     }
   ],
-  controllers: [PaymentOrderController]
+  controllers: [PaymentOrderController, IncomeTaxWithholdingVoucherController]
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
+   /*  consumer
       .apply(AuthMiddleware, ReplicatePaymentOrderMiddleware)
-      .forRoutes({ path: '*', method: RequestMethod.POST });
+      .forRoutes({ path: '*', method: RequestMethod.POST }); */
   }
 }
