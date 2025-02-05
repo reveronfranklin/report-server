@@ -14,6 +14,7 @@ import { CommitmentModel } from '../models/commitment.model';
 import { PreCommitmentModel } from '../models/pre-commitment.model';
 import { BalanceModel } from '../models/balance.model';
 import { WithholdingModel } from '../models/withholding.model';
+import { DocumentModel } from '../models/document.model';
 
 /* Mappers */
 import { PaymentOrderMapper } from '../mappers/payment-order.mapper';
@@ -78,6 +79,21 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
     }
 
     const paymentOrderModel = await this.paymentOrderModel.findByPk(id, options)
+
+    /* responses */
+    return paymentOrderModel ? PaymentOrderMapper.toDomain(paymentOrderModel) : null
+  }
+
+  async findByIdWithHoldings(id: number): Promise<PaymentOrderEntity | null> {
+    const options = {
+      include: [
+        { model: DocumentModel, as: 'DOCUMENTS' },
+      ]
+    }
+
+    const paymentOrderModel = await this.paymentOrderModel.findByPk(id, options)
+
+    console.log('paymentOrderModel', paymentOrderModel)
 
     /* responses */
     return paymentOrderModel ? PaymentOrderMapper.toDomain(paymentOrderModel) : null

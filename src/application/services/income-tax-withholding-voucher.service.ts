@@ -24,7 +24,7 @@ export class IncomeTaxWithholdingVoucherService {
   ) {}
 
   async generateReport(id: number): Promise<PDFKit.PDFDocument> {
-    const paymentOrder = await this.paymentOrderRepository.findByIdWithRelations(id)
+    const paymentOrder = await this.paymentOrderRepository.findByIdWithHoldings(id)
 
     if (!paymentOrder) {
       throw new Error('Payment order not found')

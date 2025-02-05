@@ -57,6 +57,11 @@ import { PreCommitmentRepository } from './infrastructure/persistence/repositori
 import { WithholdingModel } from './infrastructure/persistence/models/withholding.model';
 import { WithholdingRepository } from './infrastructure/persistence/repositories/withholding.repository';
 
+/* Module DocumentModel */
+import { DocumentModel } from './infrastructure/persistence/models/document.model';
+import { DocumentRepository } from './infrastructure/persistence/repositories/document.repository';
+
+
 /* Module IncomeTaxWithholdingVoucherModel */
 //import { IncomeTaxWithholdingVoucherModel } from './infrastructure/persistence/models/income-tax-withholding-voucher.model';
 //import { IncomeTaxWithholdingVoucherRepository } from './infrastructure/persistence/repositories/income-tax-withholding-voucher.repository';
@@ -87,7 +92,8 @@ import { PrinterModule } from 'src/shared/modules/printer/printer.module';
       PucPaymentOrderModel,
       CommitmentModel,
       PreCommitmentModel,
-      WithholdingModel
+      WithholdingModel,
+      DocumentModel
     ]),
     PrinterModule
   ],
@@ -137,6 +143,10 @@ import { PrinterModule } from 'src/shared/modules/printer/printer.module';
     {
       provide: 'IWithholdingRepository',
       useClass: WithholdingRepository
+    },
+    {
+      provide: 'IDocumentRepository',
+      useClass: DocumentRepository
     },
     {
       provide: 'IPdfGenerator',
