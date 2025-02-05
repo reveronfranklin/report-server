@@ -1,6 +1,6 @@
-export interface DocumentInterface {
-  CODIGO_DOCUMENTO_OP: string;
-  CODIGO_ORDEN_PAGO: string;
+export interface IDocument {
+  CODIGO_DOCUMENTO_OP: number;
+  CODIGO_ORDEN_PAGO: number;
   FECHA_COMPROBANTE: Date;
   PERIODO_IMPOSITIVO: string;
   TIPO_OPERACION_ID: string;

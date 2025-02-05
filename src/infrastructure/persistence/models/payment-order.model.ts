@@ -5,6 +5,7 @@ import { SupplierModel } from './supplier.model';
 import { PucPaymentOrderModel } from './puc-payment-order.model';
 import { CommitmentModel } from './commitment.model';
 import { WithholdingModel } from './withholding.model';
+import { DocumentModel } from './document.model';
 
 @Table({
   schema: 'public',
@@ -61,6 +62,9 @@ export class PaymentOrderModel extends Model<PaymentOrderModel> implements IPaym
 
   @HasMany(() => WithholdingModel, { foreignKey: 'CODIGO_ORDEN_PAGO' })
   WITHHOLDINGS: WithholdingModel[];
+
+  @HasMany(() => DocumentModel, { foreignKey: 'CODIGO_ORDEN_PAGO' })
+  DOCUMENTS: DocumentModel[];
 
   @HasOne(() => CommitmentModel, { foreignKey: 'CODIGO_ORDEN_PAGO' })
   COMMITMENT: CommitmentModel;

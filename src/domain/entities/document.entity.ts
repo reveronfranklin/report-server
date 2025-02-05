@@ -1,9 +1,9 @@
-import { DocumentInterface } from '../interfaces/document.interface';
+import { IDocument } from '../interfaces/document.interface';
 
-export class DocumentEntity implements DocumentInterface {
+export class DocumentEntity implements IDocument {
   constructor(
-    public CODIGO_DOCUMENTO_OP: string,
-    public CODIGO_ORDEN_PAGO: string,
+    public CODIGO_DOCUMENTO_OP: number,
+    public CODIGO_ORDEN_PAGO: number,
     public FECHA_COMPROBANTE: Date,
     public PERIODO_IMPOSITIVO: string,
     public TIPO_OPERACION_ID: string,

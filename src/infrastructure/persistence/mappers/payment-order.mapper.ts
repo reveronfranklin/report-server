@@ -3,6 +3,7 @@ import { PaymentOrderEntity } from '../../../domain/entities/payment-order.entit
 import { PucPaymentOrderEntity } from '../../../domain/entities/puc-payment-order.entity';
 import { BalanceEntity } from '../../../domain/entities/balance.entity';
 import { WithholdingEntity } from '../../../domain/entities/withholding.entity';
+import { DocumentEntity } from '../../../domain/entities/document.entity';
 
 export class PaymentOrderMapper {
   static toDomain(paymentOrderModel: PaymentOrderModel): PaymentOrderEntity {
@@ -150,6 +151,37 @@ export class PaymentOrderMapper {
         withholding.extra4,
         withholding.baseImponible,
         withholding?.DESCRIPCION?.get({ plain: true })
+      )) || [],
+
+      paymentOrderModel?.DOCUMENTS?.map(document => new DocumentEntity(
+        document.CODIGO_DOCUMENTO_OP,
+        document.CODIGO_ORDEN_PAGO,
+        document.FECHA_COMPROBANTE,
+        document.PERIODO_IMPOSITIVO,
+        document.TIPO_OPERACION_ID,
+        document.TIPO_DOCUMENTO_ID,
+        document.FECHA_DOCUMENTO,
+        document.NUMERO_DOCUMENTO,
+        document.NUMERO_CONTROL_DOCUMENTO,
+        document.MONTO_DOCUMENTO,
+        document.BASE_IMPONIBLE,
+        document.MONTO_IMPUESTO,
+        document.NUMERO_DOCUMENTO_AFECTADO,
+        document.TIPO_TRANSACCION_ID,
+        document.TIPO_IMPUESTO_ID,
+        document.MONTO_IMPUESTO_EXENTO,
+        document.MONTO_RETENIDO,
+        document.EXTRA1,
+        document.EXTRA2,
+        document.EXTRA3,
+        document.USUARIO_INS,
+        document.FECHA_INS,
+        document.USUARIO_UPD,
+        document.FECHA_UPD,
+        document.CODIGO_EMPRESA,
+        document.CODIGO_PRESUPUESTO,
+        document.NUMERO_EXPEDIENTE,
+        document.ESTATUS_FISCO_ID
       )) || []
     )
   }
