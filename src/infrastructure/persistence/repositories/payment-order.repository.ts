@@ -13,7 +13,7 @@ import { PucPaymentOrderModel } from '../models/puc-payment-order.model';
 import { CommitmentModel } from '../models/commitment.model';
 import { PreCommitmentModel } from '../models/pre-commitment.model';
 import { BalanceModel } from '../models/balance.model';
-import { WithholdingModel } from '../models/withholding.model';
+import { WithholdingOpModel } from '../models/withholding-op.model';
 import { DocumentModel } from '../models/document.model';
 
 /* Mappers */
@@ -69,7 +69,7 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
           ]
         },
         {
-          model: WithholdingModel,
+          model: WithholdingOpModel,
           as: 'WITHHOLDINGS',
           include: [
             { model: DescriptiveModel, as: 'DESCRIPCION' }
@@ -87,6 +87,18 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
   async findByIdWithHoldings(id: number): Promise<PaymentOrderEntity | null> {
     const options = {
       include: [
+        {
+          model: SupplierModel,
+          as: 'PROVEEDOR',
+          include: [
+            {
+              model: BeneficiaryModel,
+              as: 'BENEFICIARIES',
+              where: { PRINCIPAL: 1 },
+              required: false  // This makes it a LEFT OUTER JOIN
+            }
+          ]
+        },
         { model: DocumentModel, as: 'DOCUMENTS' },
       ]
     }

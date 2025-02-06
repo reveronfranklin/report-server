@@ -1,7 +1,7 @@
 import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
 import { IDescriptive } from '../../../domain/interfaces/descriptive.interface';
 import { PaymentOrderModel } from './payment-order.model';
-import { WithholdingModel } from './withholding.model';
+import { WithholdingOpModel } from './withholding-op.model';
 
 @Table({
   schema: 'public',
@@ -22,8 +22,8 @@ export class DescriptiveModel extends Model<DescriptiveModel> implements IDescri
   @HasMany(() => PaymentOrderModel, { foreignKey: 'TIPO_ORDEN_PAGO_ID' })
   PAYMENT_ORDERS: PaymentOrderModel[];
 
-  @HasMany(() => WithholdingModel, { foreignKey: 'TIPO_RETENCION_ID' })
-  WITHHOLDINGS: WithholdingModel[];
+  @HasMany(() => WithholdingOpModel, { foreignKey: 'TIPO_RETENCION_ID' })
+  WITHHOLDINGS: WithholdingOpModel[];
 
   /* Associations */
 

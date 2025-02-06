@@ -53,7 +53,11 @@ import { CommitmentRepository } from './infrastructure/persistence/repositories/
 import { PreCommitmentModel } from './infrastructure/persistence/models/pre-commitment.model';
 import { PreCommitmentRepository } from './infrastructure/persistence/repositories/pre-commitment.repository';
 
-/* Module PreCommitmentModel */
+/* Module WithholdingOpModel */
+import { WithholdingOpModel } from './infrastructure/persistence/models/withholding-op.model';
+import { WithholdingOpRepository } from './infrastructure/persistence/repositories/withholding-op.repository';
+
+/* Module WithholdingModel */
 import { WithholdingModel } from './infrastructure/persistence/models/withholding.model';
 import { WithholdingRepository } from './infrastructure/persistence/repositories/withholding.repository';
 
@@ -92,6 +96,7 @@ import { PrinterModule } from 'src/shared/modules/printer/printer.module';
       PucPaymentOrderModel,
       CommitmentModel,
       PreCommitmentModel,
+      WithholdingOpModel,
       WithholdingModel,
       DocumentModel
     ]),
@@ -141,8 +146,12 @@ import { PrinterModule } from 'src/shared/modules/printer/printer.module';
       useClass: PreCommitmentRepository
     },
     {
+      provide: 'IWithholdingOpRepository',
+      useClass: WithholdingOpRepository
+    },
+    {
       provide: 'IWithholdingRepository',
-      useClass: WithholdingRepository
+      useClass: WithholdingRepository,
     },
     {
       provide: 'IDocumentRepository',

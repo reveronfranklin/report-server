@@ -1,78 +1,55 @@
-import { Model, Column, ForeignKey, BelongsTo, Table, DataType } from 'sequelize-typescript';
-import { IWithholding } from '../../../domain/interfaces/withholding.interface';
-import { DescriptiveModel } from './descriptive.model';
-import { PaymentOrderModel } from './payment-order.model';
+import { Model, Table, Column, DataType } from 'sequelize-typescript';
 
-@Table({
-  schema: 'public',
-  tableName: 'ADM_RETENCIONES_OP',
-  timestamps: false // Desactiva los timestamps
-})
-export class WithholdingModel extends Model<WithholdingModel> implements IWithholding {
-  @Column({ primaryKey: true, field: 'CODIGO_RETENCION_OP' })
-  codigoRetencionOp!: string;
+@Table({ tableName: 'ADM_RETENCIONES', schema: 'public' })
+export class WithholdingModel extends Model<WithholdingModel> {
+  @Column({ primaryKey: true, field: 'CODIGO_RETENCION' })
+  CODIGO_RETENCION!: string;
 
-  /* Foreing Keys */
-  @ForeignKey(() => PaymentOrderModel)
-  @Column({ field: 'CODIGO_ORDEN_PAGO' })
-  codigoOrdenPago!: number;
-
-
-  @ForeignKey(() => DescriptiveModel)
   @Column({ field: 'TIPO_RETENCION_ID' })
-  tipoRetencionId!: string;
+  TIPO_RETENCION_ID!: string;
 
-  /* Foreing Keys */
+  @Column({ field: 'CONCEPTO_PAGO' })
+  CONCEPTO_PAGO!: string;
 
-  /* Associations */
-
-  @BelongsTo(() => DescriptiveModel, { foreignKey: 'TIPO_RETENCION_ID', as: 'DESCRIPCION' })
-  DESCRIPCION: DescriptiveModel;
-
-  @BelongsTo(() => PaymentOrderModel, { foreignKey: 'CODIGO_ORDEN_PAGO', as: 'PAYMENT_ORDER' })
-  PAYMENT_ORDER: PaymentOrderModel;
-
-  /* Associations */
-
-  @Column({ field: 'CODIGO_RETENCION' })
-  codigoRetencion!: string;
-
-  @Column({ field: 'POR_RETENCION', type: DataType.DECIMAL(10, 2) })
-  porRetencion!: number;
-
-  @Column({ field: 'MONTO_RETENCION', type: DataType.DECIMAL(18, 2) })
-  montoRetencion!: number;
-
-  @Column({ field: 'EXTRA1' })
-  extra1!: string;
-
-  @Column({ field: 'EXTRA2' })
-  extra2!: string;
-
-  @Column({ field: 'EXTRA3' })
-  extra3!: string;
-
-  @Column({ field: 'USUARIO_INS' })
-  usuarioIns!: string;
-
-  @Column({ field: 'FECHA_INS' })
-  fechaIns!: Date;
-
-  @Column({ field: 'USUARIO_UPD' })
-  usuarioUpd!: string;
-
-  @Column({ field: 'FECHA_UPD' })
-  fechaUpd!: Date;
-
-  @Column({ field: 'CODIGO_EMPRESA' })
-  codigoEmpresa!: string;
-
-  @Column({ field: 'CODIGO_PRESUPUESTO' })
-  codigoPresupuesto!: string;
-
-  @Column({ field: 'EXTRA4' })
-  extra4!: string;
+  @Column({ field: 'TIPO_PERSONA_ID' })
+  TIPO_PERSONA_ID!: string;
 
   @Column({ field: 'BASE_IMPONIBLE', type: DataType.DECIMAL(18, 2) })
-  baseImponible!: number;
+  BASE_IMPONIBLE!: number;
+
+  @Column({ field: 'POR_RETENCION', type: DataType.DECIMAL(5, 2) })
+  POR_RETENCION!: number;
+
+  @Column({ field: 'MONTO_RETENCION', type: DataType.DECIMAL(18, 2) })
+  MONTO_RETENCION!: number;
+
+  @Column({ field: 'FECHA_INI', type: DataType.DATE })
+  FECHA_INI!: Date;
+
+  @Column({ field: 'FECHA_FIN', type: DataType.DATE })
+  FECHA_FIN!: Date;
+
+  @Column({ field: 'EXTRA1' })
+  EXTRA1!: string;
+
+  @Column({ field: 'EXTRA2' })
+  EXTRA2!: string;
+
+  @Column({ field: 'EXTRA3' })
+  EXTRA3!: string;
+
+  @Column({ field: 'USUARIO_INS' })
+  USUARIO_INS!: string;
+
+  @Column({ field: 'FECHA_INS', type: DataType.DATE })
+  FECHA_INS!: Date;
+
+  @Column({ field: 'USUARIO_UPD' })
+  USUARIO_UPD!: string;
+
+  @Column({ field: 'FECHA_UPD', type: DataType.DATE })
+  FECHA_UPD!: Date;
+
+  @Column({ field: 'CODIGO_EMPRESA' })
+  CODIGO_EMPRESA!: string;
 }
