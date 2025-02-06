@@ -2,7 +2,7 @@ import { PaymentOrderModel } from '../models/payment-order.model';
 import { PaymentOrderEntity } from '../../../domain/entities/payment-order.entity';
 import { PucPaymentOrderEntity } from '../../../domain/entities/puc-payment-order.entity';
 import { BalanceEntity } from '../../../domain/entities/balance.entity';
-import { WithholdingEntity } from '../../../domain/entities/withholding.entity';
+import { WithholdingOpEntity } from '../../../domain/entities/withholding-op.entity';
 import { DocumentEntity } from '../../../domain/entities/document.entity';
 
 export class PaymentOrderMapper {
@@ -132,7 +132,7 @@ export class PaymentOrderMapper {
         ) : null
       )) || [],
 
-      paymentOrderModel?.WITHHOLDINGS?.map(withholding => new WithholdingEntity(
+      paymentOrderModel?.WITHHOLDINGS?.map(withholding => new WithholdingOpEntity(
         withholding.codigoRetencionOp,
         withholding.codigoOrdenPago,
         withholding.tipoRetencionId,
