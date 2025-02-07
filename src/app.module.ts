@@ -65,6 +65,10 @@ import { WithholdingRepository } from './infrastructure/persistence/repositories
 import { DocumentModel } from './infrastructure/persistence/models/document.model';
 import { DocumentRepository } from './infrastructure/persistence/repositories/document.repository';
 
+/* Module TaxDocumentModel */
+import { TaxDocumentModel } from './infrastructure/persistence/models/tax-document.model';
+import { TaxDocumentRepository } from './infrastructure/persistence/repositories/tax-document.repository';
+
 
 /* Module IncomeTaxWithholdingVoucherModel */
 //import { IncomeTaxWithholdingVoucherModel } from './infrastructure/persistence/models/income-tax-withholding-voucher.model';
@@ -98,7 +102,8 @@ import { PrinterModule } from 'src/shared/modules/printer/printer.module';
       PreCommitmentModel,
       WithholdingOpModel,
       WithholdingModel,
-      DocumentModel
+      DocumentModel,
+      TaxDocumentModel
     ]),
     PrinterModule
   ],
@@ -156,6 +161,10 @@ import { PrinterModule } from 'src/shared/modules/printer/printer.module';
     {
       provide: 'IDocumentRepository',
       useClass: DocumentRepository
+    },
+    {
+      provide: 'ITaxDocumentRepository',
+      useClass: TaxDocumentRepository,
     },
     {
       provide: 'IPdfGenerator',

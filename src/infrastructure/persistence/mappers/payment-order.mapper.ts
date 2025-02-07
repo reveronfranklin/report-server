@@ -181,7 +181,8 @@ export class PaymentOrderMapper {
         document.CODIGO_EMPRESA,
         document.CODIGO_PRESUPUESTO,
         document.NUMERO_EXPEDIENTE,
-        document.ESTATUS_FISCO_ID
+        document.ESTATUS_FISCO_ID,
+        document?.TAX_DOCUMENT?.get({ plain: true })
       )) || []
     )
   }

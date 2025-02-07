@@ -16,7 +16,7 @@ export class WithholdingRepository implements IWithholdingRepository {
     return withholdings;
   }
 
-  async findById(id: string): Promise<WithholdingEntity | null> {
+  async findById(id: number): Promise<WithholdingEntity | null> {
     const withholding = await this.withholdingModel.findByPk(id);
     return withholding;
   }

@@ -1,4 +1,5 @@
 import { IDocument } from '../interfaces/document.interface';
+import { TaxDocumentEntity } from './tax-document.entity';
 
 export class DocumentEntity implements IDocument {
   constructor(
@@ -29,6 +30,8 @@ export class DocumentEntity implements IDocument {
     public CODIGO_EMPRESA: string,
     public CODIGO_PRESUPUESTO: string,
     public NUMERO_EXPEDIENTE: string,
-    public ESTATUS_FISCO_ID: string
+    public ESTATUS_FISCO_ID: string,
+
+    public TAX_DOCUMENT?: TaxDocumentEntity
   ) {}
 }

@@ -15,9 +15,11 @@ import { PreCommitmentModel } from '../models/pre-commitment.model';
 import { BalanceModel } from '../models/balance.model';
 import { WithholdingOpModel } from '../models/withholding-op.model';
 import { DocumentModel } from '../models/document.model';
+import { TaxDocumentModel } from '../models/tax-document.model';
 
 /* Mappers */
 import { PaymentOrderMapper } from '../mappers/payment-order.mapper';
+import { WithholdingModel } from '../models/withholding.model';
 
 @Injectable()
 export class PaymentOrderRepository implements IPaymentOrderRepository {
@@ -99,13 +101,31 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
             }
           ]
         },
-        { model: DocumentModel, as: 'DOCUMENTS' },
+        {
+          model: DocumentModel,
+          as: 'DOCUMENTS',
+          include: [
+            {
+              /* Falta condicion de: (SELECT X.DESCRIPCION_ID FROM ADM_DESCRIPTIVAS X WHERE X.CODIGO= 'ISLR') */
+              model: TaxDocumentModel,
+              as: 'TAX_DOCUMENT',
+              required: false,
+              include: [
+                {
+                  model: WithholdingModel,
+                  as: 'WITHHOLDING',
+                  required: false
+                }
+              ]
+            }
+          ]
+        },
       ]
     }
 
     const paymentOrderModel = await this.paymentOrderModel.findByPk(id, options)
 
-    console.log('paymentOrderModel', paymentOrderModel)
+    console.log('paymentOrderModel', paymentOrderModel /*.DOCUMENTS[0].TAX_DOCUMENT*/)
 
     /* responses */
     return paymentOrderModel ? PaymentOrderMapper.toDomain(paymentOrderModel) : null

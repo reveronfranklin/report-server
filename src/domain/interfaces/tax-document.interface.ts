@@ -1,9 +1,9 @@
-export interface TaxesDocumentInterface {
-  CODIGO_IMPUESTO_DOCUMENTO_OP: string;
-  CODIGO_DOCUMENTO_OP: string;
-  CODIGO_RETENCION: string;
-  TIPO_RETENCION_ID: string;
-  TIPO_IMPUESTO_ID: string;
+export interface ITaxDocument {
+  CODIGO_IMPUESTO_DOCUMENTO_OP: number;
+  CODIGO_DOCUMENTO_OP: number;
+  CODIGO_RETENCION: number;
+  TIPO_RETENCION_ID: number;
+  TIPO_IMPUESTO_ID: number;
   PERIODO_IMPOSITIVO: string;
   BASE_IMPONIBLE: number;
   MONTO_IMPUESTO: number;
