@@ -1,8 +1,8 @@
 export interface IWithholding {
-  CODIGO_RETENCION: string;
-  TIPO_RETENCION_ID: string;
+  CODIGO_RETENCION: number;
+  TIPO_RETENCION_ID: number;
   CONCEPTO_PAGO: string;
-  TIPO_PERSONA_ID: string;
+  TIPO_PERSONA_ID: number;
   BASE_IMPONIBLE: number;
   POR_RETENCION: number;
   MONTO_RETENCION: number;

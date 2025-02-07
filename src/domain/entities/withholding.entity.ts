@@ -2,10 +2,10 @@ import { IWithholding } from '../interfaces/withholding.interface';
 
 export class WithholdingEntity implements IWithholding {
   constructor(
-    public CODIGO_RETENCION: string,
-    public TIPO_RETENCION_ID: string,
+    public CODIGO_RETENCION: number,
+    public TIPO_RETENCION_ID: number,
     public CONCEPTO_PAGO: string,
-    public TIPO_PERSONA_ID: string,
+    public TIPO_PERSONA_ID: number,
     public BASE_IMPONIBLE: number,
     public POR_RETENCION: number,
     public MONTO_RETENCION: number,

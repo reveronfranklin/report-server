@@ -1,6 +1,7 @@
-import { Model, Table, Column, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import { Model, Table, Column, DataType, ForeignKey, BelongsTo, HasOne } from 'sequelize-typescript';
 import { IDocument } from '../../../domain/interfaces/document.interface';
 import { PaymentOrderModel } from './payment-order.model';
+import { TaxDocumentModel } from './tax-document.model';
 
 @Table({
   schema: 'public',
@@ -27,6 +28,9 @@ export class DocumentModel extends Model<DocumentModel> implements IDocument {
 
   @BelongsTo(() => PaymentOrderModel, { foreignKey: 'CODIGO_ORDEN_PAGO', as: 'PAYMENT_ORDER' })
   PAYMENT_ORDER: PaymentOrderModel;
+
+  @HasOne(() => TaxDocumentModel, { foreignKey: 'CODIGO_DOCUMENTO_OP', as: 'TAX_DOCUMENT' })
+  TAX_DOCUMENT: TaxDocumentModel;
 
   /* Associations */
 

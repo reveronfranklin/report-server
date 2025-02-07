@@ -1,12 +1,12 @@
-import { TaxesDocumentInterface } from '../interfaces/taxes-document.interface';
+import { ITaxDocument } from '../interfaces/tax-document.interface';
 
-export class TaxesDocumentEntity implements TaxesDocumentInterface {
+export class TaxDocumentEntity implements ITaxDocument {
   constructor(
-    public CODIGO_IMPUESTO_DOCUMENTO_OP: string,
-    public CODIGO_DOCUMENTO_OP: string,
-    public CODIGO_RETENCION: string,
-    public TIPO_RETENCION_ID: string,
-    public TIPO_IMPUESTO_ID: string,
+    public CODIGO_IMPUESTO_DOCUMENTO_OP: number,
+    public CODIGO_DOCUMENTO_OP: number,
+    public CODIGO_RETENCION: number,
+    public TIPO_RETENCION_ID: number,
+    public TIPO_IMPUESTO_ID: number,
     public PERIODO_IMPOSITIVO: string,
     public BASE_IMPONIBLE: number,
     public MONTO_IMPUESTO: number,
