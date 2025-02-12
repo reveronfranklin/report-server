@@ -16,5 +16,5 @@ export interface ITaxDocument {
   FECHA_INS: Date;
   USUARIO_UPD: string | null;
   FECHA_UPD: Date | null;
-  CODIGO_EMPRESA: string;
+  CODIGO_EMPRESA: number;
 }

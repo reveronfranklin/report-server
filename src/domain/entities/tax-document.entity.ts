@@ -19,6 +19,6 @@ export class TaxDocumentEntity implements ITaxDocument {
     public FECHA_INS: Date,
     public USUARIO_UPD: string | null,
     public FECHA_UPD: Date | null,
-    public CODIGO_EMPRESA: string
+    public CODIGO_EMPRESA: number
   ) {}
 }

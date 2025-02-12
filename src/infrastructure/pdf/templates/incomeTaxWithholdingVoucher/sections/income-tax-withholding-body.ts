@@ -124,162 +124,119 @@ const getTableFunds = (body: HeaderOptions['body']): TableCell[][] => {
 export const bodySection = (options: HeaderOptions): Content => {
   const { body  } = options
 
-  const tableFunds = getTableFunds(body.FUNDS)
-  const tableWithholdings = getTableWithholdings(body)
-
   const contentPdf: Content = {
     style: 'body',
     table: {
-      widths: ['*', '*', '*', '*', 30, 30, 30, 30, '*', '*', '*', '*'],
-      heights: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 100, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+      headerRows: 1,
+      widths: [60, 55, '*', 60, 60, 40, 60, 50],
+      heights: [25, 25, 25],
       body: [
-        /* header table */
         [
           {
-            colSpan: 6,
-            text: 'CIFRAS DE LA CUENTA',
-            style: 'headerTableBody'
-          },
-          {}, {}, {}, {}, {},
-          {
-            colSpan: 2,
-            text: 'CLASE DE GASTO',
-            style: 'headerTableBody'
-          }, {},
-          {
-            colSpan: 2,
-            text: 'PAGO ÚNICO O PERIÓDICO',
-            style: 'headerTableBody'
-          }, {},
-          {
-            colSpan: 2,
-            text: 'PAGO ANUAL',
-            style: 'headerTableBody'
-          }, {}
-        ],
-         /* subHeader table */
-        [
-          {
-            text: 'AÑO',
-            style: 'subHeaderTableBody'
+            text: 'Nª De Factura',
+            style: 'titleBody',
           },
           {
-            colSpan: 3,
-            text: 'FONDO',
-            style: 'subHeaderTableBody'
+            text: 'Fecha Factura',
+            style: 'titleBody',
           },
-          {}, {},
           {
-            colSpan: 2,
-            text: 'CÓDIGO ICP',
-            style: 'subHeaderTableBody'
+            text: 'Concepto De Pago',
+            style: 'titleBody',
           },
-          {},
           {
-            colSpan: 2,
-            text: 'CÓDIGO PUC',
-            style: 'subHeaderTableBody'
+            text: 'Impuesto Exento',
+            style: 'titleBody',
           },
-          {},
           {
-            colSpan: 2,
-            text: 'BOLIVARES',
-            style: 'subHeaderTableBody'
+            text: 'Base Imponible',
+            style: 'titleBody',
           },
-          {},
           {
-            colSpan: 2,
-            text: 'BOLIVARES',
-            style: 'subHeaderTableBody'
+            text: '% Alicuota',
+            style: 'titleBody',
           },
-          {}
-        ],
-        /* Body table */
-        ...tableFunds,
-        /* Footer or totals table */
-        [
           {
-            colSpan: 8,
-            text: 'TÍTULO DE LA ESPECIFICA',
-            style: 'tableHeaderFooter',
-            margin: [5, 0],
-            border: [true, true, true, false]
-          }, {}, {}, {}, {}, {}, {}, {},
-          {
-            colSpan: 2,
-            text: formatPrice(body.TOTAL_ORDEN_PAGO, 'VES'),
-            style: 'tableTotal'
+            text: 'ISLR Retenido',
+            style: 'titleBody',
           },
-          {},
           {
-            colSpan: 2,
-            text: formatPrice(body.TOTAL_ORDEN_PAGO, 'VES'),
-            style: 'tableTotal'
-          },
-          {}
-        ],
-        [
-          {
-            colSpan: 8,
-            text: body?.TITULO_ESPECIFICA ? body?.TITULO_ESPECIFICA.trim() : '',
-            style: 'tableFooter',
-            margin: [5, 0],
-            border: [true, false, true, true]
-          },
-          {}, {}, {}, {}, {}, {}, {},
-          {
-            colSpan: 2,
-            text: 'TOTAL',
-            style: 'tableHeaderTotal'
-          }, {},
-          {
-            colSpan: 2,
-            text: 'TOTAL ANUAL',
-            style: 'tableHeaderTotal'
-          },
-          {}
-        ],
-        /* Motivos */
-        [
-          {
-            colSpan: 12,
-            text: [
-              {
-                text: 'MOTIVO\n',
-                style: 'tableHeaderReason'
-              },
-              {
-                text: body?.MOTIVO ? body?.MOTIVO.trim() : '',
-                style: 'tableReason'
-              }
-            ],
-            margin: [5, 0]
+            text: 'Sustraendo',
+            style: 'titleBody',
           }
         ],
-        /* Retenciones */
         [
           {
-            colSpan: 2,
-            text: 'TOTAL ORDEN PAGO',
-            style: 'tableHeaderWithholdings'
-          }, {},
+            text: '003367',
+            style: 'descriptionBodyText',
+          },
           {
-            colSpan: 6,
-            text: 'TOTAL RETENCIONES',
-            style: 'tableHeaderWithholdings'
-          }, {}, {}, {}, {}, {},
+            text: '01/09/2024',
+            style: 'descriptionBodyText',
+          },
           {
-            colSpan: 2,
-            text: 'MONTO RETENIDO',
-            style: 'tableHeaderWithholdings'
-          }, {},
+            text: 'CONTRATISTAS Y SUBCONTRATISTAS DE SERVICIOS (P.J) (ART.9 N° 11 DECRETO 1.808 I.S.L.R)',
+            style: 'paymentConcept',
+          },
           {
-            colSpan: 2,
-            text: 'MONTO A PAGAR',
-            style: 'tableHeaderWithholdings'
-          }, {}
+            text: '0,0',
+            style: 'descriptionBodyAmount',
+          },
+          {
+            text: '41.775,75',
+            style: 'descriptionBodyAmount',
+          },
+          {
+            text: '2,00',
+            style: 'descriptionBodyAmount',
+          },
+          {
+            text: '835,52',
+            style: 'descriptionBodyAmount',
+          },
+          {
+            text: '',
+            style: 'descriptionBodyAmount',
+          }
         ],
-        ...tableWithholdings
+        [
+          {
+            text: null,
+            border: [false, false]
+          },
+          {
+            text: null,
+            border: [false, false]
+          },
+          {
+            text: null,
+            border: [false, false]
+          },
+          {
+            colSpan: 2,
+            text: 'TOTALES',
+            style: 'totalHeader',
+            border: [false, false]
+          },
+          {
+            text: null,
+            border: [false, false]
+          },
+          {
+            text: '41.775,75',
+            style: 'totalAmount',
+            border: [false, false]
+          },
+          {
+            text: '835,52',
+            style: 'totalAmount',
+            border: [false, false]
+          },
+          {
+            text: null,
+            border: [false, false]
+          }
+        ]
       ]
     }
   }

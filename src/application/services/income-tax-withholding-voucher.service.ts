@@ -1,7 +1,9 @@
 /* Dependencies */
 import { Injectable, Inject } from '@nestjs/common';
-import { IPaymentOrderRepository } from '../../domain/repositories/payment-order.repository.interface';
 import moment from 'moment-timezone';
+
+/* Repositories */
+import { IPaymentOrderRepository } from '../../domain/repositories/payment-order.repository.interface';
 
 /* Entities */
 import { PaymentOrderEntity } from '../../domain/entities/payment-order.entity';
@@ -12,7 +14,7 @@ import { ReportHeaderDto } from '../dtos/incomeTaxWithholdingVoucher/report-head
 import { ReportBodyDto } from '../dtos/incomeTaxWithholdingVoucher/report-body.dto';
 
 /* Services Pdf */
-import { IPdfGenerator } from '../../domain/repositories/pdf-generator.interface';
+import { PdfGeneratorFactory } from '../../infrastructure/pdf/pdf-generator.factory';
 
 @Injectable()
 export class IncomeTaxWithholdingVoucherService {
@@ -20,7 +22,7 @@ export class IncomeTaxWithholdingVoucherService {
     @Inject('IPaymentOrderRepository')
     private paymentOrderRepository: IPaymentOrderRepository,
     @Inject('IPdfGenerator')
-    private pdfGenerator: IPdfGenerator
+    private pdfGeneratorFactory: PdfGeneratorFactory
   ) {}
 
   async generateReport(id: number): Promise<PDFKit.PDFDocument> {
@@ -37,10 +39,13 @@ export class IncomeTaxWithholdingVoucherService {
         body: this.mapToReportBody(paymentOrder)
       } */
 
-        const reportScheme = {}
+      const reportScheme = {}
+
+      /* instancia el generador de PDF */
+      const pdfGenerator = this.pdfGeneratorFactory.getGenerator('incomeTaxWithholdingVoucher');
 
       // Generar el documento PDF
-      const pdfDocument = this.pdfGenerator.generatePdf(reportScheme);
+      const pdfDocument = pdfGenerator.generatePdf(reportScheme);
 
       return pdfDocument;
     } catch (error) {

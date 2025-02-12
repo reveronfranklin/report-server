@@ -69,10 +69,7 @@ import { DocumentRepository } from './infrastructure/persistence/repositories/do
 import { TaxDocumentModel } from './infrastructure/persistence/models/tax-document.model';
 import { TaxDocumentRepository } from './infrastructure/persistence/repositories/tax-document.repository';
 
-
 /* Module IncomeTaxWithholdingVoucherModel */
-//import { IncomeTaxWithholdingVoucherModel } from './infrastructure/persistence/models/income-tax-withholding-voucher.model';
-//import { IncomeTaxWithholdingVoucherRepository } from './infrastructure/persistence/repositories/income-tax-withholding-voucher.repository';
 import { IncomeTaxWithholdingVoucherController} from './infrastructure/http/controllers/income-tax-withholding-voucher.controller';
 import { IncomeTaxWithholdingVoucherService } from './application/services/income-tax-withholding-voucher.service';
 
@@ -80,6 +77,9 @@ import { IncomeTaxWithholdingVoucherService } from './application/services/incom
 import { PdfGeneratorAdapterPaymentOrder } from './infrastructure/pdf/pdf-generator-payment-order.adapter';
 import { PdfGeneratorAdapterIncomeTaxWithholdingVoucher } from './infrastructure/pdf/pdf-generator-income-tax-withholding-voucher';
 import { PrinterModule } from 'src/shared/modules/printer/printer.module';
+
+/* Factories */
+import { PdfGeneratorFactory } from './infrastructure/pdf/pdf-generator.factory';
 
 @Module({
   imports: [
@@ -110,6 +110,9 @@ import { PrinterModule } from 'src/shared/modules/printer/printer.module';
   providers: [
     PaymentOrderService,
     IncomeTaxWithholdingVoucherService,
+    PdfGeneratorAdapterPaymentOrder,
+    PdfGeneratorAdapterIncomeTaxWithholdingVoucher,
+    PdfGeneratorFactory,
     {
       provide: AuthRepository,
       useClass: AuthAdapter
@@ -168,14 +171,13 @@ import { PrinterModule } from 'src/shared/modules/printer/printer.module';
     },
     {
       provide: 'IPdfGenerator',
-      useClass: PdfGeneratorAdapterPaymentOrder
-    },
-    {
-      provide: 'IPdfGenerator',
-      useClass: PdfGeneratorAdapterIncomeTaxWithholdingVoucher
+      useClass: PdfGeneratorFactory
     }
   ],
-  controllers: [PaymentOrderController, IncomeTaxWithholdingVoucherController]
+  controllers: [
+    PaymentOrderController,
+    IncomeTaxWithholdingVoucherController
+  ]
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

@@ -1,6 +1,22 @@
-import { Model, Table, Column, ForeignKey, BelongsTo, DataType } from 'sequelize-typescript';
+import { Model, Table, Column, ForeignKey, BelongsTo, Scopes, DataType } from 'sequelize-typescript';
 import { DocumentModel } from './document.model';
 import { WithholdingModel } from './withholding.model';
+import { DescriptiveModel } from './descriptive.model';
+
+@Scopes(() => ({
+  withISLR: {
+    include: [{
+      model: DescriptiveModel,
+      as: 'TIPO_RETENCION',
+      where: {
+        CODIGO: 'ISLR'
+      },
+      attributes: [
+        'CODIGO'
+      ]
+    }]
+  }
+}))
 
 @Table({
   schema: 'public',
@@ -28,6 +44,12 @@ export class TaxDocumentModel extends Model<TaxDocumentModel> {
   })
   CODIGO_RETENCION!: number;
 
+  @ForeignKey(() => DescriptiveModel)
+  @Column({
+    field: 'TIPO_RETENCION_ID'
+  })
+  TIPO_RETENCION_ID!: number;
+
   /* Foreing Keys */
 
   /* Associations */
@@ -38,12 +60,10 @@ export class TaxDocumentModel extends Model<TaxDocumentModel> {
   @BelongsTo(() => WithholdingModel, { foreignKey: 'CODIGO_RETENCION', as: 'WITHHOLDING' })
   WITHHOLDING: WithholdingModel;
 
-  /* Associations */
+  @BelongsTo(() => DescriptiveModel, 'TIPO_RETENCION_ID')
+  TIPO_RETENCION: DescriptiveModel;
 
-  @Column({
-    field: 'TIPO_RETENCION_ID'
-  })
-  TIPO_RETENCION_ID!: number;
+  /* Associations */
 
   @Column({
     field: 'TIPO_IMPUESTO_ID'
@@ -119,5 +139,5 @@ export class TaxDocumentModel extends Model<TaxDocumentModel> {
   @Column({
     field: 'CODIGO_EMPRESA'
   })
-  CODIGO_EMPRESA!: string;
+  CODIGO_EMPRESA!: number;
 }

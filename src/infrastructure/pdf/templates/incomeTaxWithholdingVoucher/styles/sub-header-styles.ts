@@ -2,51 +2,16 @@ import { StyleDictionary } from 'pdfmake/interfaces';
 
 export const subHeaderStyles: StyleDictionary = {
   subHeader: {
-    alignment: 'center',
-    margin: [20, 5, 60, 20]
-  },
-  tableSubHeader: {
-    fontSize: 6,
-    bold: true,
-    lineHeight: 1.5,
     alignment: 'left',
+    margin: [20, 25, 60, 30],
+    fontSize: 9
   },
-  tableSubHeaderPlazo: {
-    fontSize: 6,
+  titleSubHeader: {
     bold: true,
-    alignment: 'center'
+    margin: [0, 20]
   },
-  tableSubHeaderNPay: {
-    fontSize: 6,
-    bold: true,
-    lineHeight: 1.5,
-    alignment: 'center'
-  },
-  tableContentSubHeader: {
-    fontSize: 8,
+  descriptionSubHeader: {
     bold: false,
-    color: '#444444',
-    alignment: 'left'
-  },
-  tableContentSubHeaderNPay: {
-    fontSize: 8,
-    bold: false,
-    color: '#444444',
-    alignment: 'center'
-  },
-  tableSubHeaderAmountLetters: {
-    fontSize: 6,
-    bold: true,
-    alignment: 'center'
-  },
-  tableContentSubHeaderAmountLetters: {
-    fontSize: 6,
-    bold: true,
-    color: '#444444',
-    alignment: 'left'
-  },
-  sinceTo: {
-    fontSize: 4,
-    bold: true,
+    margin: [0, 0]
   }
 }

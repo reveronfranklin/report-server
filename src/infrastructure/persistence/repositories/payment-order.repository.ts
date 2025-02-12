@@ -20,6 +20,7 @@ import { TaxDocumentModel } from '../models/tax-document.model';
 /* Mappers */
 import { PaymentOrderMapper } from '../mappers/payment-order.mapper';
 import { WithholdingModel } from '../models/withholding.model';
+import { where } from 'sequelize';
 
 @Injectable()
 export class PaymentOrderRepository implements IPaymentOrderRepository {
@@ -106,10 +107,10 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
           as: 'DOCUMENTS',
           include: [
             {
-              /* Falta condicion de: (SELECT X.DESCRIPCION_ID FROM ADM_DESCRIPTIVAS X WHERE X.CODIGO= 'ISLR') */
-              model: TaxDocumentModel,
+              /* El scope condiciona: (SELECT X.DESCRIPCION_ID FROM ADM_DESCRIPTIVAS X WHERE X.CODIGO= 'ISLR') */
+              model: TaxDocumentModel.scope('withISLR'),
               as: 'TAX_DOCUMENT',
-              required: false,
+              required: true,
               include: [
                 {
                   model: WithholdingModel,
@@ -125,7 +126,7 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
 
     const paymentOrderModel = await this.paymentOrderModel.findByPk(id, options)
 
-    console.log('paymentOrderModel', paymentOrderModel /*.DOCUMENTS[0].TAX_DOCUMENT*/)
+    console.log('paymentOrderModel', paymentOrderModel.DOCUMENTS[0].get({ plain: true }) /*.DOCUMENTS[0].TAX_DOCUMENT*/)
 
     /* responses */
     return paymentOrderModel ? PaymentOrderMapper.toDomain(paymentOrderModel) : null

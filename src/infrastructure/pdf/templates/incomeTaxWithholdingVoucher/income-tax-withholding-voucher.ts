@@ -9,10 +9,10 @@ import { ReportSchemeDto } from '../../../../application/dtos/paymentOrder/repor
 //import { ReportSchemeDto } from '../../application/dtos/incomeTaxWithholdingVoucher/report-scheme.dto';
 
 /* Sections */
-import { headerSection } from './sections/payment-order-header';
-import { subHeaderSection } from './sections/payment-order-sub-header';
-import { bodySection } from './sections/payment-order-body';
-import { footerSection } from './sections/payment-order-footer';
+import { headerSection } from './sections/income-tax-withholding-header';
+import { subHeaderSection } from './sections/income-tax-withholding-sub-header';
+import { bodySection } from './sections/income-tax-withholding-body';
+import { footerSection } from './sections/income-tax-withholding-footer';
 
 /* Styles */
 import { headerStyles } from './styles/header-styles';
@@ -31,7 +31,7 @@ export function createIncomeTaxWithholdingVoucherTemplate(data: ReportSchemeDto)
   const { header, subHeader, body } = data
 
   // Execute the sections before the return statement
- /*  const headerContent: Content = headerSection({
+  const headerContent: Content = headerSection({
     header
   })
 
@@ -41,26 +41,26 @@ export function createIncomeTaxWithholdingVoucherTemplate(data: ReportSchemeDto)
 
   const bodyContent: Content = bodySection({
     body,
-  }) */
+  })
 
   const footerContent: Content = footerSection()
 
   return {
     pageSize: 'LETTER',
     pageOrientation: 'landscape',
-    pageMargins: [20, 215, 60, 100],
+    pageMargins: [20, 280, 60, 100],
     styles: styles,
     header: {
       columns: [
         {
           stack: [
-            'header content',
-            'subHeader content'
+            headerContent,
+            subHeaderContent
           ]
         }
       ]
     },
-    content: 'body content',
+    content: bodyContent,
     footer: footerContent
   }
 }
