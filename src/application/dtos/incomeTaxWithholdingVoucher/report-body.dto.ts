@@ -2,7 +2,7 @@ import { IsNumber, IsString, IsDate } from 'class-validator';
 
 export class ReportBodyDto {
   @IsNumber()
-  invoiceNumber: number;
+  invoiceNumber: string;
 
   @IsDate()
   invoiceDate: Date;
@@ -10,18 +10,24 @@ export class ReportBodyDto {
   @IsString()
   conceptPayment: string;
 
-  @IsNumber()
-  extensiveTax: number;
+  @IsString()
+  extensiveTax: string;
 
-  @IsNumber()
-  taxableIncome: number;
+  @IsString()
+  taxableIncome: string;
 
-  @IsNumber()
-  alicuota: number;
+  @IsString()
+  alicuota: string;
 
-  @IsNumber()
-  IncomeTaxWithheld: number;
+  @IsString()
+  incomeTaxWithheld: string;
 
-  @IsNumber()
-  subtrahend: number;
+  @IsString()
+  subtrahend: string;
+
+  @IsString()
+  totalTaxableIncome: string;
+
+  @IsString()
+  totalIncomeTaxWithheld: string;
 }

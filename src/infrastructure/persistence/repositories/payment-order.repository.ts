@@ -93,14 +93,7 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
         {
           model: SupplierModel,
           as: 'PROVEEDOR',
-          include: [
-            {
-              model: BeneficiaryModel,
-              as: 'BENEFICIARIES',
-              where: { PRINCIPAL: 1 },
-              required: false  // This makes it a LEFT OUTER JOIN
-            }
-          ]
+          required: false
         },
         {
           model: DocumentModel,
@@ -126,7 +119,7 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
 
     const paymentOrderModel = await this.paymentOrderModel.findByPk(id, options)
 
-    console.log('paymentOrderModel', paymentOrderModel.DOCUMENTS[0].get({ plain: true }) /*.DOCUMENTS[0].TAX_DOCUMENT*/)
+    console.log('paymentOrderModel', paymentOrderModel.get({ plain: true }) /*.DOCUMENTS[0].TAX_DOCUMENT*/)
 
     /* responses */
     return paymentOrderModel ? PaymentOrderMapper.toDomain(paymentOrderModel) : null

@@ -11,6 +11,7 @@ import { PaymentOrderEntity } from '../../domain/entities/payment-order.entity';
 /* Dtos */
 import { ReportSchemeDto } from '../dtos/incomeTaxWithholdingVoucher/report-scheme.dto';
 import { ReportHeaderDto } from '../dtos/incomeTaxWithholdingVoucher/report-header.dto';
+import { ReportSubHeaderDto } from '../dtos/incomeTaxWithholdingVoucher/report-sub-header.dto';
 import { ReportBodyDto } from '../dtos/incomeTaxWithholdingVoucher/report-body.dto';
 
 /* Services Pdf */
@@ -33,13 +34,12 @@ export class IncomeTaxWithholdingVoucherService {
     }
 
     try {
-      /* const reportScheme: ReportSchemeDto = {
-        name: 'payment-order',
+      const reportScheme: ReportSchemeDto = {
+        name: 'income-tax-withholding-voucher',
         header: this.mapToReportHeader(paymentOrder),
+        subHeader: this.mapToReportSubHeader(paymentOrder),
         body: this.mapToReportBody(paymentOrder)
-      } */
-
-      const reportScheme = {}
+      }
 
       /* instancia el generador de PDF */
       const pdfGenerator = this.pdfGeneratorFactory.getGenerator('incomeTaxWithholdingVoucher');
@@ -53,77 +53,73 @@ export class IncomeTaxWithholdingVoucherService {
       throw error;
     }
   }
-  public isValidDate(date: any): date is Date {
-    return date instanceof Date && !isNaN(date.getTime())
-  }
 
   public formatDate(date: any): any {
     const formattedDate = moment(date)
     return formattedDate.tz('UTC').format('DD/MM/YYYY')
   }
 
-/*   private mapToReportHeader(order: PaymentOrderEntity): ReportHeaderDto {
-    const paymentOrderType  = order.TIPO_ORDEN_PAGO ?? null
-    const commitment        = order?.COMMITMENT ?? null
-    const preCommitment     = commitment?.PRE_COMMITMENT ?? null
-    const dateOrderPayment  = this.formatDate(order.FECHA_ORDEN_PAGO)
-    const dateCommitment    = this.formatDate(preCommitment?.FECHA_COMPROMISO)
+  public formatFiscalPeriod(date: any): any {
+    const formattedDate = moment(date)
+    const year          = formattedDate.tz('UTC').format('YYYY')
+    const month         = formattedDate.tz('UTC').format('MM')
+    return `Año: ${year} Mes: ${month}`
+  }
+
+  public formatRIF(rif: any): any {
+    // Eliminar cualquier guión existente en el RIF
+    const cleanRIF = rif.replace(/-/g, '');
+    // Obtener el primer carácter
+    const firstChar = cleanRIF.charAt(0);
+    // Obtener el resto de los caracteres, rellenando con ceros a la izquierda si es necesario
+    const restOfRIF = cleanRIF.slice(1).padStart(9, '0');
+    return `${firstChar}-${restOfRIF}`;
+  }
+
+  public parseNumber = (value: string): number => {
+    // Reemplaza la coma por punto y convierte a número
+    return parseFloat(value.replace(',', '.'));
+  };
+
+  public formatNumber = (value: number): string => {
+    // Formatea el número con dos decimales y usa coma como separador decimal
+    return value.toFixed(2).replace('.', ',');
+  };
+
+  private mapToReportHeader(order: PaymentOrderEntity): ReportHeaderDto {
+    const subTitle = 'CONCEJO MUNICIPAL DEL MUNICIPIO CHACAO'
+
+    return { SUB_TITULO: subTitle }
+  }
+
+  private mapToReportSubHeader(order: PaymentOrderEntity): ReportSubHeaderDto {
+    const supplier = order?.PROVEEDOR ?? null
 
     return {
-      DESCRIPCION: paymentOrderType?.DESCRIPCION,
-      TITULO: order.TITULO_REPORTE,
-      NUMERO_COMPROMISO: preCommitment?.NUMERO_COMPROMISO,
-      NUMERO_ORDEN_PAGO: order.NUMERO_ORDEN_PAGO,
-      FECHA_ORDEN_PAGO: dateOrderPayment,
-      FECHA_COMPROMISO: dateCommitment
+      NOMBRE_AGENTE_RETENCION: 'CONCEJO MUNICIPAL DEL MUNICIPIO CHACAO',
+      TELEFONO_AGENTE_RETENCION: '/ 0212-905.74.62; 0212-905.74.53',
+      RIF_AGENTE_RETENCION: 'G-200074590',
+      DIRECCION_AGENTE_RETENCION: 'EDF. ATRIUM, PISO 2. AV. VENEZUELA CON CALLE SOROCAIMA. EL ROSAL. EDO. MIRANDA. DTTO. CAPI',
+      FECHA: this.formatDate(order.FECHA_INS),
+      PERIODO_FISCAL: this.formatFiscalPeriod(order.FECHA_INS),
+      NOMBRE_SUJETO_RETENIDO: supplier.NOMBRE_PROVEEDOR,
+      RIF_SUJETO_RETENIDO: this.formatRIF(supplier?.RIF),
+      NRO_ORDEN_PAGO: order.NUMERO_ORDEN_PAGO
     }
-  } */
+  }
 
-  /* private mapToReportBody(order: PaymentOrderEntity): ReportBodyDto {
-    let total: number = 0
-    let totalRetenciones: number = 0
-
-    const listPucOrder: FundsDto[] = [];
-    const listWithholding: WithholdingDto[] = [];
-
-    const pucOrders = order?.PUC_PAYMENT_ORDERS ?? []
-    const withholdings = order?.WITHHOLDINGS ?? []
-
-    pucOrders.forEach((pucOrder) => {
-      const balance = pucOrder?.BALANCE ?? null
-
-      const data = {
-        ANO: balance?.ANO,
-        DESCRIPCION_FINANCIADO: balance?.DESCRIPCION_FINANCIADO,
-        CODIGO_ICP_CONCAT: balance?.CODIGO_ICP_CONCAT,
-        CODIGO_PUC_CONCAT: balance.CODIGO_PUC_CONCAT,
-        MONTO: pucOrder.MONTO,
-        PERIODICO: (pucOrder.MONTO / order.CANTIDAD_PAGO)
-      }
-
-      total += Number(pucOrder.MONTO)
-
-      listPucOrder.push(data)
-    })
-
-    withholdings.forEach((withholding) => {
-      const data = {
-        DESCRIPCION:`${withholding.porRetencion ?? ''}% ${withholding?.descripcion?.DESCRIPCION ?? ''}`,
-        MONTO_RETENIDO: withholding.montoRetencion ?? 0
-      }
-
-      totalRetenciones += Number(withholding.montoRetencion)
-
-      listWithholding.push(data)
-    })
-
-    const body = {
-      FUNDS: listPucOrder,
-      WITHHOLDING: listWithholding,
-      TOTAL_ORDEN_PAGO: total,
-      MONTO_PAGAR: (total - totalRetenciones)
-    }
-
-    return body
-  } */
+  private mapToReportBody(order: PaymentOrderEntity): ReportBodyDto {
+    return {
+      invoiceNumber: '003367',
+      invoiceDate: this.formatDate('01/09/2024'),
+      conceptPayment: 'CONTRATISTAS Y SUBCONTRATISTAS DE SERVICIOS (P.J) (ART.9 N° 11 DECRETO 1.808 I.S.L.R)',
+      extensiveTax: '0,00',
+      taxableIncome: '41.775,75',
+      alicuota: '2,00',
+      incomeTaxWithheld: '835,52',
+      totalTaxableIncome: '41.775,75',
+      totalIncomeTaxWithheld: '835,52',
+      subtrahend: this.formatNumber(0)
+    };
+  }
 }

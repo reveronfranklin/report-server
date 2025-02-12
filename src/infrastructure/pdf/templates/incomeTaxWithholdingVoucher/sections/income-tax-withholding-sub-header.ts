@@ -18,25 +18,25 @@ export const subHeaderSection = (options: HeaderOptions): Content => {
           {
             text: [
               { text: 'Nombre o Razón Social del Agente de Retención\n', style: 'titleSubHeader' },
-              { text: `${subHeader?.NOMBRE_PROVEEDOR ?? 'CONCEJO MUNICIPAL DEL MUNICIPIO CHACAO' }`, style: 'descriptionSubHeader' }
+              { text: `${subHeader?.NOMBRE_AGENTE_RETENCION ?? '' }`, style: 'descriptionSubHeader' }
             ]
           },
           {
             text: [
               { text: 'Telefonos del Agente de Retencion\n', style: 'titleSubHeader' },
-              { text: `${subHeader?.RIF_PROVEEDOR ?? ' / 0212-905.74.62; 0212-905.74.53' }`, style: 'descriptionSubHeader' }
+              { text: `${subHeader?.TELEFONO_AGENTE_RETENCION ?? '' }`, style: 'descriptionSubHeader' }
             ]
           },
           {
             text: [
               { text: 'RIF del Agente de Retención\n', style: 'titleSubHeader' },
-              { text: `${subHeader?.RIF_PROVEEDOR ?? 'G-200074590' }`, style: 'descriptionSubHeader' }
+              { text: `${subHeader?.RIF_AGENTE_RETENCION ?? '' }`, style: 'descriptionSubHeader' }
             ]
           },
           {
             text: [
               { text: 'FECHA\n', style: 'titleSubHeader' },
-              { text: `${subHeader?.RIF_PROVEEDOR ?? '05/09/2024' }`, style: 'descriptionSubHeader' }
+              { text: `${subHeader?.FECHA ?? '' }`, style: 'descriptionSubHeader' }
             ]
           }
         ],
@@ -45,7 +45,7 @@ export const subHeaderSection = (options: HeaderOptions): Content => {
             colSpan: 2,
             text: [
               { text: 'Dirección Fiscal del Agente de Retención\n', style: 'titleSubHeader' },
-              { text: `${subHeader?.NOMBRE_PROVEEDOR ?? 'EDF. ATRIUM, PISO 2. AV. VENEZUELA CON CALLE SOROCAIMA. EL ROSAL. EDO. MIRANDA. DTTO. CAPI' }`, style: 'descriptionSubHeader' }
+              { text: `${subHeader?.DIRECCION_AGENTE_RETENCION ?? '' }`, style: 'descriptionSubHeader' }
             ]
           },
           {},
@@ -53,7 +53,7 @@ export const subHeaderSection = (options: HeaderOptions): Content => {
             colSpan: 2,
             text: [
               { text: 'Período Fiscal\n', style: 'titleSubHeader' },
-              { text: `${subHeader?.RIF_PROVEEDOR ?? 'Año:2024  Mes:09' }`, style: 'descriptionSubHeader' }
+              { text: `${subHeader?.PERIODO_FISCAL ?? '' }`, style: 'descriptionSubHeader' }
             ]
           },
           {}
@@ -63,20 +63,20 @@ export const subHeaderSection = (options: HeaderOptions): Content => {
             colSpan: 2,
             text: [
               { text: 'Nombre o Razón Social del Sujeto Retenido\n', style: 'titleSubHeader' },
-              { text: `${subHeader?.NOMBRE_PROVEEDOR ?? 'FRESH TECHS, C.A' }`, style: 'descriptionSubHeader' }
+              { text: `${subHeader?.NOMBRE_SUJETO_RETENIDO ?? '' }`, style: 'descriptionSubHeader' }
             ]
           },
           {},
           {
             text: [
               { text: 'RIF del Sujeto Retenido\n', style: 'titleSubHeader' },
-              { text: `${subHeader?.RIF_PROVEEDOR ?? 'J-406694576' }`, style: 'descriptionSubHeader' }
+              { text: `${subHeader?.RIF_SUJETO_RETENIDO ?? '' }`, style: 'descriptionSubHeader' }
             ]
           },
           {
             text: [
               { text: 'Nro. Orden Pago\n', style: 'titleSubHeader' },
-              { text: `${subHeader?.RIF_PROVEEDOR ?? '508' }`, style: 'descriptionSubHeader' }
+              { text: `${subHeader?.NRO_ORDEN_PAGO ?? '' }`, style: 'descriptionSubHeader' }
             ]
           }
         ],
