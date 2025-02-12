@@ -6,12 +6,12 @@ export const footerStyles: StyleDictionary = {
     margin: [40, 10, 80, 0]
   },
   footerSignature: {
-    fontSize: 7,
+    fontSize: 10,
     bold: true,
     alignment: 'center',
   },
   footerText: {
-    fontSize: 7,
+    fontSize: 10,
     color: '#444444',
     bold: false,
     alignment: 'center',

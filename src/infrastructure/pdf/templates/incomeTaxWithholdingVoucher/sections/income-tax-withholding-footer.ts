@@ -11,7 +11,7 @@ export const footerSection = (): Content => {
       body: [
         [
           {
-            text: 'PRESIDENTE (A)',
+            text: 'BENEFICIARIO',
             style: 'footerSignature',
             border: [false, true, false, false]
           },
