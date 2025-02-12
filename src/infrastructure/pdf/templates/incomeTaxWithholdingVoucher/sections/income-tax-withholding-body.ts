@@ -134,69 +134,69 @@ export const bodySection = (options: HeaderOptions): Content => {
         [
           {
             text: 'Nª De Factura',
-            style: 'titleBody',
+            style: 'titleBody'
           },
           {
             text: 'Fecha Factura',
-            style: 'titleBody',
+            style: 'titleBody'
           },
           {
             text: 'Concepto De Pago',
-            style: 'titleBody',
+            style: 'titleBody'
           },
           {
             text: 'Impuesto Exento',
-            style: 'titleBody',
+            style: 'titleBody'
           },
           {
             text: 'Base Imponible',
-            style: 'titleBody',
+            style: 'titleBody'
           },
           {
             text: '% Alicuota',
-            style: 'titleBody',
+            style: 'titleBody'
           },
           {
             text: 'ISLR Retenido',
-            style: 'titleBody',
+            style: 'titleBody'
           },
           {
             text: 'Sustraendo',
-            style: 'titleBody',
+            style: 'titleBody'
           }
         ],
         [
           {
-            text: '003367',
-            style: 'descriptionBodyText',
+            text: `${body.invoiceNumber ?? ''}`,
+            style: 'descriptionBodyText'
           },
           {
-            text: '01/09/2024',
-            style: 'descriptionBodyText',
+            text: `${body.invoiceDate ?? ''}`,
+            style: 'descriptionBodyText'
           },
           {
-            text: 'CONTRATISTAS Y SUBCONTRATISTAS DE SERVICIOS (P.J) (ART.9 N° 11 DECRETO 1.808 I.S.L.R)',
-            style: 'paymentConcept',
+            text: `${body.conceptPayment ?? ''}`,
+            style: 'paymentConcept'
           },
           {
-            text: '0,0',
-            style: 'descriptionBodyAmount',
+            text: `${body.extensiveTax ?? ''}`,
+            style: 'descriptionBodyAmount'
           },
           {
-            text: '41.775,75',
-            style: 'descriptionBodyAmount',
+            text: `${body.taxableIncome ?? ''}`,
+            style: 'descriptionBodyAmount'
           },
           {
-            text: '2,00',
-            style: 'descriptionBodyAmount',
+            text: `${body.alicuota ?? ''}`,
+            style: 'descriptionBodyAmount'
           },
           {
-            text: '835,52',
-            style: 'descriptionBodyAmount',
+            text: `${body.incomeTaxWithheld ?? ''}`,
+            style: 'descriptionBodyAmount'
           },
           {
-            text: '',
-            style: 'descriptionBodyAmount',
+            text: `${body.subtrahend ?? ''}`,
+            style: 'descriptionBodyAmount'
           }
         ],
         [
@@ -223,12 +223,12 @@ export const bodySection = (options: HeaderOptions): Content => {
             border: [false, false]
           },
           {
-            text: '41.775,75',
+            text: `${body.totalTaxableIncome ?? ''}`,
             style: 'totalAmount',
             border: [false, false]
           },
           {
-            text: '835,52',
+            text: `${body.totalIncomeTaxWithheld ?? ''}`,
             style: 'totalAmount',
             border: [false, false]
           },

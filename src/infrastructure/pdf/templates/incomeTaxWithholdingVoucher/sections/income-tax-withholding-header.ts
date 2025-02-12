@@ -16,7 +16,7 @@ interface HeaderOptions {
 export const headerSection = (options: HeaderOptions): Content => {
   const { header  } = options
 
-  const subTitle = header?.TITULO ? header.TITULO.trim().split(/\s+/) : 'CONCEJO MUNICIPAL DEL MUNICIPIO CHACAO';
+  const subTitle = header?.subTitle ? header.subTitle.trim().split(/\s+/) : null;
 
   const contentPdf: Content = {
     layout: 'noBorders', // optional
