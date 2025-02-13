@@ -365,4 +365,32 @@ export class PaymentOrderModel extends Model<PaymentOrderModel> implements IPaym
     allowNull: true
   })
   SEARCH_TEXT: string | null;
+
+  @Column({
+    type: DataType.STRING,
+    field: 'NOMBRE_AGENTE_RETENCION',
+    allowNull: true
+  })
+  NOMBRE_AGENTE_RETENCION: string | null;
+
+  @Column({
+    type: DataType.STRING,
+    field: 'TELEFONO_AGENTE_RETENCION',
+    allowNull: true
+  })
+  TELEFONO_AGENTE_RETENCION: string | null;
+
+  @Column({
+    type: DataType.STRING,
+    field: 'RIF_AGENTE_RETENCION',
+    allowNull: true
+  })
+  RIF_AGENTE_RETENCION: string | null;
+
+  @Column({
+    type: DataType.STRING,
+    field: 'DIRECCION_AGENTE_RETENCION',
+    allowNull: true
+  })
+  DIRECCION_AGENTE_RETENCION: string | null;
 }

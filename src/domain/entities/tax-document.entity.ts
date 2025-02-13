@@ -1,4 +1,5 @@
 import { ITaxDocument } from '../interfaces/tax-document.interface';
+import { WithholdingEntity } from './withholding.entity';
 
 export class TaxDocumentEntity implements ITaxDocument {
   constructor(
@@ -19,6 +20,8 @@ export class TaxDocumentEntity implements ITaxDocument {
     public FECHA_INS: Date,
     public USUARIO_UPD: string | null,
     public FECHA_UPD: Date | null,
-    public CODIGO_EMPRESA: number
+    public CODIGO_EMPRESA: number,
+
+    public WITHHOLDING?: WithholdingEntity
   ) {}
 }

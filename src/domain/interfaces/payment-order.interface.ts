@@ -47,4 +47,8 @@ export interface IPaymentOrder {
   SEARCH_TEXT: string | null;
   MONTO_LETRAS: string | null;
   TITULO_REPORTE: string | null;
+  NOMBRE_AGENTE_RETENCION: string | null;
+  TELEFONO_AGENTE_RETENCION: string | null;
+  RIF_AGENTE_RETENCION: string | null;
+  DIRECCION_AGENTE_RETENCION: string | null;
 }

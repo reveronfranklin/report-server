@@ -56,6 +56,10 @@ export class PaymentOrderEntity implements IPaymentOrder {
     public SEARCH_TEXT: string | null,
     public MONTO_LETRAS: string | null,
     public TITULO_REPORTE: string | null,
+    public NOMBRE_AGENTE_RETENCION: string | null,
+    public TELEFONO_AGENTE_RETENCION: string | null,
+    public RIF_AGENTE_RETENCION: string | null,
+    public DIRECCION_AGENTE_RETENCION: string | null,
 
     /* Por ahora se agregaran aqui, buscar una merjor manera */
     public TIPO_ORDEN_PAGO?: DescriptiveEntity,

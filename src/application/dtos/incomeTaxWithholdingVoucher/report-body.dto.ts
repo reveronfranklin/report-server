@@ -1,33 +1,13 @@
-import { IsNumber, IsString, IsDate } from 'class-validator';
+import { IsNumber, IsArray } from 'class-validator';
+import { WithholdingDto } from './withholding.dto';
 
 export class ReportBodyDto {
+  @IsArray()
+  withHolding: WithholdingDto[];
+
   @IsNumber()
-  invoiceNumber: string;
+  totalTaxableIncome: number;
 
-  @IsDate()
-  invoiceDate: Date;
-
-  @IsString()
-  conceptPayment: string;
-
-  @IsString()
-  extensiveTax: string;
-
-  @IsString()
-  taxableIncome: string;
-
-  @IsString()
-  alicuota: string;
-
-  @IsString()
-  incomeTaxWithheld: string;
-
-  @IsString()
-  subtrahend: string;
-
-  @IsString()
-  totalTaxableIncome: string;
-
-  @IsString()
-  totalIncomeTaxWithheld: string;
+  @IsNumber()
+  totalIncomeTaxWithheld: number;
 }
