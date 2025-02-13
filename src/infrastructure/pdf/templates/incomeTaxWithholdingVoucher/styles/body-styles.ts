@@ -29,7 +29,7 @@ export const bodyStyles: StyleDictionary = {
     margin: [0, 10]
   },
   totalAmount: {
-    bold: false,
+    bold: true,
     alignment: 'right',
     margin: [0, 10]
   }

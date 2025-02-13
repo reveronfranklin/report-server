@@ -14,13 +14,13 @@ export class DocumentModel extends Model<DocumentModel> implements IDocument {
     type: DataType.INTEGER,
     field: 'CODIGO_DOCUMENTO_OP'
   })
-  CODIGO_DOCUMENTO_OP!: number;
+  CODIGO_DOCUMENTO_OP!: number | null;
 
   /* Foreing Keys */
 
   @ForeignKey(() => PaymentOrderModel)
   @Column({ field: 'CODIGO_ORDEN_PAGO' })
-  CODIGO_ORDEN_PAGO!: number;
+  CODIGO_ORDEN_PAGO!: number | null;
 
   /* Foreing Keys */
 
@@ -38,138 +38,138 @@ export class DocumentModel extends Model<DocumentModel> implements IDocument {
     field: 'FECHA_COMPROBANTE',
     type: DataType.DATE
   })
-  FECHA_COMPROBANTE!: Date;
+  FECHA_COMPROBANTE!: Date | null;
 
   @Column({
     field: 'PERIODO_IMPOSITIVO'
   })
-  PERIODO_IMPOSITIVO!: string;
+  PERIODO_IMPOSITIVO!: string | null;
 
   @Column({
     field: 'TIPO_OPERACION_ID'
   })
-  TIPO_OPERACION_ID!: string;
+  TIPO_OPERACION_ID!: string | null;
 
   @Column({
     field: 'TIPO_DOCUMENTO_ID'
   })
-  TIPO_DOCUMENTO_ID!: string;
+  TIPO_DOCUMENTO_ID!: string | null;
 
   @Column({
     field: 'FECHA_DOCUMENTO',
     type: DataType.DATE
   })
-  FECHA_DOCUMENTO!: Date;
+  FECHA_DOCUMENTO!: Date | null;
 
   @Column({
     field: 'NUMERO_DOCUMENTO'
   })
-  NUMERO_DOCUMENTO!: string;
+  NUMERO_DOCUMENTO!: string | null;
 
   @Column({
     field: 'NUMERO_CONTROL_DOCUMENTO'
   })
-  NUMERO_CONTROL_DOCUMENTO!: string;
+  NUMERO_CONTROL_DOCUMENTO!: string | null;
 
   @Column({
     field: 'MONTO_DOCUMENTO',
     type: DataType.DECIMAL(18, 2)
   })
-  MONTO_DOCUMENTO!: number;
+  MONTO_DOCUMENTO!: number | null;
 
   @Column({
     field: 'BASE_IMPONIBLE',
     type: DataType.DECIMAL(18, 2)
   })
-  BASE_IMPONIBLE!: number;
+  BASE_IMPONIBLE!: number | null;
 
   @Column({
     field: 'MONTO_IMPUESTO',
     type: DataType.DECIMAL(18, 2)
   })
-  MONTO_IMPUESTO!: number;
+  MONTO_IMPUESTO!: number | null;
 
   @Column({
     field: 'NUMERO_DOCUMENTO_AFECTADO'
   })
-  NUMERO_DOCUMENTO_AFECTADO!: string;
+  NUMERO_DOCUMENTO_AFECTADO!: string | null;
 
   @Column({
     field: 'TIPO_TRANSACCION_ID'
   })
-  TIPO_TRANSACCION_ID!: string;
+  TIPO_TRANSACCION_ID!: string | null;
 
   @Column({
     field: 'TIPO_IMPUESTO_ID'
   })
-  TIPO_IMPUESTO_ID!: string;
+  TIPO_IMPUESTO_ID!: string | null;
 
   @Column({
     field: 'MONTO_IMPUESTO_EXENTO',
     type: DataType.DECIMAL(18, 2)
   })
-  MONTO_IMPUESTO_EXENTO!: number;
+  MONTO_IMPUESTO_EXENTO!: number | null;
 
   @Column({
     field: 'MONTO_RETENIDO',
     type: DataType.DECIMAL(18, 2)
   })
-  MONTO_RETENIDO!: number;
+  MONTO_RETENIDO!: number | null;
 
   @Column({
     field: 'EXTRA1'
   })
-  EXTRA1!: string;
+  EXTRA1!: string | null;
 
   @Column({
     field: 'EXTRA2'
   })
-  EXTRA2!: string;
+  EXTRA2!: string | null;
 
   @Column({
     field: 'EXTRA3'
   })
-  EXTRA3!: string;
+  EXTRA3!: string | null;
 
   @Column({
     field: 'USUARIO_INS'
   })
-  USUARIO_INS!: string;
+  USUARIO_INS!: string | null;
 
   @Column({
     field: 'FECHA_INS',
     type: DataType.DATE
   })
-  FECHA_INS!: Date;
+  FECHA_INS!: Date | null;
 
   @Column({
     field: 'USUARIO_UPD'
   })
-  USUARIO_UPD!: string;
+  USUARIO_UPD!: string | null;
 
   @Column({
     field: 'FECHA_UPD',
     type: DataType.DATE
   })
-  FECHA_UPD!: Date;
+  FECHA_UPD!: Date | null;
 
   @Column({
     field: 'CODIGO_EMPRESA'
   })
-  CODIGO_EMPRESA!: string;
+  CODIGO_EMPRESA!: string | null;
 
   @Column({
     field: 'CODIGO_PRESUPUESTO'
   })
-  CODIGO_PRESUPUESTO!: string;
+  CODIGO_PRESUPUESTO!: string | null;
 
   @Column({
     field: 'NUMERO_EXPEDIENTE'
   })
-  NUMERO_EXPEDIENTE!: string;
+  NUMERO_EXPEDIENTE!: string | null;
 
   @Column({
     field: 'ESTATUS_FISCO_ID'
   })
-  ESTATUS_FISCO_ID!: string;
+  ESTATUS_FISCO_ID!: string | null;
 }

@@ -20,7 +20,6 @@ import { TaxDocumentModel } from '../models/tax-document.model';
 /* Mappers */
 import { PaymentOrderMapper } from '../mappers/payment-order.mapper';
 import { WithholdingModel } from '../models/withholding.model';
-import { where } from 'sequelize';
 
 @Injectable()
 export class PaymentOrderRepository implements IPaymentOrderRepository {
@@ -89,37 +88,60 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
 
   async findByIdWithHoldings(id: number): Promise<PaymentOrderEntity | null> {
     const options = {
+      attributes: [
+        'NOMBRE_AGENTE_RETENCION',
+        'TELEFONO_AGENTE_RETENCION',
+        'RIF_AGENTE_RETENCION',
+        'DIRECCION_AGENTE_RETENCION',
+        'FECHA_INS',
+        'NUMERO_ORDEN_PAGO'
+      ],
       include: [
         {
           model: SupplierModel,
+          attributes: [
+            'NOMBRE_PROVEEDOR',
+            'RIF'
+          ],
           as: 'PROVEEDOR',
           required: false
         },
         {
           model: DocumentModel,
           as: 'DOCUMENTS',
+          attributes: [
+            'NUMERO_DOCUMENTO',
+            'FECHA_DOCUMENTO'
+          ],
           include: [
             {
               /* El scope condiciona: (SELECT X.DESCRIPCION_ID FROM ADM_DESCRIPTIVAS X WHERE X.CODIGO= 'ISLR') */
               model: TaxDocumentModel.scope('withISLR'),
               as: 'TAX_DOCUMENT',
+              attributes: [
+                'MONTO_IMPUESTO_EXENTO',
+                'MONTO_IMPUESTO',
+                'BASE_IMPONIBLE'
+              ],
               required: true,
               include: [
                 {
                   model: WithholdingModel,
+                  attributes: [
+                    'CONCEPTO_PAGO',
+                    'POR_RETENCION'
+                  ],
                   as: 'WITHHOLDING',
                   required: false
                 }
               ]
             }
           ]
-        },
+        }
       ]
     }
 
     const paymentOrderModel = await this.paymentOrderModel.findByPk(id, options)
-
-    console.log('paymentOrderModel', paymentOrderModel.get({ plain: true }) /*.DOCUMENTS[0].TAX_DOCUMENT*/)
 
     /* responses */
     return paymentOrderModel ? PaymentOrderMapper.toDomain(paymentOrderModel) : null

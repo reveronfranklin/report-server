@@ -13,6 +13,7 @@ import { ReportSchemeDto } from '../dtos/incomeTaxWithholdingVoucher/report-sche
 import { ReportHeaderDto } from '../dtos/incomeTaxWithholdingVoucher/report-header.dto';
 import { ReportSubHeaderDto } from '../dtos/incomeTaxWithholdingVoucher/report-sub-header.dto';
 import { ReportBodyDto } from '../dtos/incomeTaxWithholdingVoucher/report-body.dto';
+import { WithholdingDto } from '../dtos/incomeTaxWithholdingVoucher/withholding.dto';
 
 /* Services Pdf */
 import { PdfGeneratorFactory } from '../../infrastructure/pdf/pdf-generator.factory';
@@ -36,7 +37,7 @@ export class IncomeTaxWithholdingVoucherService {
     try {
       const reportScheme: ReportSchemeDto = {
         name: 'income-tax-withholding-voucher',
-        header: this.mapToReportHeader(paymentOrder),
+        header: this.mapToReportHeader(),
         subHeader: this.mapToReportSubHeader(paymentOrder),
         body: this.mapToReportBody(paymentOrder)
       }
@@ -67,6 +68,9 @@ export class IncomeTaxWithholdingVoucherService {
   }
 
   public formatRIF(rif: any): any {
+    if (!rif) {
+      return null
+    }
     // Eliminar cualquier guión existente en el RIF
     const cleanRIF = rif.replace(/-/g, '');
     // Obtener el primer carácter
@@ -76,30 +80,44 @@ export class IncomeTaxWithholdingVoucherService {
     return `${firstChar}-${restOfRIF}`;
   }
 
-  public parseNumber = (value: string): number => {
-    // Reemplaza la coma por punto y convierte a número
-    return parseFloat(value.replace(',', '.'));
-  };
+  public formatPercentageRetention(percentage: number | string): any {
+    // Asegurarse de que estamos trabajando con un número
+    const numericPercentage = typeof percentage === 'string' ? parseFloat(percentage) : percentage;
 
-  public formatNumber = (value: number): string => {
-    // Formatea el número con dos decimales y usa coma como separador decimal
-    return value.toFixed(2).replace('.', ',');
-  };
+    // Verificar si el valor es un número válido
+    if (isNaN(numericPercentage)) {
+      console.log(`Valor inválido para formatPercentageRetention: ${percentage}`);
+      return '0.00';
+    }
 
-  private mapToReportHeader(order: PaymentOrderEntity): ReportHeaderDto {
+    // Convertir el número a una cadena con 2 decimales
+    let formattedNumber = numericPercentage.toFixed(2);
+    // Separar la parte entera y decimal
+    let [integerPart, decimalPart] = formattedNumber.split('.');
+    // Formatear la parte entera con separadores de miles
+    integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    // Reconstruir el número con la parte decimal
+    formattedNumber = `${integerPart}.${decimalPart}`;
+    // Eliminar espacios en blanco al inicio y al final
+    return formattedNumber.trim();
+  }
+
+  private mapToReportHeader(): ReportHeaderDto {
     const subTitle = 'CONCEJO MUNICIPAL DEL MUNICIPIO CHACAO'
 
-    return { SUB_TITULO: subTitle }
+    return {
+      SUB_TITULO: subTitle
+    }
   }
 
   private mapToReportSubHeader(order: PaymentOrderEntity): ReportSubHeaderDto {
     const supplier = order?.PROVEEDOR ?? null
 
     return {
-      NOMBRE_AGENTE_RETENCION: 'CONCEJO MUNICIPAL DEL MUNICIPIO CHACAO',
-      TELEFONO_AGENTE_RETENCION: '/ 0212-905.74.62; 0212-905.74.53',
-      RIF_AGENTE_RETENCION: 'G-200074590',
-      DIRECCION_AGENTE_RETENCION: 'EDF. ATRIUM, PISO 2. AV. VENEZUELA CON CALLE SOROCAIMA. EL ROSAL. EDO. MIRANDA. DTTO. CAPI',
+      NOMBRE_AGENTE_RETENCION: order.NOMBRE_AGENTE_RETENCION,
+      TELEFONO_AGENTE_RETENCION: order.TELEFONO_AGENTE_RETENCION,
+      RIF_AGENTE_RETENCION: this.formatRIF(order.RIF_AGENTE_RETENCION),
+      DIRECCION_AGENTE_RETENCION: order.DIRECCION_AGENTE_RETENCION,
       FECHA: this.formatDate(order.FECHA_INS),
       PERIODO_FISCAL: this.formatFiscalPeriod(order.FECHA_INS),
       NOMBRE_SUJETO_RETENIDO: supplier.NOMBRE_PROVEEDOR,
@@ -109,17 +127,38 @@ export class IncomeTaxWithholdingVoucherService {
   }
 
   private mapToReportBody(order: PaymentOrderEntity): ReportBodyDto {
+    const documents = order?.DOCUMENTS ?? []
+
+    let totalTaxableIncome: number = 0
+    let totalIncomeTaxWithheld: number = 0
+
+    const listWithholding: WithholdingDto[] = [];
+
+    documents.forEach((document) => {
+      const taxDocument = document.TAX_DOCUMENT
+      const withholding = taxDocument?.WITHHOLDING
+
+      const data = {
+        invoiceNumber: document.NUMERO_DOCUMENTO,
+        invoiceDate: this.formatDate(document.FECHA_DOCUMENTO),
+        conceptPayment: withholding?.CONCEPTO_PAGO,
+        extensiveTax: taxDocument?.MONTO_IMPUESTO_EXENTO,
+        taxableIncome: taxDocument?.BASE_IMPONIBLE,
+        alicuota: this.formatPercentageRetention(withholding?.POR_RETENCION ?? 0),
+        incomeTaxWithheld: taxDocument?.MONTO_IMPUESTO,
+        subtrahend: null
+      }
+
+      totalTaxableIncome      += Number(taxDocument?.BASE_IMPONIBLE)
+      totalIncomeTaxWithheld  += Number(taxDocument?.MONTO_IMPUESTO)
+
+      listWithholding.push(data)
+    })
+
     return {
-      invoiceNumber: '003367',
-      invoiceDate: this.formatDate('01/09/2024'),
-      conceptPayment: 'CONTRATISTAS Y SUBCONTRATISTAS DE SERVICIOS (P.J) (ART.9 N° 11 DECRETO 1.808 I.S.L.R)',
-      extensiveTax: '0,00',
-      taxableIncome: '41.775,75',
-      alicuota: '2,00',
-      incomeTaxWithheld: '835,52',
-      totalTaxableIncome: '41.775,75',
-      totalIncomeTaxWithheld: '835,52',
-      subtrahend: this.formatNumber(0)
-    };
+      withHolding: listWithholding,
+      totalTaxableIncome: totalTaxableIncome,
+      totalIncomeTaxWithheld: totalIncomeTaxWithheld
+    }
   }
 }
