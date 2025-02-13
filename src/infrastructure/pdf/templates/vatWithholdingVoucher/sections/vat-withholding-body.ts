@@ -25,7 +25,7 @@ const getTableWithholding = (withHolding: any): TableCell[][] => {
 
     const data: TableCell[] = [
       {
-        text: `${row.invoiceNumber ?? ''}`,
+        text: `${row.operationNumber ?? ''}`,
         style: 'descriptionBodyText'
       },
       {
@@ -33,11 +33,35 @@ const getTableWithholding = (withHolding: any): TableCell[][] => {
         style: 'descriptionBodyText'
       },
       {
-        text: `${row?.conceptPayment ?? ''}`,
-        style: 'paymentConcept'
+        text: `${row?.invoiceNumber ?? ''}`,
+        style: 'descriptionBodyText'
       },
       {
-        text: `${formatPrice(row?.extensiveTax ?? 0, 'VES')}`,
+        text: `${row?.invoiceControlNumber ?? ''}`,
+        style: 'descriptionBodyText'
+      },
+      {
+        text: `${row?.debitNoteNumber ?? ''}`,
+        style: 'descriptionBodyText'
+      },
+      {
+        text: `${row?.creditNoteNumber ?? ''}`,
+        style: 'descriptionBodyText'
+      },
+      {
+        text: `${row?.transactionType ?? ''}`,
+        style: 'descriptionBodyText'
+      },
+      {
+        text: `${row?.affectedInvoiceNumber ?? ''}`,
+        style: 'descriptionBodyText'
+      },
+      {
+        text: `${formatPrice(row?.totalPurchasesIncludingVat ?? 0, 'VES')}`,
+        style: 'descriptionBodyText'
+      },
+      {
+        text: `${formatPrice(row?.purchasesWithoutVatCredit ?? 0, 'VES')}`,
         style: 'descriptionBodyAmount'
       },
       {
@@ -49,16 +73,16 @@ const getTableWithholding = (withHolding: any): TableCell[][] => {
         style: 'descriptionBodyAmount'
       },
       {
-        text: `${formatPrice(row?.incomeTaxWithheld ?? 0, 'VES')}`,
+        text: `${formatPrice(row?.vatTax ?? 0, 'VES')}`,
         style: 'descriptionBodyAmount'
       },
       {
-        text: `${formatPrice(row?.subtrahend ?? 0, 'VES')}`,
+        text: `${formatPrice(row?.vatWithheld ?? 0, 'VES')}`,
         style: 'descriptionBodyAmount'
       }
-    ];
+    ]
 
-    tableBody.push(data);
+    tableBody.push(data)
   }
 
   return tableBody;
@@ -73,10 +97,14 @@ export const bodySection = (options: HeaderOptions): Content => {
     style: 'body',
     table: {
       headerRows: 1,
-      widths: [60, 55, '*', 60, 60, 40, 60, 50],
+      widths: [20, '*', '*', '*', '*', '*', '*', '*',  '*', '*', '*', 30, '*', '*'],
       heights: [25, 25, 25],
       body: [
         [
+          {
+            text: 'Nº Oper.',
+            style: 'titleBody'
+          },
           {
             text: 'Nº De Factura',
             style: 'titleBody'
@@ -86,11 +114,31 @@ export const bodySection = (options: HeaderOptions): Content => {
             style: 'titleBody'
           },
           {
-            text: 'Concepto De Pago',
+            text: 'Nº  Ctrol. Factura',
             style: 'titleBody'
           },
           {
-            text: 'Impuesto Exento',
+            text: 'Nº Nota de Débito',
+            style: 'titleBody'
+          },
+          {
+            text: 'Nº Nota de Crédito',
+            style: 'titleBody'
+          },
+          {
+            text: 'Tipo Transacción',
+            style: 'titleBody'
+          },
+          {
+            text: 'Nº Factura Afectada',
+            style: 'titleBody'
+          },
+          {
+            text: 'Total Compras Incluyendo I.V.A.',
+            style: 'titleBody'
+          },
+          {
+            text: 'Compras sin derecho a Crédito I.V.A',
             style: 'titleBody'
           },
           {
@@ -102,16 +150,28 @@ export const bodySection = (options: HeaderOptions): Content => {
             style: 'titleBody'
           },
           {
-            text: 'ISLR Retenido',
+            text: 'Impuesto I.V.A.',
             style: 'titleBody'
           },
           {
-            text: 'Sustraendo',
+            text: 'I.V.A. Retenido',
             style: 'titleBody'
           }
         ],
         ...tableWithholding,
         [
+          {
+            text: null,
+            border: [false, false]
+          },
+          {
+            text: null,
+            border: [false, false]
+          },
+          {
+            text: null,
+            border: [false, false]
+          },
           {
             text: null,
             border: [false, false]
@@ -135,17 +195,32 @@ export const bodySection = (options: HeaderOptions): Content => {
             border: [false, false]
           },
           {
-            text: `${formatPrice(body.totalTaxableIncome ?? 0, 'VES')}`,
+            text: `${formatPrice(body.totalPurchasesVat ?? 0, 'VES')}`,
             style: 'totalAmount',
             border: [false, false]
           },
           {
-            text: `${formatPrice(body.totalIncomeTaxWithheld ?? 0, 'VES')}`,
+            text: `${formatPrice(body.totalPurchasesCredit ?? 0, 'VES')}`,
+            style: 'totalAmount',
+            border: [false, false]
+          },
+          {
+            text: `${formatPrice(body.totalTaxableBase ?? 0, 'VES')}`,
             style: 'totalAmount',
             border: [false, false]
           },
           {
             text: null,
+            border: [false, false]
+          },
+          {
+            text: `${formatPrice(body.totalVatTax ?? 0, 'VES')}`,
+            style: 'totalAmount',
+            border: [false, false]
+          },
+          {
+            text: `${formatPrice(body.totalVatWithheld ?? 0, 'VES')}`,
+            style: 'totalAmount',
             border: [false, false]
           }
         ]

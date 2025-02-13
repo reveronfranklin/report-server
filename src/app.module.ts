@@ -69,13 +69,18 @@ import { DocumentRepository } from './infrastructure/persistence/repositories/do
 import { TaxDocumentModel } from './infrastructure/persistence/models/tax-document.model';
 import { TaxDocumentRepository } from './infrastructure/persistence/repositories/tax-document.repository';
 
-/* Module IncomeTaxWithholdingVoucherModel */
+/* Module IncomeTaxWithholdingVoucher */
 import { IncomeTaxWithholdingVoucherController} from './infrastructure/http/controllers/income-tax-withholding-voucher.controller';
 import { IncomeTaxWithholdingVoucherService } from './application/services/income-tax-withholding-voucher.service';
+
+/* Module VatWithholdingVoucher */
+import { VatWithholdingVoucherController} from './infrastructure/http/controllers/vat-withholding-voucher.controller';
+import { VatWithholdingVoucherService } from './application/services/vat-withholding-voucher.service';
 
 /* Resources */
 import { PdfGeneratorAdapterPaymentOrder } from './infrastructure/pdf/pdf-generator-payment-order.adapter';
 import { PdfGeneratorAdapterIncomeTaxWithholdingVoucher } from './infrastructure/pdf/pdf-generator-income-tax-withholding-voucher';
+import { PdfGeneratorAdapterVatWithholdingVoucher } from './infrastructure/pdf/pdf-generator-vat-withholding-voucher';
 import { PrinterModule } from 'src/shared/modules/printer/printer.module';
 
 /* Factories */
@@ -110,8 +115,10 @@ import { PdfGeneratorFactory } from './infrastructure/pdf/pdf-generator.factory'
   providers: [
     PaymentOrderService,
     IncomeTaxWithholdingVoucherService,
+    VatWithholdingVoucherService,
     PdfGeneratorAdapterPaymentOrder,
     PdfGeneratorAdapterIncomeTaxWithholdingVoucher,
+    PdfGeneratorAdapterVatWithholdingVoucher,
     PdfGeneratorFactory,
     {
       provide: AuthRepository,
@@ -176,7 +183,8 @@ import { PdfGeneratorFactory } from './infrastructure/pdf/pdf-generator.factory'
   ],
   controllers: [
     PaymentOrderController,
-    IncomeTaxWithholdingVoucherController
+    IncomeTaxWithholdingVoucherController,
+    VatWithholdingVoucherController
   ]
 })
 export class AppModule implements NestModule {
