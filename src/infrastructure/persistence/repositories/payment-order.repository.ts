@@ -29,7 +29,7 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
     private sequelize: Sequelize
   ) {}
 
-  async findByIdWithRelations(id: number): Promise<PaymentOrderEntity | null> {
+  async findByIdWithPaymentOrder(id: number): Promise<PaymentOrderEntity | null> {
     const options = {
       include: [
         { model: DescriptiveModel, as: 'TIPO_ORDEN_PAGO' },
@@ -86,7 +86,7 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
     return paymentOrderModel ? PaymentOrderMapper.toDomain(paymentOrderModel) : null
   }
 
-  async findByIdWithHoldings(id: number): Promise<PaymentOrderEntity | null> {
+  async findByIdWithHoldingISLR(id: number): Promise<PaymentOrderEntity | null> {
     const options = {
       attributes: [
         'NOMBRE_AGENTE_RETENCION',
@@ -147,13 +147,71 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
     return paymentOrderModel ? PaymentOrderMapper.toDomain(paymentOrderModel) : null
   }
 
-  async existPaymentOrder(id: number): Promise<boolean> {
-    const paymentOrderModel = await this.paymentOrderModel.findByPk(id)
+  async findByIdWithHoldingVat(id: number): Promise<PaymentOrderEntity | null> {
+    const options = {
+      attributes: [
+        'NUMERO_COMPROBANTE',
+        'NOMBRE_AGENTE_RETENCION',
+        'TELEFONO_AGENTE_RETENCION',
+        'RIF_AGENTE_RETENCION',
+        'DIRECCION_AGENTE_RETENCION',
+        'FECHA_INS',
+        'NUMERO_ORDEN_PAGO'
+      ],
+      include: [
+        {
+          model: SupplierModel,
+          attributes: [
+            'NOMBRE_PROVEEDOR',
+            'RIF'
+          ],
+          as: 'PROVEEDOR',
+          required: false
+        },
+        {
+          model: DocumentModel,
+          as: 'DOCUMENTS',
+          attributes: [
+            'NUMERO_DOCUMENTO',
+            'FECHA_DOCUMENTO',
+            'NUMERO_CONTROL_DOCUMENTO',
+            'NUMERO_DOCUMENTO_AFECTADO',
+            'MONTO_DOCUMENTO',
+            'MONTO_IMPUESTO_EXENTO',
+            'BASE_IMPONIBLE',
+            'MONTO_IMPUESTO',
+            'MONTO_RETENIDO',
+            'TIPO_DOCUMENTO_ID'
+          ],
+          required: false,
+          order: ['NUMERO_DOCUMENTO', 'ASC'],
+          include: [
+            {
+              model: DescriptiveModel,
+              as: 'TYPE_DOCUMENT',
+              attributes: [
+                'EXTRA1',
+                'EXTRA2',
+                'EXTRA3',
+                'CODIGO'
+              ]
+            },
+            {
+              model: DescriptiveModel,
+              as: 'TAX_TYPE',
+              attributes: [
+                'EXTRA1',
+                'CODIGO'
+              ]
+            }
+          ]
+        }
+      ]
+    }
 
-    /* console.log('paymentOrderModel', paymentOrderModel) */
+    const paymentOrderModel = await this.paymentOrderModel.findByPk(id, options)
 
-    console.log('exist payment order', !!paymentOrderModel)
-
-    return !!paymentOrderModel
+    /* responses */
+    return paymentOrderModel ? PaymentOrderMapper.toDomain(paymentOrderModel) : null
   }
 }

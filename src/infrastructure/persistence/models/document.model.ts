@@ -2,6 +2,7 @@ import { Model, Table, Column, DataType, ForeignKey, BelongsTo, HasOne } from 's
 import { IDocument } from '../../../domain/interfaces/document.interface';
 import { PaymentOrderModel } from './payment-order.model';
 import { TaxDocumentModel } from './tax-document.model';
+import { DescriptiveModel } from './descriptive.model';
 
 @Table({
   schema: 'public',
@@ -22,12 +23,36 @@ export class DocumentModel extends Model<DocumentModel> implements IDocument {
   @Column({ field: 'CODIGO_ORDEN_PAGO' })
   CODIGO_ORDEN_PAGO!: number | null;
 
+  @ForeignKey(() => DescriptiveModel)
+  @Column({
+    field: 'TIPO_DOCUMENTO_ID'
+  })
+  TIPO_DOCUMENTO_ID!: string | null;
+
+  @ForeignKey(() => DescriptiveModel)
+  @Column({
+    field: 'TIPO_OPERACION_ID'
+  })
+  TIPO_OPERACION_ID!: string | null;
+
+  @ForeignKey(() => DescriptiveModel)
+  @Column({
+    field: 'TIPO_IMPUESTO_ID'
+  })
+  TIPO_IMPUESTO_ID!: string | null;
+
   /* Foreing Keys */
 
   /* Associations */
 
   @BelongsTo(() => PaymentOrderModel, { foreignKey: 'CODIGO_ORDEN_PAGO', as: 'PAYMENT_ORDER' })
   PAYMENT_ORDER: PaymentOrderModel;
+
+  @BelongsTo(() => DescriptiveModel, { foreignKey: 'TIPO_DOCUMENTO_ID', as: 'TYPE_DOCUMENT' })
+  TYPE_DOCUMENT: DescriptiveModel;
+
+  @BelongsTo(() => DescriptiveModel, { foreignKey: 'TIPO_IMPUESTO_ID', as: 'TAX_TYPE' })
+  TAX_TYPE: DescriptiveModel;
 
   @HasOne(() => TaxDocumentModel, { foreignKey: 'CODIGO_DOCUMENTO_OP', as: 'TAX_DOCUMENT' })
   TAX_DOCUMENT: TaxDocumentModel;
@@ -44,16 +69,6 @@ export class DocumentModel extends Model<DocumentModel> implements IDocument {
     field: 'PERIODO_IMPOSITIVO'
   })
   PERIODO_IMPOSITIVO!: string | null;
-
-  @Column({
-    field: 'TIPO_OPERACION_ID'
-  })
-  TIPO_OPERACION_ID!: string | null;
-
-  @Column({
-    field: 'TIPO_DOCUMENTO_ID'
-  })
-  TIPO_DOCUMENTO_ID!: string | null;
 
   @Column({
     field: 'FECHA_DOCUMENTO',
@@ -98,11 +113,6 @@ export class DocumentModel extends Model<DocumentModel> implements IDocument {
     field: 'TIPO_TRANSACCION_ID'
   })
   TIPO_TRANSACCION_ID!: string | null;
-
-  @Column({
-    field: 'TIPO_IMPUESTO_ID'
-  })
-  TIPO_IMPUESTO_ID!: string | null;
 
   @Column({
     field: 'MONTO_IMPUESTO_EXENTO',

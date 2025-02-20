@@ -58,7 +58,7 @@ const getTableWithholding = (withHolding: any): TableCell[][] => {
       },
       {
         text: `${formatPrice(row?.totalPurchasesIncludingVat ?? 0, 'VES')}`,
-        style: 'descriptionBodyText'
+        style: 'descriptionBodyAmount'
       },
       {
         text: `${formatPrice(row?.purchasesWithoutVatCredit ?? 0, 'VES')}`,
@@ -98,7 +98,7 @@ export const bodySection = (options: HeaderOptions): Content => {
     table: {
       headerRows: 1,
       widths: [20, '*', '*', '*', '*', '*', '*', '*',  '*', '*', '*', 30, '*', '*'],
-      heights: [25, 25, 25],
+      heights: [25],
       body: [
         [
           {
@@ -106,11 +106,11 @@ export const bodySection = (options: HeaderOptions): Content => {
             style: 'titleBody'
           },
           {
-            text: 'Nº De Factura',
+            text: 'Fecha Factura',
             style: 'titleBody'
           },
           {
-            text: 'Fecha Factura',
+            text: 'Nº De Factura',
             style: 'titleBody'
           },
           {

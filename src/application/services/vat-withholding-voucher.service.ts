@@ -28,7 +28,7 @@ export class VatWithholdingVoucherService {
   ) {}
 
   async generateReport(id: number): Promise<PDFKit.PDFDocument> {
-    const paymentOrder = await this.paymentOrderRepository.findByIdWithHoldings(id)
+    const paymentOrder = await this.paymentOrderRepository.findByIdWithHoldingVat(id)
 
     if (!paymentOrder) {
       throw new Error('Payment order not found')
@@ -102,6 +102,20 @@ export class VatWithholdingVoucherService {
     return formattedNumber.trim();
   }
 
+  public rpad(str: string, length: number): string {
+    if (str === undefined || str === null) {
+      return null;
+    }
+    // Convierte el valor a una cadena si no lo es
+    let result = String(str);
+    // Si la longitud de la cadena es menor que la longitud deseada, se rellena con espacios
+    while (result.length < length) {
+        result += ' ';
+    }
+    // Si la longitud de la cadena es mayor que la longitud deseada, se trunca
+    return result.substring(0, length);
+  }
+
   private mapToReportHeader(): ReportHeaderDto {
     const subTitle = 'CONCEJO MUNICIPAL DEL MUNICIPIO CHACAO'
 
@@ -114,28 +128,15 @@ export class VatWithholdingVoucherService {
     const supplier = order?.PROVEEDOR ?? null
 
     return {
-      date: this.formatDate('2024-10-22'),
-      voucherNumber: 20241000000525,
-      nameWithholdingAgent: 'CONCEJO MUNICIPAL DEL MUNICIPIO CHACAO',
-      withholdingAgentRif: this.formatRIF('G200074590'),
-      withholdingAgentAddress: 'EDF. ATRIUM, PISO 2. AV. VENEZUELA CON CALLE SOROCAIMA. EL ROSAL. EDO. MIRANDA. DTTO. CAPI',
-      fiscalPeriod: this.formatFiscalPeriod('2024-10-22'),
-      subjectNameWithheld: 'CORPORACION COTOS 1830, C.A.',
-      subjectNameWithheldRif: this.formatRIF('J502223606'),
-      paymentOrderNumber: 674
-
-
-      /* NOMBRE_AGENTE_RETENCION: order.NOMBRE_AGENTE_RETENCION,
-      TELEFONO_AGENTE_RETENCION: order.TELEFONO_AGENTE_RETENCION,
-      RIF_AGENTE_RETENCION: this.formatRIF(order.RIF_AGENTE_RETENCION),
-      DIRECCION_AGENTE_RETENCION: order.DIRECCION_AGENTE_RETENCION,
-      FECHA: this.formatDate(order.FECHA_INS),
-      PERIODO_FISCAL: this.formatFiscalPeriod(order.FECHA_INS),
-      NOMBRE_SUJETO_RETENIDO: supplier.NOMBRE_PROVEEDOR,
-      RIF_SUJETO_RETENIDO: this.formatRIF(supplier?.RIF),
-      NRO_ORDEN_PAGO: order.NUMERO_ORDEN_PAGO */
-
-
+      date: this.formatDate(order.FECHA_INS),
+      voucherNumber: order.NUMERO_COMPROBANTE,
+      nameWithholdingAgent:  order.NOMBRE_AGENTE_RETENCION,
+      withholdingAgentRif: this.formatRIF(order.RIF_AGENTE_RETENCION),
+      withholdingAgentAddress: order.DIRECCION_AGENTE_RETENCION,
+      fiscalPeriod: this.formatFiscalPeriod(order.FECHA_INS),
+      subjectNameWithheld: supplier.NOMBRE_PROVEEDOR,
+      subjectNameWithheldRif: this.formatRIF(supplier?.RIF),
+      paymentOrderNumber: order.NUMERO_ORDEN_PAGO
     }
   }
 
@@ -150,37 +151,29 @@ export class VatWithholdingVoucherService {
 
     const listWithholding: WithholdingDto[] = []
 
-    documents.forEach((document) => {
-      const taxDocument = document.TAX_DOCUMENT
-      const withholding = taxDocument?.WITHHOLDING
+    documents.forEach((document, index) => {
+      const operationNumber   = index + 1
+      const transactionType   = document.TYPE_DOCUMENT?.EXTRA1
+      /* Review with franklin */
+      const debitNoteNumber   = null //document.TYPE_DOCUMENT?.EXTRA2
+      const creditNoteNumber  = null //document.TYPE_DOCUMENT?.EXTRA3
+      const taxType           = document.TAX_TYPE?.EXTRA1
 
       const data = {
-        operationNumber: 1,
-        invoiceDate:  this.formatDate('2024-10-21'),
-        invoiceNumber: '00066',
-        invoiceControlNumber: 0,
-        debitNoteNumber: null,
-        creditNoteNumber: null,
-        transactionType:'01',
-        affectedInvoiceNumber: null,
-        totalPurchasesIncludingVat: 1744045.30,
-        purchasesWithoutVatCredit: 0.00,
-        taxableIncome: 1503487.33,
-        alicuota: '16%',
-        vatTax: 240557.97,
-        vatWithheld: 180418.48
-
-
-        /* invoiceNumber: document.NUMERO_DOCUMENTO,
+        operationNumber,
         invoiceDate: this.formatDate(document.FECHA_DOCUMENTO),
-        conceptPayment: withholding?.CONCEPTO_PAGO,
-        extensiveTax: taxDocument?.MONTO_IMPUESTO_EXENTO,
-        taxableIncome: taxDocument?.BASE_IMPONIBLE,
-        alicuota: this.formatPercentageRetention(withholding?.POR_RETENCION ?? 0),
-        incomeTaxWithheld: taxDocument?.MONTO_IMPUESTO,
-        subtrahend: null */
-
-
+        invoiceNumber: document.NUMERO_DOCUMENTO,
+        invoiceControlNumber: document.NUMERO_CONTROL_DOCUMENTO ?? '00-00000000',
+        debitNoteNumber,
+        creditNoteNumber,
+        transactionType,
+        affectedInvoiceNumber: this.rpad(document.NUMERO_DOCUMENTO_AFECTADO, 20),
+        totalPurchasesIncludingVat: document.MONTO_DOCUMENTO,
+        purchasesWithoutVatCredit: document.MONTO_IMPUESTO_EXENTO,
+        taxableIncome: document.BASE_IMPONIBLE,
+        alicuota: `${taxType}%`,
+        vatTax: document.MONTO_IMPUESTO,
+        vatWithheld: document.MONTO_RETENIDO
       }
 
       totalPurchasesVat     += Number(data.totalPurchasesIncludingVat)
