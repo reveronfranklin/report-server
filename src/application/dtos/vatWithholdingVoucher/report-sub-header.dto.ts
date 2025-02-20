@@ -33,7 +33,7 @@ export class ReportSubHeaderDto {
   @IsNotEmpty()
   subjectNameWithheldRif: string;
 
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
-  paymentOrderNumber: number;
+  paymentOrderNumber: string;
 }

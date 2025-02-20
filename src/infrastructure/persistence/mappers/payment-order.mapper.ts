@@ -186,7 +186,9 @@ export class PaymentOrderMapper {
         document?.CODIGO_PRESUPUESTO,
         document?.NUMERO_EXPEDIENTE,
         document?.ESTATUS_FISCO_ID,
-        document?.TAX_DOCUMENT?.get({ plain: true })
+        document?.TAX_DOCUMENT?.get({ plain: true }),
+        document?.TYPE_DOCUMENT?.get({ plain: true }),
+        document?.TAX_TYPE?.get({ plain: true })
       )) || []
     )
   }
