@@ -1,27 +1,23 @@
 import { IWithholding } from '../interfaces/withholding.interface';
-import { DescriptiveEntity } from './descriptive.entity'
-
 
 export class WithholdingEntity implements IWithholding {
   constructor(
-    public codigoRetencionOp: string,
-    public codigoOrdenPago: string,
-    public tipoRetencionId: string,
-    public codigoRetencion: string,
-    public porRetencion: number,
-    public montoRetencion: number,
-    public extra1: string | null,
-    public extra2: string | null,
-    public extra3: string | null,
-    public usuarioIns: string,
-    public fechaIns: Date,
-    public usuarioUpd: string | null,
-    public fechaUpd: Date | null,
-    public codigoEmpresa: string,
-    public codigoPresupuesto: string,
-    public extra4: string | null,
-    public baseImponible: number,
-
-    public descripcion?: DescriptiveEntity
+    public CODIGO_RETENCION: number,
+    public TIPO_RETENCION_ID: number,
+    public CONCEPTO_PAGO: string,
+    public TIPO_PERSONA_ID: number,
+    public BASE_IMPONIBLE: number,
+    public POR_RETENCION: number,
+    public MONTO_RETENCION: number,
+    public FECHA_INI: Date,
+    public FECHA_FIN: Date,
+    public EXTRA1: string | null,
+    public EXTRA2: string | null,
+    public EXTRA3: string | null,
+    public USUARIO_INS: string,
+    public FECHA_INS: Date,
+    public USUARIO_UPD: string | null,
+    public FECHA_UPD: Date | null,
+    public CODIGO_EMPRESA: string
   ) {}
 }

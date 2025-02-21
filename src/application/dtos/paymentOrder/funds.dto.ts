@@ -1,8 +1,6 @@
-// src/features/payment-order/application/dtos/report-body.dto.ts
-
 import { IsNumber, IsPositive, IsString, IsNotEmpty } from 'class-validator';
 
-export class ReportBodyDto {
+export class FundsDto {
   @IsNumber()
   @IsPositive()
   MONTO: number;

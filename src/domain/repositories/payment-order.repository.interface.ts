@@ -1,5 +1,7 @@
 import { PaymentOrderEntity } from '../entities/payment-order.entity';
 
 export interface IPaymentOrderRepository {
-  findByIdWithRelations(id: number): Promise<PaymentOrderEntity | null>;
+  findByIdWithPaymentOrder(id: number): Promise<PaymentOrderEntity | null>;
+  findByIdWithHoldingISLR(id: number): Promise<PaymentOrderEntity | null>;
+  findByIdWithHoldingVat(id: number): Promise<PaymentOrderEntity | null>;
 }

@@ -2,17 +2,22 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { WithholdingModel } from '../models/withholding.model';
 import { IWithholdingRepository } from '../../../domain/repositories/withholding.repository.interface';
-import { IWithholding } from '../../../domain/interfaces/withholding.interface';
+import { WithholdingEntity } from '../../../domain/entities/withholding.entity';
 
 @Injectable()
 export class WithholdingRepository implements IWithholdingRepository {
   constructor(
     @InjectModel(WithholdingModel)
-    private withholdingModel: typeof WithholdingModel
+    private withholdingModel: typeof WithholdingModel,
   ) {}
 
-  async findByIdWithRelations(id: number, options?: any): Promise<IWithholding | null> {
-    const withholding = await this.withholdingModel.findByPk(id, options);
+  async findAll(): Promise<WithholdingEntity[]> {
+    const withholdings = await this.withholdingModel.findAll();
+    return withholdings;
+  }
+
+  async findById(id: number): Promise<WithholdingEntity | null> {
+    const withholding = await this.withholdingModel.findByPk(id);
     return withholding;
   }
 }

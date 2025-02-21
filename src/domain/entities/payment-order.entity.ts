@@ -3,6 +3,8 @@ import { DescriptiveEntity } from './descriptive.entity'
 import { SupplierEntity } from './supplier.entity'
 import { PucPaymentOrderEntity } from './puc-payment-order.entity';
 import { CommitmentEntity} from './commitment.entity';
+import { WithholdingOpEntity } from './withholding-op.entity';
+import { DocumentEntity } from './document.entity';
 
 export class PaymentOrderEntity implements IPaymentOrder {
   constructor(
@@ -54,12 +56,18 @@ export class PaymentOrderEntity implements IPaymentOrder {
     public SEARCH_TEXT: string | null,
     public MONTO_LETRAS: string | null,
     public TITULO_REPORTE: string | null,
+    public NOMBRE_AGENTE_RETENCION: string | null,
+    public TELEFONO_AGENTE_RETENCION: string | null,
+    public RIF_AGENTE_RETENCION: string | null,
+    public DIRECCION_AGENTE_RETENCION: string | null,
 
     /* Por ahora se agregaran aqui, buscar una merjor manera */
     public TIPO_ORDEN_PAGO?: DescriptiveEntity,
     public FRECUENCIA_PAGO?: DescriptiveEntity,
     public PROVEEDOR?: SupplierEntity,
     public COMMITMENT?: CommitmentEntity,
-    public PUC_PAYMENT_ORDERS?: PucPaymentOrderEntity[]
+    public PUC_PAYMENT_ORDERS?: PucPaymentOrderEntity[],
+    public WITHHOLDINGS?: WithholdingOpEntity[],
+    public DOCUMENTS?: DocumentEntity[]
   ) {}
 }

@@ -16,7 +16,7 @@ interface HeaderOptions {
 export const headerSection = (options: HeaderOptions): Content => {
   const { header  } = options
 
-  const words = header.TITULO.trim().split(/\s+/);
+  const words = header.TITULO ? header.TITULO.trim().split(/\s+/) : '';
   const wordCount = words.length;
   const titleStyle = wordCount > 3 ? 'orderTitleVariable' : 'orderTitle';
 
@@ -77,7 +77,7 @@ export const headerSection = (options: HeaderOptions): Content => {
             colSpan: 2,
             text: [
               { text: 'NUMERO COMPROMISO #\n', style: 'tableHeader' },
-              { text: `${header.NUMERO_COMPROMISO}`, style: 'tableContent' }
+              { text: `${ header.NUMERO_COMPROMISO ?? '' }`, style: 'tableContent' }
             ]
           }, {},
           {

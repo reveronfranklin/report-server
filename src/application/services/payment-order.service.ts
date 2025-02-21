@@ -1,19 +1,23 @@
 /* Dependencies */
 import { Injectable, Inject } from '@nestjs/common';
-import { IPaymentOrderRepository } from '../../domain/repositories/payment-order.repository.interface';
 import moment from 'moment-timezone';
+
+/* Repositories */
+import { IPaymentOrderRepository } from '../../domain/repositories/payment-order.repository.interface';
 
 /* Entities */
 import { PaymentOrderEntity } from '../../domain/entities/payment-order.entity';
 
 /* Dtos */
-import { ReportSchemeDto } from '../dtos/report-scheme.dto';
-import { ReportHeaderDto } from '../dtos/report-header.dto';
-import { ReportSubHeaderDto } from '../dtos/report-sub-header.dto';
-import { ReportBodyDto } from '../dtos/report-body.dto';
+import { ReportSchemeDto } from '../dtos/paymentOrder/report-scheme.dto';
+import { ReportHeaderDto } from '../dtos/paymentOrder/report-header.dto';
+import { ReportSubHeaderDto } from '../dtos/paymentOrder/report-sub-header.dto';
+import { ReportBodyDto } from '../dtos/paymentOrder/report-body.dto';
+import { FundsDto } from '../dtos/paymentOrder/funds.dto';
+import { WithholdingDto } from '../dtos/paymentOrder/withholding.dto';
 
 /* Services Pdf */
-import { IPdfGenerator } from '../../domain/repositories/pdf-generator.interface';
+import { PdfGeneratorFactory } from '../../infrastructure/pdf/pdf-generator.factory';
 
 @Injectable()
 export class PaymentOrderService {
@@ -21,11 +25,11 @@ export class PaymentOrderService {
     @Inject('IPaymentOrderRepository')
     private paymentOrderRepository: IPaymentOrderRepository,
     @Inject('IPdfGenerator')
-    private pdfGenerator: IPdfGenerator
+    private pdfGeneratorFactory: PdfGeneratorFactory
   ) {}
 
   async generateReport(id: number): Promise<PDFKit.PDFDocument> {
-    const paymentOrder = await this.paymentOrderRepository.findByIdWithRelations(id)
+    const paymentOrder = await this.paymentOrderRepository.findByIdWithPaymentOrder(id)
 
     if (!paymentOrder) {
       throw new Error('Payment order not found')
@@ -39,8 +43,11 @@ export class PaymentOrderService {
         body: this.mapToReportBody(paymentOrder)
       }
 
+      /* instancia el generador de PDF */
+      const pdfGenerator = this.pdfGeneratorFactory.getGenerator('paymentOrder');
+
       // Generar el documento PDF
-      const pdfDocument = this.pdfGenerator.generatePdf(reportScheme);
+      const pdfDocument = pdfGenerator.generatePdf(reportScheme);
 
       return pdfDocument;
     } catch (error) {
@@ -97,13 +104,20 @@ export class PaymentOrderService {
     }
   }
 
+  private mapToReportBody(order: PaymentOrderEntity): ReportBodyDto {
+    let total: number = 0
+    let totalRetenciones: number = 0
+    let titleEspecifica: string = ''
 
-  private mapToReportBody(order: PaymentOrderEntity): ReportBodyDto[] {
-    const body = []
+    const listPucOrder: FundsDto[] = [];
+    const listWithholding: WithholdingDto[] = [];
+
     const pucOrders = order?.PUC_PAYMENT_ORDERS ?? []
+    const withholdings = order?.WITHHOLDINGS ?? []
 
     pucOrders.forEach((pucOrder) => {
       const balance = pucOrder?.BALANCE ?? null
+      titleEspecifica= balance?.DENOMINACION_PUC ?? ''
 
       const data = {
         ANO: balance?.ANO,
@@ -113,8 +127,31 @@ export class PaymentOrderService {
         MONTO: pucOrder.MONTO,
         PERIODICO: (pucOrder.MONTO / order.CANTIDAD_PAGO)
       }
-      body.push(data)
+
+      total += Number(pucOrder.MONTO)
+
+      listPucOrder.push(data)
     })
+
+    withholdings.forEach((withholding) => {
+      const data = {
+        DESCRIPCION:`${withholding.porRetencion ?? ''}% ${withholding?.descripcion?.DESCRIPCION ?? ''}`,
+        MONTO_RETENIDO: withholding.montoRetencion ?? 0
+      }
+
+      totalRetenciones += Number(withholding.montoRetencion)
+
+      listWithholding.push(data)
+    })
+
+    const body = {
+      FUNDS: listPucOrder,
+      WITHHOLDING: listWithholding,
+      TOTAL_ORDEN_PAGO: total,
+      MONTO_PAGAR: (total - totalRetenciones),
+      TITULO_ESPECIFICA: titleEspecifica,
+      MOTIVO: order.MOTIVO
+    }
 
     return body
   }

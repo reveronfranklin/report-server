@@ -1,12 +1,23 @@
 /* Dependencies */
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { HttpModule } from '@nestjs/axios';
 
 /* Config */
 import { configLoader } from './config/config-loader';
 import { envSchema } from './config/env-schema';
 import { DatabaseModule } from './shared/modules/db/database.module';
+
+/* Middleware Auth */
+import { AuthRepository } from './domain/repositories/auth.repository';
+import { AuthAdapter } from './infrastructure/http/adapters/auth.adapter';
+import { AuthMiddleware } from './infrastructure/http/middleware/auth.middleware';
+
+/* Middleware Replicate Payment Order */
+import { ReplicatePaymentOrderRepository } from './domain/repositories/replicate-payment-order.repository';
+import { ReplicatePaymentOrderAdapter } from './infrastructure/http/adapters/replicate-payment-order.adapter';
+import { ReplicatePaymentOrderMiddleware } from './infrastructure/http/middleware/replicate-payment-order.middleware';
 
 /* Module Payment Order */
 import { PaymentOrderModel } from './infrastructure/persistence/models/payment-order.model';
@@ -42,9 +53,38 @@ import { CommitmentRepository } from './infrastructure/persistence/repositories/
 import { PreCommitmentModel } from './infrastructure/persistence/models/pre-commitment.model';
 import { PreCommitmentRepository } from './infrastructure/persistence/repositories/pre-commitment.repository';
 
+/* Module WithholdingOpModel */
+import { WithholdingOpModel } from './infrastructure/persistence/models/withholding-op.model';
+import { WithholdingOpRepository } from './infrastructure/persistence/repositories/withholding-op.repository';
+
+/* Module WithholdingModel */
+import { WithholdingModel } from './infrastructure/persistence/models/withholding.model';
+import { WithholdingRepository } from './infrastructure/persistence/repositories/withholding.repository';
+
+/* Module DocumentModel */
+import { DocumentModel } from './infrastructure/persistence/models/document.model';
+import { DocumentRepository } from './infrastructure/persistence/repositories/document.repository';
+
+/* Module TaxDocumentModel */
+import { TaxDocumentModel } from './infrastructure/persistence/models/tax-document.model';
+import { TaxDocumentRepository } from './infrastructure/persistence/repositories/tax-document.repository';
+
+/* Module IncomeTaxWithholdingVoucher */
+import { IncomeTaxWithholdingVoucherController} from './infrastructure/http/controllers/income-tax-withholding-voucher.controller';
+import { IncomeTaxWithholdingVoucherService } from './application/services/income-tax-withholding-voucher.service';
+
+/* Module VatWithholdingVoucher */
+import { VatWithholdingVoucherController} from './infrastructure/http/controllers/vat-withholding-voucher.controller';
+import { VatWithholdingVoucherService } from './application/services/vat-withholding-voucher.service';
+
 /* Resources */
-import { PdfGeneratorAdapter } from './infrastructure/pdf/pdf-generator.adapter';
+import { PdfGeneratorAdapterPaymentOrder } from './infrastructure/pdf/pdf-generator-payment-order.adapter';
+import { PdfGeneratorAdapterIncomeTaxWithholdingVoucher } from './infrastructure/pdf/pdf-generator-income-tax-withholding-voucher';
+import { PdfGeneratorAdapterVatWithholdingVoucher } from './infrastructure/pdf/pdf-generator-vat-withholding-voucher';
 import { PrinterModule } from 'src/shared/modules/printer/printer.module';
+
+/* Factories */
+import { PdfGeneratorFactory } from './infrastructure/pdf/pdf-generator.factory';
 
 @Module({
   imports: [
@@ -55,6 +95,7 @@ import { PrinterModule } from 'src/shared/modules/printer/printer.module';
       validationSchema: envSchema
     }),
     DatabaseModule,
+    HttpModule,
     SequelizeModule.forFeature([
       PaymentOrderModel,
       DescriptiveModel,
@@ -63,12 +104,30 @@ import { PrinterModule } from 'src/shared/modules/printer/printer.module';
       BalanceModel,
       PucPaymentOrderModel,
       CommitmentModel,
-      PreCommitmentModel
+      PreCommitmentModel,
+      WithholdingOpModel,
+      WithholdingModel,
+      DocumentModel,
+      TaxDocumentModel
     ]),
     PrinterModule
   ],
   providers: [
     PaymentOrderService,
+    IncomeTaxWithholdingVoucherService,
+    VatWithholdingVoucherService,
+    PdfGeneratorAdapterPaymentOrder,
+    PdfGeneratorAdapterIncomeTaxWithholdingVoucher,
+    PdfGeneratorAdapterVatWithholdingVoucher,
+    PdfGeneratorFactory,
+    {
+      provide: AuthRepository,
+      useClass: AuthAdapter
+    },
+    {
+      provide: ReplicatePaymentOrderRepository,
+      useClass: ReplicatePaymentOrderAdapter
+    },
     {
       provide: 'IPaymentOrderRepository',
       useClass: PaymentOrderRepository
@@ -102,10 +161,36 @@ import { PrinterModule } from 'src/shared/modules/printer/printer.module';
       useClass: PreCommitmentRepository
     },
     {
+      provide: 'IWithholdingOpRepository',
+      useClass: WithholdingOpRepository
+    },
+    {
+      provide: 'IWithholdingRepository',
+      useClass: WithholdingRepository,
+    },
+    {
+      provide: 'IDocumentRepository',
+      useClass: DocumentRepository
+    },
+    {
+      provide: 'ITaxDocumentRepository',
+      useClass: TaxDocumentRepository,
+    },
+    {
       provide: 'IPdfGenerator',
-      useClass: PdfGeneratorAdapter
+      useClass: PdfGeneratorFactory
     }
   ],
-  controllers: [PaymentOrderController]
+  controllers: [
+    PaymentOrderController,
+    IncomeTaxWithholdingVoucherController,
+    VatWithholdingVoucherController
+  ]
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthMiddleware, ReplicatePaymentOrderMiddleware)
+      .forRoutes({ path: '*', method: RequestMethod.POST });
+  }
+}

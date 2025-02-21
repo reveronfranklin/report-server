@@ -8,6 +8,8 @@ export class ResponseDto<T> implements IResponse<T> {
   @Type(() => Object)
   data: T | null;
 
+  /* consultar si las respuestas del data es boolean o no */
+
   @IsBoolean()
   isValid: boolean;
 

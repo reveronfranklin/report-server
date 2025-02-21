@@ -4,6 +4,8 @@ import { DescriptiveModel } from './descriptive.model';
 import { SupplierModel } from './supplier.model';
 import { PucPaymentOrderModel } from './puc-payment-order.model';
 import { CommitmentModel } from './commitment.model';
+import { WithholdingOpModel } from './withholding-op.model';
+import { DocumentModel } from './document.model';
 
 @Table({
   schema: 'public',
@@ -57,6 +59,12 @@ export class PaymentOrderModel extends Model<PaymentOrderModel> implements IPaym
 
   @HasMany(() => PucPaymentOrderModel, { foreignKey: 'CODIGO_ORDEN_PAGO' })
   PUC_PAYMENT_ORDERS: PucPaymentOrderModel[];
+
+  @HasMany(() => WithholdingOpModel, { foreignKey: 'CODIGO_ORDEN_PAGO' })
+  WITHHOLDINGS: WithholdingOpModel[];
+
+  @HasMany(() => DocumentModel, { foreignKey: 'CODIGO_ORDEN_PAGO' })
+  DOCUMENTS: DocumentModel[];
 
   @HasOne(() => CommitmentModel, { foreignKey: 'CODIGO_ORDEN_PAGO' })
   COMMITMENT: CommitmentModel;
@@ -357,4 +365,32 @@ export class PaymentOrderModel extends Model<PaymentOrderModel> implements IPaym
     allowNull: true
   })
   SEARCH_TEXT: string | null;
+
+  @Column({
+    type: DataType.STRING,
+    field: 'NOMBRE_AGENTE_RETENCION',
+    allowNull: true
+  })
+  NOMBRE_AGENTE_RETENCION: string | null;
+
+  @Column({
+    type: DataType.STRING,
+    field: 'TELEFONO_AGENTE_RETENCION',
+    allowNull: true
+  })
+  TELEFONO_AGENTE_RETENCION: string | null;
+
+  @Column({
+    type: DataType.STRING,
+    field: 'RIF_AGENTE_RETENCION',
+    allowNull: true
+  })
+  RIF_AGENTE_RETENCION: string | null;
+
+  @Column({
+    type: DataType.STRING,
+    field: 'DIRECCION_AGENTE_RETENCION',
+    allowNull: true
+  })
+  DIRECCION_AGENTE_RETENCION: string | null;
 }

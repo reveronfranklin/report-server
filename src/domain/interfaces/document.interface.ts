@@ -1,0 +1,30 @@
+export interface IDocument {
+  CODIGO_DOCUMENTO_OP: number;
+  CODIGO_ORDEN_PAGO: number;
+  FECHA_COMPROBANTE: Date;
+  PERIODO_IMPOSITIVO: string;
+  TIPO_OPERACION_ID: string;
+  TIPO_DOCUMENTO_ID: string;
+  FECHA_DOCUMENTO: Date;
+  NUMERO_DOCUMENTO: string;
+  NUMERO_CONTROL_DOCUMENTO: string;
+  MONTO_DOCUMENTO: number;
+  BASE_IMPONIBLE: number;
+  MONTO_IMPUESTO: number;
+  NUMERO_DOCUMENTO_AFECTADO: string;
+  TIPO_TRANSACCION_ID: string;
+  TIPO_IMPUESTO_ID: string;
+  MONTO_IMPUESTO_EXENTO: number;
+  MONTO_RETENIDO: number;
+  EXTRA1: string | null;
+  EXTRA2: string | null;
+  EXTRA3: string | null;
+  USUARIO_INS: string;
+  FECHA_INS: Date;
+  USUARIO_UPD: string | null;
+  FECHA_UPD: Date | null;
+  CODIGO_EMPRESA: string;
+  CODIGO_PRESUPUESTO: string;
+  NUMERO_EXPEDIENTE: string;
+  ESTATUS_FISCO_ID: string;
+}
