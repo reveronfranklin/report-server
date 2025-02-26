@@ -77,10 +77,15 @@ import { IncomeTaxWithholdingVoucherService } from './application/services/incom
 import { VatWithholdingVoucherController} from './infrastructure/http/controllers/vat-withholding-voucher.controller';
 import { VatWithholdingVoucherService } from './application/services/vat-withholding-voucher.service';
 
+/* Module TaxStampVoucher */
+import { TaxStampVoucherController} from './infrastructure/http/controllers/tax-stamp-voucher.controller';
+import { TaxStampVoucherService } from './application/services/tax-stamp-voucher.service';
+
 /* Resources */
 import { PdfGeneratorAdapterPaymentOrder } from './infrastructure/pdf/pdf-generator-payment-order.adapter';
 import { PdfGeneratorAdapterIncomeTaxWithholdingVoucher } from './infrastructure/pdf/pdf-generator-income-tax-withholding-voucher';
 import { PdfGeneratorAdapterVatWithholdingVoucher } from './infrastructure/pdf/pdf-generator-vat-withholding-voucher';
+import { PdfGeneratorAdapterTaxStampVoucher } from './infrastructure/pdf/pdf-generator-tax-stamp-voucher';
 import { PrinterModule } from 'src/shared/modules/printer/printer.module';
 
 /* Factories */
@@ -116,9 +121,11 @@ import { PdfGeneratorFactory } from './infrastructure/pdf/pdf-generator.factory'
     PaymentOrderService,
     IncomeTaxWithholdingVoucherService,
     VatWithholdingVoucherService,
+    TaxStampVoucherService,
     PdfGeneratorAdapterPaymentOrder,
     PdfGeneratorAdapterIncomeTaxWithholdingVoucher,
     PdfGeneratorAdapterVatWithholdingVoucher,
+    PdfGeneratorAdapterTaxStampVoucher,
     PdfGeneratorFactory,
     {
       provide: AuthRepository,
@@ -184,13 +191,14 @@ import { PdfGeneratorFactory } from './infrastructure/pdf/pdf-generator.factory'
   controllers: [
     PaymentOrderController,
     IncomeTaxWithholdingVoucherController,
-    VatWithholdingVoucherController
+    VatWithholdingVoucherController,
+    TaxStampVoucherController
   ]
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
+    /* consumer
       .apply(AuthMiddleware, ReplicatePaymentOrderMiddleware)
-      .forRoutes({ path: '*', method: RequestMethod.POST });
+      .forRoutes({ path: '*', method: RequestMethod.POST }); */
   }
 }

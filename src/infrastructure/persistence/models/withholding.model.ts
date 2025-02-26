@@ -1,5 +1,6 @@
-import { Model, Table, Column, HasOne, DataType } from 'sequelize-typescript';
+import { Model, Table, Column, HasOne, HasMany, DataType } from 'sequelize-typescript';
 import { TaxDocumentModel } from './tax-document.model';
+import { WithholdingOpModel } from './withholding-op.model';
 
 @Table({
   schema: 'public',
@@ -17,6 +18,9 @@ export class WithholdingModel extends Model<WithholdingModel> {
 
   @HasOne(() => TaxDocumentModel, { foreignKey: 'CODIGO_RETENCION', as: 'TAX_DOCUMENT' })
   TAX_DOCUMENT: TaxDocumentModel;
+
+  @HasMany(() => WithholdingOpModel, { foreignKey: 'CODIGO_RETENCION', as: 'WITHHOLDING_OPS' })
+  WITHHOLDING_OPS: WithholdingOpModel[];
 
   /* Associations */
 
@@ -38,19 +42,19 @@ export class WithholdingModel extends Model<WithholdingModel> {
 
   @Column({
     field: 'BASE_IMPONIBLE',
-    type: DataType.DECIMAL(18, 2)
+    type: DataType.INTEGER
   })
   BASE_IMPONIBLE!: number;
 
   @Column({
     field: 'POR_RETENCION',
-    type: DataType.DECIMAL(5, 2)
+    type: DataType.INTEGER
   })
   POR_RETENCION!: number;
 
   @Column({
     field: 'MONTO_RETENCION',
-    type: DataType.DECIMAL(18, 2)
+    type: DataType.INTEGER
   })
   MONTO_RETENCION!: number;
 

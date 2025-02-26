@@ -12,7 +12,7 @@ export class IncomeTaxWithholdingVoucherController {
   constructor(private incomeTaxWithholdingVoucherService: IncomeTaxWithholdingVoucherService) {}
 
   @Post('/pdf/report')
-  @ApiOperation({ summary: 'Generate a PDF report for a payment order' })
+  @ApiOperation({ summary: 'Generate a PDF report for a voucher ISLR' })
   @ApiResponse({ status: 200, description: 'Report generated successfully' })
   @ApiResponse({ status: 400, description: 'Bad request' })
   @Header('Content-Type', 'application/pdf')

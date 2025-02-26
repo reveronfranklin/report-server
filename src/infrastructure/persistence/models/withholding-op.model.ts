@@ -1,7 +1,23 @@
-import { Model, Column, ForeignKey, BelongsTo, Table, DataType } from 'sequelize-typescript';
+import { Model, Column, ForeignKey, BelongsTo, Table, Scopes, DataType } from 'sequelize-typescript';
 import { IWithholdingOp } from '../../../domain/interfaces/withholding-op.interface';
 import { DescriptiveModel } from './descriptive.model';
 import { PaymentOrderModel } from './payment-order.model';
+import { WithholdingModel } from './withholding.model';
+
+@Scopes(() => ({
+  withLT: {
+    include: [{
+      model: DescriptiveModel,
+      as: 'DESCRIPCION',
+      where: {
+        CODIGO: 'LT'
+      },
+      attributes: [
+        'CODIGO'
+      ]
+    }]
+  }
+}))
 
 @Table({
   schema: 'public',
@@ -22,6 +38,10 @@ export class WithholdingOpModel extends Model<WithholdingOpModel> implements IWi
   @Column({ field: 'TIPO_RETENCION_ID' })
   tipoRetencionId!: string;
 
+  @ForeignKey(() => WithholdingModel)
+  @Column({ field: 'CODIGO_RETENCION' })
+  codigoRetencion!: string;
+
   /* Foreing Keys */
 
   /* Associations */
@@ -29,18 +49,22 @@ export class WithholdingOpModel extends Model<WithholdingOpModel> implements IWi
   @BelongsTo(() => DescriptiveModel, { foreignKey: 'TIPO_RETENCION_ID', as: 'DESCRIPCION' })
   DESCRIPCION: DescriptiveModel;
 
+  /* pasar description a tipo de Retención */
+  /*  @BelongsTo(() => DescriptiveModel, 'TIPO_RETENCION_ID')
+  TIPO_RETENCION: DescriptiveModel; */
+
   @BelongsTo(() => PaymentOrderModel, { foreignKey: 'CODIGO_ORDEN_PAGO', as: 'PAYMENT_ORDER' })
   PAYMENT_ORDER: PaymentOrderModel;
 
+  @BelongsTo(() => WithholdingModel, { foreignKey: 'CODIGO_RETENCION', as: 'WITHHOLDING' })
+  WITHHOLDING: WithholdingModel;
+
   /* Associations */
 
-  @Column({ field: 'CODIGO_RETENCION' })
-  codigoRetencion!: string;
-
-  @Column({ field: 'POR_RETENCION', type: DataType.DECIMAL(10, 2) })
+  @Column({ field: 'POR_RETENCION', type: DataType.INTEGER })
   porRetencion!: number;
 
-  @Column({ field: 'MONTO_RETENCION', type: DataType.DECIMAL(18, 2) })
+  @Column({ field: 'MONTO_RETENCION', type: DataType.INTEGER })
   montoRetencion!: number;
 
   @Column({ field: 'EXTRA1' })
@@ -73,6 +97,6 @@ export class WithholdingOpModel extends Model<WithholdingOpModel> implements IWi
   @Column({ field: 'EXTRA4' })
   extra4!: string;
 
-  @Column({ field: 'BASE_IMPONIBLE', type: DataType.DECIMAL(18, 2) })
+  @Column({ field: 'BASE_IMPONIBLE', type: DataType.INTEGER })
   baseImponible!: number;
 }

@@ -14,12 +14,12 @@ import { CommitmentModel } from '../models/commitment.model';
 import { PreCommitmentModel } from '../models/pre-commitment.model';
 import { BalanceModel } from '../models/balance.model';
 import { WithholdingOpModel } from '../models/withholding-op.model';
+import { WithholdingModel } from '../models/withholding.model';
 import { DocumentModel } from '../models/document.model';
 import { TaxDocumentModel } from '../models/tax-document.model';
 
 /* Mappers */
 import { PaymentOrderMapper } from '../mappers/payment-order.mapper';
-import { WithholdingModel } from '../models/withholding.model';
 
 @Injectable()
 export class PaymentOrderRepository implements IPaymentOrderRepository {
@@ -94,7 +94,8 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
         'RIF_AGENTE_RETENCION',
         'DIRECCION_AGENTE_RETENCION',
         'FECHA_INS',
-        'NUMERO_ORDEN_PAGO'
+        'NUMERO_ORDEN_PAGO',
+        'STATUS'
       ],
       include: [
         {
@@ -152,11 +153,11 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
       attributes: [
         'NUMERO_COMPROBANTE',
         'NOMBRE_AGENTE_RETENCION',
-        'TELEFONO_AGENTE_RETENCION',
         'RIF_AGENTE_RETENCION',
         'DIRECCION_AGENTE_RETENCION',
         'FECHA_INS',
-        'NUMERO_ORDEN_PAGO'
+        'NUMERO_ORDEN_PAGO',
+        'STATUS'
       ],
       include: [
         {
@@ -184,7 +185,7 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
             'TIPO_DOCUMENTO_ID'
           ],
           required: false,
-          order: ['NUMERO_DOCUMENTO', 'ASC'],
+          //order: [['NUMERO_DOCUMENTO', 'ASC']],
           include: [
             {
               model: DescriptiveModel,
@@ -207,6 +208,75 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
           ]
         }
       ]
+    }
+
+    const paymentOrderModel = await this.paymentOrderModel.findByPk(id, options)
+
+    /* responses */
+    return paymentOrderModel ? PaymentOrderMapper.toDomain(paymentOrderModel) : null
+  }
+
+  async findByIdTaxStamp(id: number): Promise<PaymentOrderEntity | null> {
+    const options = {
+      attributes: [
+        'NOMBRE_AGENTE_RETENCION',
+        'RIF_AGENTE_RETENCION',
+        'NUMERO_ORDEN_PAGO',
+        'STATUS',
+        'MOTIVO'
+      ],
+      include: [
+        {
+          /* El scope condiciona: (SELECT X.DESCRIPCION_ID FROM ADM_DESCRIPTIVAS X WHERE X.CODIGO= 'LT') */
+          model: WithholdingOpModel.scope('withLT'),
+          attributes: [
+            'codigoOrdenPago',
+            'tipoRetencionId',
+            'codigoRetencion',
+            'baseImponible',
+            'montoRetencion'
+          ],
+          as: 'WITHHOLDINGS',
+          required: false,
+          /* Consultar a franklin, el monto de retención no se puede obtener de la tabla ADM_RETENCIONES,
+          sino que se debe consultar a la tabla ADM_RETENCIONES_OP */
+          /* include: [
+            {
+              model: WithholdingModel,
+              attributes: [
+                'CODIGO_RETENCION',
+                'POR_RETENCION'
+              ],
+              as: 'WITHHOLDING',
+              required: false
+            }
+          ] */
+        },
+        {
+          model: SupplierModel,
+          attributes: [
+            'NOMBRE_PROVEEDOR',
+            'RIF'
+          ],
+          as: 'PROVEEDOR',
+          required: false
+        },
+        {
+          model: DocumentModel,
+          as: 'DOCUMENTS',
+          attributes: [
+            'CODIGO_ORDEN_PAGO',
+            'NUMERO_CONTROL_DOCUMENTO',
+            'NUMERO_DOCUMENTO',
+            'MONTO_DOCUMENTO',
+            'MONTO_IMPUESTO',
+            'MONTO_IMPUESTO_EXENTO'
+          ],
+          required: false
+        }
+      ],
+      plain: true
+      //order: [['NUMERO_ORDEN_PAGO', 'DESC']]
     }
 
     const paymentOrderModel = await this.paymentOrderModel.findByPk(id, options)
