@@ -3,13 +3,11 @@ import { StyleDictionary } from 'pdfmake/interfaces';
 export const bodyStyles: StyleDictionary = {
   body: {
     alignment: 'center',
-    margin: [0, 0, 0, 0],
-    fontSize: 7
+    margin: [0, 0],
+    fontSize: 8
   },
   titleBody: {
-    fontSize: 8,
-    bold: true,
-    margin: [0, 10]
+    bold: true
   },
   descriptionBodyText: {
     bold: false,
@@ -18,15 +16,5 @@ export const bodyStyles: StyleDictionary = {
   descriptionBodyAmount: {
     bold: false,
     alignment: 'right'
-  },
-  totalHeader: {
-    bold: true,
-    alignment: 'center',
-    margin: [0, 10]
-  },
-  totalAmount: {
-    bold: true,
-    alignment: 'right',
-    margin: [0, 10]
   }
 }
