@@ -2,16 +2,18 @@ import { StyleDictionary } from 'pdfmake/interfaces';
 
 export const subHeaderStyles: StyleDictionary = {
   subHeader: {
-    alignment: 'left',
-    margin: [20, 0, 60, 30],
-    fontSize: 9
+    alignment: 'center',
+    margin: [30, 10],
+    fontSize: 8
   },
   titleSubHeader: {
     bold: true,
-    margin: [0, 20]
+    decoration: 'underline',
+    alignment: 'left'
   },
   descriptionSubHeader: {
     bold: false,
-    margin: [0, 0]
+    decoration: 'underline',
+    alignment: 'left'
   }
 }

@@ -8,29 +8,33 @@ import type {
 import { ReportSchemeDto } from '../../../../application/dtos/taxStampVoucher/report-scheme.dto';
 
 /* Sections */
-import { headerSection } from './sections/vat-withholding-header';
-import { subHeaderSection } from './sections/vat-withholding-sub-header';
-import { bodySection } from './sections/vat-withholding-body';
-import { footerSection } from './sections/vat-withholding-footer';
+import { headerSection } from './sections/header';
+import { subHeaderSection } from './sections/sub-header';
+import { bodySection } from './sections/body';
+import { bodyTotalSection } from './sections/total';
+import { footerSection } from './sections/footer';
 
 /* Styles */
 import { headerStyles } from './styles/header-styles';
 import { subHeaderStyles } from './styles/sub-header-styles';
 import { bodyStyles } from './styles/body-styles';
+import { totalStyles } from './styles/total-styles';
 import { footerStyles } from './styles/footer-styles';
 
 const styles: StyleDictionary = {
   ...headerStyles,
   ...subHeaderStyles,
   ...bodyStyles,
+  ...totalStyles,
   ...footerStyles
 };
+
 
 export function createTaxStampVoucherTemplate(data: ReportSchemeDto): TDocumentDefinitions {
   const { header, subHeader, body } = data
 
   // Execute the sections before the return statement
-/*   const headerContent: Content = headerSection({
+  const headerContent: Content = headerSection({
     header
   })
 
@@ -39,27 +43,43 @@ export function createTaxStampVoucherTemplate(data: ReportSchemeDto): TDocumentD
   })
 
   const bodyContent: Content = bodySection({
-    body,
+    withHolding: body.withHolding
   })
 
-  const footerContent: Content = footerSection() */
+  const bodyTotalContent: Content = bodyTotalSection({
+    body
+  })
+
+  //const footerContent: Content = footerSection(currentPage, pageCount)
 
   return {
     pageSize: 'LETTER',
     pageOrientation: 'portrait',
-    pageMargins: [20, 280, 20, 100],
+    pageMargins: [30, 480, 30, 100],
     styles: styles,
     header: {
       columns: [
         {
           stack: [
-            'headerContent',
-            'subHeaderContent'
+            headerContent,
+            subHeaderContent
           ]
         }
       ]
     },
-    content: 'bodyContent',
-    footer: 'footerContent'
+    content: {
+      columns:[
+        {
+          stack: [
+            bodyContent,
+            bodyTotalContent
+          ]
+        }
+      ]
+    },
+    footer: (currentPage, pageCount) => {
+      const footerContent: Content = footerSection(currentPage, pageCount)
+      return footerContent
+    }
   }
 }

@@ -42,8 +42,6 @@ export class TaxStampVoucherService {
         body: this.mapToReportBody(paymentOrder)
       }
 
-      console.log(reportScheme)
-
       /* instancia el generador de PDF */
       const pdfGenerator = this.pdfGeneratorFactory.getGenerator('taxStampVoucher');
 
@@ -91,7 +89,7 @@ export class TaxStampVoucherService {
       PLANILLA PARA EL CÁLCULO DEL IMPUESTO 1x1000
       AGENTES DE RETENCIÓN
       ENTES PÚBLICOS
-    `
+    `.trim()
 
     return {
       title,
@@ -104,11 +102,11 @@ export class TaxStampVoucherService {
     const supplier = order?.PROVEEDOR ?? null
 
     return {
-      nameWithholdingAgent: order.NOMBRE_AGENTE_RETENCION,
+      nameWithholdingAgent: order?.NOMBRE_AGENTE_RETENCION.trim() ?? null,
       withholdingAgentRif: this.formatRIF(order.RIF_AGENTE_RETENCION),
-      taxpayerName: supplier?.NOMBRE_PROVEEDOR,
+      taxpayerName: supplier?.NOMBRE_PROVEEDOR.trim() ?? null,
       taxpayerRifNumber: this.formatRIF(supplier?.RIF),
-      reason: order.MOTIVO
+      reason: order?.MOTIVO.trim() ?? null
     }
   }
 
