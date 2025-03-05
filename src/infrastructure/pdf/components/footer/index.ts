@@ -1,12 +1,12 @@
 import type { Content } from 'pdfmake/interfaces';
 
-export const footerSection = (): Content => {
+const getFooter = (currentPage: number, pageCount: number): Content => {
   const contentPdf: Content = {
     style: 'footer',
     table: {
       headerRows: 1,
       widths: ['*', '*', '*'],
-      heights: [10, 10], // Aumenta la altura de las filas
+      heights: [10, 10],
       body: [
         [
           {
@@ -26,9 +26,17 @@ export const footerSection = (): Content => {
         ],
         [
           {
-            colSpan: 3,
+            text: null,
+            border: [false, false]
+          },
+          {
             text: 'FORMA: OSSMMASOFT C.A.',
             style: 'footerText',
+            border: [false, false]
+          },
+          {
+            text: `Pág ${currentPage.toString()} de ${pageCount}`,
+            style: 'footerCurrentPage',
             border: [false, false]
           }
         ]
@@ -38,3 +46,5 @@ export const footerSection = (): Content => {
 
   return contentPdf
 }
+
+export default getFooter

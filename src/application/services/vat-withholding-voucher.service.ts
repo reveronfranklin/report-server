@@ -35,8 +35,11 @@ export class VatWithholdingVoucherService {
     }
 
     try {
+      const status = (paymentOrder.STATUS === 'AP') ?  'approved' : 'annulled'
+
       const reportScheme: ReportSchemeDto = {
         name: 'vat-withholding-voucher',
+        status: status,
         header: this.mapToReportHeader(),
         subHeader: this.mapToReportSubHeader(paymentOrder),
         body: this.mapToReportBody(paymentOrder)

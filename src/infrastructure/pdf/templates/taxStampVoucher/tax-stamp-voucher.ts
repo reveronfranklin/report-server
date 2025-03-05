@@ -7,6 +7,9 @@ import type {
 /* Dtos */
 import { ReportSchemeDto } from '../../../../application/dtos/taxStampVoucher/report-scheme.dto';
 
+/* Components */
+import getWatermark from '../../components/watermark';
+
 /* Sections */
 import { headerSection } from './sections/header';
 import { subHeaderSection } from './sections/sub-header';
@@ -29,9 +32,8 @@ const styles: StyleDictionary = {
   ...footerStyles
 };
 
-
 export function createTaxStampVoucherTemplate(data: ReportSchemeDto): TDocumentDefinitions {
-  const { header, subHeader, body } = data
+  const { status, header, subHeader, body } = data
 
   // Execute the sections before the return statement
   const headerContent: Content = headerSection({
@@ -50,13 +52,14 @@ export function createTaxStampVoucherTemplate(data: ReportSchemeDto): TDocumentD
     body
   })
 
-  //const footerContent: Content = footerSection(currentPage, pageCount)
+  const watermark = getWatermark(status)
 
   return {
     pageSize: 'LETTER',
     pageOrientation: 'portrait',
     pageMargins: [30, 480, 30, 100],
     styles: styles,
+    watermark: watermark,
     header: {
       columns: [
         {

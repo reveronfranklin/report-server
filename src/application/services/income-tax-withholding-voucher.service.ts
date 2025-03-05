@@ -35,8 +35,11 @@ export class IncomeTaxWithholdingVoucherService {
     }
 
     try {
+      const status = (paymentOrder.STATUS === 'AP') ?  'approved' : 'annulled'
+
       const reportScheme: ReportSchemeDto = {
         name: 'income-tax-withholding-voucher',
+        status: status,
         header: this.mapToReportHeader(),
         subHeader: this.mapToReportSubHeader(paymentOrder),
         body: this.mapToReportBody(paymentOrder)

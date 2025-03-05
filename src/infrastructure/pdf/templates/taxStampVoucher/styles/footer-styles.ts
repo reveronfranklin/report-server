@@ -16,14 +16,12 @@ export const footerStyles: StyleDictionary = {
     alignment: 'left'
   },
   footerText: {
-    fontSize: 10,
     color: '#444444',
     bold: false,
     alignment: 'center',
     margin: [0, 10, 0, 0]
   },
   footerCurrentPage: {
-    fontSize: 8,
     color: '#444444',
     bold: false,
     alignment: 'right',

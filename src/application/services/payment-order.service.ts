@@ -36,8 +36,11 @@ export class PaymentOrderService {
     }
 
     try {
+      const status = (paymentOrder.STATUS === 'AP') ?  'approved' : 'annulled'
+
       const reportScheme: ReportSchemeDto = {
         name: 'payment-order',
+        status: status,
         header: this.mapToReportHeader(paymentOrder),
         subHeader: this.mapToReportSubHeader(paymentOrder),
         body: this.mapToReportBody(paymentOrder)
@@ -98,7 +101,7 @@ export class PaymentOrderService {
       CEDULA_BENEFICIARIO: beneficiary?.IDENTIFICACION,
       FECHA_PLAZO_DESDE: dateSince,
       FECHA_PLAZO_HASTA: dateUntil,
-      MONTO_LETRAS: order.MONTO_LETRAS,
+      MONTO_LETRAS: order?.MONTO_LETRAS ?? null,
       FORMA_DE_PAGO: methodOfPayment?.DESCRIPCION,
       CANTIDAD_PAGO: order.CANTIDAD_PAGO
     }

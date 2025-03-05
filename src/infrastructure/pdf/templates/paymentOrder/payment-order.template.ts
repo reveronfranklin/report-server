@@ -7,17 +7,20 @@ import type {
 /* Dtos */
 import { ReportSchemeDto } from '../../../../application/dtos/paymentOrder/report-scheme.dto';
 
+/* Components */
+import getWatermark from '../../components/watermark';
+import getFooter from '../../components/footer';
+
 /* Sections */
 import { headerSection } from './sections/payment-order-header';
 import { subHeaderSection } from './sections/payment-order-sub-header';
 import { bodySection } from './sections/payment-order-body';
-import { footerSection } from './sections/payment-order-footer';
 
 /* Styles */
 import { headerStyles } from './styles/header-styles';
 import { subHeaderStyles } from './styles/sub-header-styles';
 import { bodyStyles } from './styles/body-styles';
-import { footerStyles } from './styles/footer-styles';
+import { footerStyles } from '../../components/footer/styles';
 
 const styles: StyleDictionary = {
   ...headerStyles,
@@ -27,7 +30,7 @@ const styles: StyleDictionary = {
 };
 
 export function createPaymentOrderTemplate(data: ReportSchemeDto): TDocumentDefinitions {
-  const { header, subHeader, body } = data
+  const { status, header, subHeader, body } = data
 
   // Execute the sections before the return statement
   const headerContent: Content = headerSection({
@@ -42,13 +45,14 @@ export function createPaymentOrderTemplate(data: ReportSchemeDto): TDocumentDefi
     body,
   })
 
-  const footerContent: Content = footerSection()
+  const watermark = getWatermark(status)
 
   return {
     pageSize: 'LETTER',
     pageOrientation: 'portrait',
     pageMargins: [20, 215, 60, 100],
     styles: styles,
+    watermark: watermark,
     header: {
       columns: [
         {
@@ -60,6 +64,9 @@ export function createPaymentOrderTemplate(data: ReportSchemeDto): TDocumentDefi
       ]
     },
     content: bodyContent,
-    footer: footerContent
+    footer: (currentPage, pageCount) => {
+      const footerContent: Content = getFooter(currentPage, pageCount)
+      return footerContent
+    }
   }
 }

@@ -195,10 +195,10 @@ import { PdfGeneratorFactory } from './infrastructure/pdf/pdf-generator.factory'
     TaxStampVoucherController
   ]
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
+export class AppModule /* implements NestModule */ {
+  /* configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware, ReplicatePaymentOrderMiddleware)
       .forRoutes({ path: '*', method: RequestMethod.POST });
-  }
+  } */
 }

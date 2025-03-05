@@ -81,7 +81,7 @@ export const subHeaderSection = (options: HeaderOptions): Content => {
             colSpan: 7,
             text: [
               { text: 'ÚNICO O PERIÓDICO (BOLÍVARES EN LETRAS)\n', style: 'tableSubHeaderAmountLetters' },
-              { text: `${subHeader.MONTO_LETRAS}`, style: 'tableContentSubHeaderAmountLetters' }
+              { text: `${subHeader.MONTO_LETRAS ?? ''}`, style: 'tableContentSubHeaderAmountLetters' }
             ]
           }, {}, {}, {}, {}, {}, {}
         ]

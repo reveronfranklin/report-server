@@ -35,8 +35,11 @@ export class TaxStampVoucherService {
     }
 
     try {
+      const status = (paymentOrder.STATUS === 'AP') ?  'approved' : 'annulled'
+
       const reportScheme: ReportSchemeDto = {
         name: 'tax-stamp-voucher',
+        status: status,
         header: this.mapToReportHeader(paymentOrder.NUMERO_ORDEN_PAGO),
         subHeader: this.mapToReportSubHeader(paymentOrder),
         body: this.mapToReportBody(paymentOrder)

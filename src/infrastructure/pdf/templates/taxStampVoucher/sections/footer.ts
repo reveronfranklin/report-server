@@ -1,6 +1,5 @@
 import type { Content } from 'pdfmake/interfaces';
 
-
 export const footerSection = (currentPage: number, pageCount: number): Content => {
   const contentPdf: Content = {
     style: 'footer',
