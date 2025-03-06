@@ -196,9 +196,9 @@ import { PdfGeneratorFactory } from './infrastructure/pdf/pdf-generator.factory'
   ]
 })
 export class AppModule /* implements NestModule */ {
-  /* configure(consumer: MiddlewareConsumer) {
+  configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware, ReplicatePaymentOrderMiddleware)
       .forRoutes({ path: '*', method: RequestMethod.POST });
-  } */
+  }
 }
