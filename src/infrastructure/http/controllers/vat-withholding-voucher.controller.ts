@@ -2,7 +2,7 @@ import { Controller, Post, Body, UseInterceptors, StreamableFile, Header } from 
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { VatWithholdingVoucherService } from '../../../application/services/vat-withholding-voucher.service';
 import { GenerateReportDto } from '../dtos/generate-report.dto';
-import { ApiResponseInterceptor } from '../../../interceptors/response.interceptor';
+import { ApiResponseInterceptor } from '../../interceptors/response/response.interceptor';
 import blobStream from 'blob-stream';
 
 @ApiTags('vat-withholding-voucher')

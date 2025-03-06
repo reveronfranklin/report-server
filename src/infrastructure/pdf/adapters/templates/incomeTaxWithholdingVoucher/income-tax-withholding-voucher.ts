@@ -5,22 +5,22 @@ import type {
 } from 'pdfmake/interfaces';
 
 /* Dtos */
-import { ReportSchemeDto } from '../../../../application/dtos/incomeTaxWithholdingVoucher/report-scheme.dto';
+import { ReportSchemeDto } from '../../../../../application/dtos/incomeTaxWithholdingVoucher/report-scheme.dto';
 
 /* Components */
-import getWatermark from '../../components/watermark';
-import getFooter from '../../components/footer';
+import getWatermark from '../../../adapters/components/watermark';
+import getFooter from '../../../adapters/components/footer';
 
 /* Sections */
-import { headerSection } from './sections/income-tax-withholding-header';
-import { subHeaderSection } from './sections/income-tax-withholding-sub-header';
-import { bodySection } from './sections/income-tax-withholding-body';
+import { headerSection } from './sections/header';
+import { subHeaderSection } from './sections/sub-header';
+import { bodySection } from './sections/body';
 
 /* Styles */
-import { headerStyles } from './styles/header-styles';
-import { subHeaderStyles } from './styles/sub-header-styles';
-import { bodyStyles } from './styles/body-styles';
-import { footerStyles } from '../../components/footer/styles';
+import { headerStyles } from './styles/header';
+import { subHeaderStyles } from './styles/sub-header';
+import { bodyStyles } from './styles/body';
+import { footerStyles } from '../../../adapters/components/footer/styles';
 
 const styles: StyleDictionary = {
   ...headerStyles,

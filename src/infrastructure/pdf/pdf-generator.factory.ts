@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { PdfGeneratorAdapterPaymentOrder } from './pdf-generator-payment-order.adapter';
-import { PdfGeneratorAdapterIncomeTaxWithholdingVoucher } from './pdf-generator-income-tax-withholding-voucher';
-import { PdfGeneratorAdapterVatWithholdingVoucher } from './pdf-generator-vat-withholding-voucher';
-import { PdfGeneratorAdapterTaxStampVoucher } from './pdf-generator-tax-stamp-voucher';
+import { PdfGeneratorAdapterPaymentOrder } from './adapters/payment-order';
+import { PdfGeneratorAdapterIncomeTaxWithholdingVoucher } from './adapters/income-tax-withholding-voucher';
+import { PdfGeneratorAdapterVatWithholdingVoucher } from './adapters/vat-withholding-voucher';
+import { PdfGeneratorAdapterTaxStampVoucher } from './adapters/tax-stamp-voucher';
 
 @Injectable()
 export class PdfGeneratorFactory {

@@ -3,11 +3,12 @@ import { ConfigService } from '@nestjs/config';
 import { SequelizeModuleOptions } from '@nestjs/sequelize';
 
 @Injectable()
-export class DatabaseSequelizeConfig {
+export class DatabaseSequelizeConfigService {
   constructor(private configService: ConfigService) {}
 
   createSequelizeOptions(): SequelizeModuleOptions {
-    const config = this.configService.get('database.postgres');
+    const config  = this.configService.get('database.postgres')
+    const logging = (config.logging == 'true')
 
     const sequelizeOptions: SequelizeModuleOptions = {
       dialect: config.connection,
@@ -18,9 +19,9 @@ export class DatabaseSequelizeConfig {
       database: config.database,
       synchronize: config.synchronize,
       autoLoadModels: config.autoLoadModels,
-      logging: false //config.logging
-    };
+      logging: logging
+    }
 
-    return sequelizeOptions;
+    return sequelizeOptions
   }
 }

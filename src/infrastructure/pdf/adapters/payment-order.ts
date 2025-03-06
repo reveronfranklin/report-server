@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { IPdfGenerator } from '../../domain/repositories/pdf-generator.interface';
+import { IPdfGenerator } from '../../../domain/repositories/pdf-generator.interface';
 import { createPaymentOrderTemplate } from './templates/paymentOrder/payment-order.template';
 import { PrinterService } from 'src/shared/modules/printer/printer.service';
-import { ReportSchemeDto } from '../../application/dtos/paymentOrder/report-scheme.dto';
+import { ReportSchemeDto } from '../../../application/dtos/paymentOrder/report-scheme.dto';
 
 @Injectable()
 export class PdfGeneratorAdapterPaymentOrder implements IPdfGenerator {

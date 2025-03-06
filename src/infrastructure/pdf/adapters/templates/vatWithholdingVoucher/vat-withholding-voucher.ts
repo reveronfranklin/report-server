@@ -5,22 +5,22 @@ import type {
 } from 'pdfmake/interfaces';
 
 /* Dtos */
-import { ReportSchemeDto } from '../../../../application/dtos/paymentOrder/report-scheme.dto';
+import { ReportSchemeDto } from '../../../../../application/dtos/vatWithholdingVoucher/report-scheme.dto';
 
 /* Components */
-import getWatermark from '../../components/watermark';
-import getFooter from '../../components/footer';
+import getWatermark from '../../../adapters/components/watermark';
+import getFooter from '../../../adapters/components/footer';
 
 /* Sections */
-import { headerSection } from './sections/payment-order-header';
-import { subHeaderSection } from './sections/payment-order-sub-header';
-import { bodySection } from './sections/payment-order-body';
+import { headerSection } from './sections/header';
+import { subHeaderSection } from './sections/sub-header';
+import { bodySection } from './sections/body';
 
 /* Styles */
-import { headerStyles } from './styles/header-styles';
-import { subHeaderStyles } from './styles/sub-header-styles';
-import { bodyStyles } from './styles/body-styles';
-import { footerStyles } from '../../components/footer/styles';
+import { headerStyles } from './styles/header';
+import { subHeaderStyles } from './styles/sub-header';
+import { bodyStyles } from './styles/body';
+import { footerStyles } from '../../../adapters/components/footer/styles';
 
 const styles: StyleDictionary = {
   ...headerStyles,
@@ -29,7 +29,7 @@ const styles: StyleDictionary = {
   ...footerStyles
 };
 
-export function createPaymentOrderTemplate(data: ReportSchemeDto): TDocumentDefinitions {
+export function createVatWithholdingVoucherTemplate(data: ReportSchemeDto): TDocumentDefinitions {
   const { status, header, subHeader, body } = data
 
   // Execute the sections before the return statement
@@ -49,8 +49,8 @@ export function createPaymentOrderTemplate(data: ReportSchemeDto): TDocumentDefi
 
   return {
     pageSize: 'LETTER',
-    pageOrientation: 'portrait',
-    pageMargins: [20, 215, 60, 100],
+    pageOrientation: 'landscape',
+    pageMargins: [20, 280, 20, 100],
     styles: styles,
     watermark: watermark,
     header: {

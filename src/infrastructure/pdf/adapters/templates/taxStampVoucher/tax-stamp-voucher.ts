@@ -5,10 +5,10 @@ import type {
 } from 'pdfmake/interfaces';
 
 /* Dtos */
-import { ReportSchemeDto } from '../../../../application/dtos/taxStampVoucher/report-scheme.dto';
+import { ReportSchemeDto } from '../../../../../application/dtos/taxStampVoucher/report-scheme.dto';
 
 /* Components */
-import getWatermark from '../../components/watermark';
+import getWatermark from '../../../adapters/components/watermark';
 
 /* Sections */
 import { headerSection } from './sections/header';
@@ -18,11 +18,11 @@ import { bodyTotalSection } from './sections/total';
 import { footerSection } from './sections/footer';
 
 /* Styles */
-import { headerStyles } from './styles/header-styles';
-import { subHeaderStyles } from './styles/sub-header-styles';
-import { bodyStyles } from './styles/body-styles';
-import { totalStyles } from './styles/total-styles';
-import { footerStyles } from './styles/footer-styles';
+import { headerStyles } from './styles/header';
+import { subHeaderStyles } from './styles/sub-header';
+import { bodyStyles } from './styles/body';
+import { totalStyles } from './styles/total';
+import { footerStyles } from './styles/footer';
 
 const styles: StyleDictionary = {
   ...headerStyles,

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { IPdfGenerator } from '../../domain/repositories/pdf-generator.interface';
+import { IPdfGenerator } from '../../../domain/repositories/pdf-generator.interface';
 import { PrinterService } from 'src/shared/modules/printer/printer.service';
 import { createIncomeTaxWithholdingVoucherTemplate } from './templates/incomeTaxWithholdingVoucher/income-tax-withholding-voucher'
-import { ReportSchemeDto } from '../../application/dtos/incomeTaxWithholdingVoucher/report-scheme.dto';
+import { ReportSchemeDto } from '../../../application/dtos/incomeTaxWithholdingVoucher/report-scheme.dto';
 
 @Injectable()
 export class PdfGeneratorAdapterIncomeTaxWithholdingVoucher implements IPdfGenerator {

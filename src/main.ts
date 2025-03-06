@@ -1,44 +1,65 @@
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
+import { Logger } from '@nestjs/common';
 import { AppModule } from './app.module';
+import { configureCors } from './config/cors';
+import { Request, Response, NextFunction } from 'express';
+
+const clientIp = {
+  ip: 'localhost'
+}
+
+const getClientIp = (req: Request, res: Response, next: NextFunction) => {
+  // Obtener la dirección IP
+  let ip = req?.ip ?? 'localhost'
+
+  // Convertir a IPv4 si es necesario
+  if (ip.startsWith('::ffff:')) {
+    ip = ip.substring(7) // Eliminar la parte '::ffff:'
+  }
+
+  clientIp.ip = ip
+
+  next()
+}
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const logger = new Logger('Bootstrap')
 
-  const configService = app.get(ConfigService);
-  const { port, prefix, allowedOrigins } = configService.get('server');
+  try {
+    // Crear la aplicación NestJS
+    const app = await NestFactory.create(AppModule, {
+      logger: ['error', 'warn', 'log', 'debug', 'verbose'],
+    })
 
-  // CORS
-  app.enableCors({
-    origin: (origin, callback) => {
-      console.log(`Solicitud recibida desde origen: ${origin}`);
-      if (origin === undefined) {
-        console.log('Solicitud recibida sin origen definido');
-        // Decide si quieres permitir o rechazar estas solicitudes
-        // Para permitir:
-        //callback(null, true);
-        // Para rechazar:
-        console.log('Solicitud recibida sin origen definido');
-        callback(new Error('No se permiten solicitudes sin origen'), false);
-      } else if (allowedOrigins.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        console.log(`Solicitud CORS rechazada desde origen: ${origin}`);
-        callback(new Error('No permitido por CORS'), false);
-      }
-    },
-    methods: 'POST',
-    credentials: true,
-    preflightContinue: false,
-    allowedHeaders: 'Content-Type, Authorization, x-refresh-token',
-    exposedHeaders: 'access-control-allow-origin'
-  });
+    // Registrar el middleware antes de iniciar el servidor
+    app.use(getClientIp);
 
-  // Global prefix
-  app.setGlobalPrefix(prefix);
+    // Obtener la configuración
+    const configService = app.get(ConfigService)
+    const { port, prefix, allowedOrigins } = configService.get('server')
 
-  await app.listen(port, () => {
-    console.log(`Servidor ejecutándose en el puerto ${port}`);
-  });
+    // Configurar CORS
+    configureCors(app, allowedOrigins)
+
+    // Configurar prefijo global
+    app.setGlobalPrefix(prefix)
+
+    // Iniciar el servidor
+    await app.listen(port)
+
+    const serverUrl = `http${app.getHttpAdapter().getHttpServer().secure ? 's' : ''}://${clientIp.ip}:${port}/${prefix}`;
+
+    logger.log(`Servidor ejecutándose en el puerto ${port}`);
+    logger.log(`Aplicación disponible en: ${serverUrl}`);
+  } catch (error) {
+    logger.error(`Error al iniciar la aplicación: ${error.message}`, error.stack)
+    process.exit(1)
+  }
 }
-bootstrap();
+
+// Iniciar la aplicación
+bootstrap().catch(err => {
+  console.error('Error durante el arranque:', err)
+  process.exit(1)
+})

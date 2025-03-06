@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { IPdfGenerator } from '../../domain/repositories/pdf-generator.interface';
+import { IPdfGenerator } from '../../../domain/repositories/pdf-generator.interface';
 import { PrinterService } from 'src/shared/modules/printer/printer.service';
 import { createVatWithholdingVoucherTemplate } from './templates/vatWithholdingVoucher/vat-withholding-voucher'
-import { ReportSchemeDto } from '../../application/dtos/vatWithholdingVoucher/report-scheme.dto';
+import { ReportSchemeDto } from '../../../application/dtos/vatWithholdingVoucher/report-scheme.dto';
 
 @Injectable()
 export class PdfGeneratorAdapterVatWithholdingVoucher implements IPdfGenerator {
