@@ -31,50 +31,145 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
 
   async findByIdWithPaymentOrder(id: number): Promise<PaymentOrderEntity | null> {
     const options = {
+      attributes: [
+        'paymentOrderCode',
+        'paymentOrderNumber',
+        'paymentOrderDate',
+        'reportTitle',
+        'deadlineEndDate',
+        'deadlineStartDate',
+        'amountInWords',
+        'status',
+        'paymentAmount',
+        'reason',
+        'supplierCode',
+        'paymentFrequencyId',
+        'paymentOrderTypeId'
+      ],
       include: [
-        { model: DescriptiveModel, as: 'TIPO_ORDEN_PAGO' },
-        { model: DescriptiveModel, as: 'FRECUENCIA_PAGO' },
+        {
+          model: DescriptiveModel,
+          as: 'paymentOrderType',
+          attributes: [
+            'code',
+            'description',
+            'descriptionId'
+          ]
+        },
+        {
+          model: DescriptiveModel,
+          as: 'paymentFrequency',
+          attributes: [
+            'code',
+            'description',
+            'descriptionId'
+          ]
+        },
         {
           model: SupplierModel,
-          as: 'PROVEEDOR',
+          as: 'supplier',
+          attributes: [
+            'identificationCard',
+            'providerCode',
+            'providerName',
+            'taxId'
+          ],
           include: [
             {
               model: BeneficiaryModel,
-              as: 'BENEFICIARIES',
-              where: { PRINCIPAL: 1 },
-              required: false  // This makes it a LEFT OUTER JOIN
+              as: 'beneficiaries',
+              attributes: [
+                'firstName',
+                'identification',
+                'identificationId',
+                'lastName',
+                'providerCode',
+                'providerContactCode'
+              ],
+              where: {
+                PRINCIPAL: 1
+              },
+              required: false // This makes it a LEFT OUTER JOIN
             }
           ]
         },
         {
           model: PucPaymentOrderModel,
-          as: 'PUC_PAYMENT_ORDERS',
+          as: 'pucPaymentOrders',
           required: false,
-          // Testear
+          attributes: [
+            'amount',
+            'balanceCode',
+            'paymentOrderCode',
+            'pucPaymentOrderCode'
+          ],
           where: this.sequelize.literal(`
             "CODIGO_PUC_ORDEN_PAGO" IN (
-              SELECT DISTINCT ON ("CODIGO_SALDO") "CODIGO_PUC_ORDEN_PAGO"
-              FROM public."ADM_PUC_ORDEN_PAGO"
-              ORDER BY "CODIGO_SALDO", "CODIGO_PUC_ORDEN_PAGO"
+              SELECT
+                DISTINCT ON ("CODIGO_SALDO") "CODIGO_PUC_ORDEN_PAGO"
+              FROM
+                public."ADM_PUC_ORDEN_PAGO"
+              ORDER BY
+                "CODIGO_SALDO",
+                "CODIGO_PUC_ORDEN_PAGO"
             )
           `),
-          //order: [['CODIGO_PUC_ORDEN_PAGO', 'DESC']],
           include: [
-            { model: BalanceModel, as: 'BALANCE' }
+            {
+              model: BalanceModel,
+              as: 'balance',
+              attributes: [
+                'balanceCode',
+                'financedDescription',
+                'icpCodeConcat',
+                'pucCodeConcat',
+                'pucDenomination',
+                'year'
+              ]
+            }
           ]
         },
         {
           model: CommitmentModel,
-          as: 'COMMITMENT',
+          as: 'commitment',
+          attributes: [
+            'commitmentCodeOp',
+            'identifierCode',
+            'paymentOrderCode'
+          ],
           include: [
-            { model: PreCommitmentModel, as: 'PRE_COMMITMENT' }
+            {
+              model:
+              PreCommitmentModel,
+              as: 'preCommitment',
+              attributes: [
+                'commitmentCode',
+                'commitmentDate',
+                'commitmentNumber'
+              ]
+            }
           ]
         },
         {
           model: WithholdingOpModel,
-          as: 'WITHHOLDINGS',
+          as: 'withholdingOps',
+          attributes: [
+            'byRetention',
+            'opRetentionCode',
+            'paymentOrderCode',
+            'retentionAmount',
+            'withholdingTypeId'
+          ],
           include: [
-            { model: DescriptiveModel, as: 'DESCRIPCION' }
+            {
+              model: DescriptiveModel,
+              as: 'retentionType',
+              attributes: [
+                'code',
+                'description',
+                'descriptionId'
+              ]
+            }
           ]
         }
       ]
@@ -82,13 +177,13 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
 
     const paymentOrderModel = await this.paymentOrderModel.findByPk(id, options)
 
-    /* responses */
     return paymentOrderModel ? PaymentOrderMapper.toDomain(paymentOrderModel) : null
   }
 
   async findByIdWithHoldingISLR(id: number): Promise<PaymentOrderEntity | null> {
     const options = {
       attributes: [
+        'CODIGO_ORDEN_PAGO',
         'NOMBRE_AGENTE_RETENCION',
         'TELEFONO_AGENTE_RETENCION',
         'RIF_AGENTE_RETENCION',
@@ -151,6 +246,7 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
   async findByIdWithHoldingVat(id: number): Promise<PaymentOrderEntity | null> {
     const options = {
       attributes: [
+        'CODIGO_ORDEN_PAGO',
         'NUMERO_COMPROBANTE',
         'NOMBRE_AGENTE_RETENCION',
         'RIF_AGENTE_RETENCION',
@@ -191,6 +287,7 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
               model: DescriptiveModel,
               as: 'TYPE_DOCUMENT',
               attributes: [
+                'DESCRIPCION_ID',
                 'EXTRA1',
                 'EXTRA2',
                 'EXTRA3',
@@ -201,6 +298,7 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
               model: DescriptiveModel,
               as: 'TAX_TYPE',
               attributes: [
+                'DESCRIPCION_ID',
                 'EXTRA1',
                 'CODIGO'
               ]
@@ -219,6 +317,7 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
   async findByIdTaxStamp(id: number): Promise<PaymentOrderEntity | null> {
     const options = {
       attributes: [
+        'CODIGO_ORDEN_PAGO',
         'NOMBRE_AGENTE_RETENCION',
         'RIF_AGENTE_RETENCION',
         'NUMERO_ORDEN_PAGO',

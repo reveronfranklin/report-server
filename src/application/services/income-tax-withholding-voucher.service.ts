@@ -35,7 +35,7 @@ export class IncomeTaxWithholdingVoucherService {
     }
 
     try {
-      const status = (paymentOrder.STATUS === 'AP') ?  'approved' : 'annulled'
+      const status = (paymentOrder.status === 'AP') ?  'approved' : 'annulled'
 
       const reportScheme: ReportSchemeDto = {
         name: 'income-tax-withholding-voucher',
@@ -114,23 +114,23 @@ export class IncomeTaxWithholdingVoucherService {
   }
 
   private mapToReportSubHeader(order: PaymentOrderEntity): ReportSubHeaderDto {
-    const supplier = order?.PROVEEDOR ?? null
+    const supplier = order?.supplier ?? null
 
     return {
-      NOMBRE_AGENTE_RETENCION: order.NOMBRE_AGENTE_RETENCION,
-      TELEFONO_AGENTE_RETENCION: order.TELEFONO_AGENTE_RETENCION,
-      RIF_AGENTE_RETENCION: this.formatRIF(order.RIF_AGENTE_RETENCION),
-      DIRECCION_AGENTE_RETENCION: order.DIRECCION_AGENTE_RETENCION,
-      FECHA: this.formatDate(order.FECHA_INS),
-      PERIODO_FISCAL: this.formatFiscalPeriod(order.FECHA_INS),
-      NOMBRE_SUJETO_RETENIDO: supplier.NOMBRE_PROVEEDOR,
-      RIF_SUJETO_RETENIDO: this.formatRIF(supplier?.RIF),
-      NRO_ORDEN_PAGO: order.NUMERO_ORDEN_PAGO
+      NOMBRE_AGENTE_RETENCION: order.withholdingAgentName,
+      TELEFONO_AGENTE_RETENCION: order.withholdingAgentPhone,
+      RIF_AGENTE_RETENCION: this.formatRIF(order.withholdingAgentRIF),
+      DIRECCION_AGENTE_RETENCION: order.withholdingAgentAddress,
+      FECHA: this.formatDate(order.insertionDate),
+      PERIODO_FISCAL: this.formatFiscalPeriod(order.insertionDate),
+      NOMBRE_SUJETO_RETENIDO: supplier.providerName,
+      RIF_SUJETO_RETENIDO: this.formatRIF(supplier?.taxId),
+      NRO_ORDEN_PAGO: order.paymentOrderNumber
     }
   }
 
   private mapToReportBody(order: PaymentOrderEntity): ReportBodyDto {
-    const documents = order?.DOCUMENTS ?? []
+    const documents = order?.documents ?? []
 
     let totalTaxableIncome: number = 0
     let totalIncomeTaxWithheld: number = 0

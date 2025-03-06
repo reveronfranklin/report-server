@@ -2,19 +2,11 @@ import { IDescriptive } from '../interfaces/descriptive.interface';
 
 export class DescriptiveEntity implements IDescriptive {
   constructor(
-    public DESCRIPCION_ID: number,
-    public DESCRIPCION_FK_ID: number | null,
-    public TITULO_ID: number,
-    public DESCRIPCION: string,
-    public CODIGO: string,
-    public EXTRA1: string | null,
-    public EXTRA2: string | null,
-    public EXTRA3: string | null,
-    public USUARIO_INS: number,
-    public FECHA_INS: Date,
-    public USUARIO_UPD: number,
-    public FECHA_UPD: Date,
-    public CODIGO_EMPRESA: number,
-    public EXTRA4: string | null
+    public code: string,
+    public description: string,
+    public descriptionId: number,
+    public extra1: string | null,
+    public extra2: string | null,
+    public extra3: string | null,
   ) {}
 }

@@ -35,7 +35,7 @@ export class VatWithholdingVoucherService {
     }
 
     try {
-      const status = (paymentOrder.STATUS === 'AP') ?  'approved' : 'annulled'
+      const status = (paymentOrder.status === 'AP') ?  'approved' : 'annulled'
 
       const reportScheme: ReportSchemeDto = {
         name: 'vat-withholding-voucher',
@@ -128,23 +128,23 @@ export class VatWithholdingVoucherService {
   }
 
   private mapToReportSubHeader(order: PaymentOrderEntity): ReportSubHeaderDto {
-    const supplier = order?.PROVEEDOR ?? null
+    const supplier = order?.supplier ?? null
 
     return {
-      date: this.formatDate(order.FECHA_INS),
-      voucherNumber: order.NUMERO_COMPROBANTE,
-      nameWithholdingAgent:  order.NOMBRE_AGENTE_RETENCION,
-      withholdingAgentRif: this.formatRIF(order.RIF_AGENTE_RETENCION),
-      withholdingAgentAddress: order.DIRECCION_AGENTE_RETENCION,
-      fiscalPeriod: this.formatFiscalPeriod(order.FECHA_INS),
-      subjectNameWithheld: supplier.NOMBRE_PROVEEDOR,
-      subjectNameWithheldRif: this.formatRIF(supplier?.RIF),
-      paymentOrderNumber: order.NUMERO_ORDEN_PAGO
+      date: this.formatDate(order.insertionDate),
+      voucherNumber: order.receiptNumber,
+      nameWithholdingAgent:  order.withholdingAgentName,
+      withholdingAgentRif: this.formatRIF(order.withholdingAgentRIF),
+      withholdingAgentAddress: order.withholdingAgentAddress,
+      fiscalPeriod: this.formatFiscalPeriod(order.insertionDate),
+      subjectNameWithheld: supplier.providerName,
+      subjectNameWithheldRif: this.formatRIF(supplier?.taxId),
+      paymentOrderNumber: order.paymentOrderNumber
     }
   }
 
   private mapToReportBody(order: PaymentOrderEntity): ReportBodyDto {
-    const documents = order?.DOCUMENTS ?? []
+    const documents = order?.documents ?? []
 
     let totalPurchasesVat: number     = 0
     let totalPurchasesCredit: number  = 0
@@ -156,11 +156,11 @@ export class VatWithholdingVoucherService {
 
     documents.forEach((document, index) => {
       const operationNumber   = index + 1
-      const transactionType   = document.TYPE_DOCUMENT?.EXTRA1
+      const transactionType   = document.TYPE_DOCUMENT?.extra1
       /* Review with franklin */
-      const debitNoteNumber   = null //document.TYPE_DOCUMENT?.EXTRA2
-      const creditNoteNumber  = null //document.TYPE_DOCUMENT?.EXTRA3
-      const taxType           = document.TAX_TYPE?.EXTRA1
+      const debitNoteNumber   = null //document.TYPE_DOCUMENT?.extra2
+      const creditNoteNumber  = null //document.TYPE_DOCUMENT?.extra3
+      const taxType           = document.TAX_TYPE?.extra1
 
       const data = {
         operationNumber,

@@ -35,12 +35,12 @@ export class TaxStampVoucherService {
     }
 
     try {
-      const status = (paymentOrder.STATUS === 'AP') ?  'approved' : 'annulled'
+      const status = (paymentOrder.status === 'AP') ?  'approved' : 'annulled'
 
       const reportScheme: ReportSchemeDto = {
         name: 'tax-stamp-voucher',
         status: status,
-        header: this.mapToReportHeader(paymentOrder.NUMERO_ORDEN_PAGO),
+        header: this.mapToReportHeader(paymentOrder.paymentOrderNumber),
         subHeader: this.mapToReportSubHeader(paymentOrder),
         body: this.mapToReportBody(paymentOrder)
       }
@@ -102,28 +102,28 @@ export class TaxStampVoucherService {
   }
 
   private mapToReportSubHeader(order: PaymentOrderEntity): ReportSubHeaderDto {
-    const supplier = order?.PROVEEDOR ?? null
+    const supplier = order?.supplier ?? null
 
     return {
-      nameWithholdingAgent: order?.NOMBRE_AGENTE_RETENCION.trim() ?? null,
-      withholdingAgentRif: this.formatRIF(order.RIF_AGENTE_RETENCION),
-      taxpayerName: supplier?.NOMBRE_PROVEEDOR.trim() ?? null,
-      taxpayerRifNumber: this.formatRIF(supplier?.RIF),
-      reason: order?.MOTIVO.trim() ?? null
+      nameWithholdingAgent: order?.withholdingAgentName.trim() ?? null,
+      withholdingAgentRif: this.formatRIF(order.withholdingAgentRIF),
+      taxpayerName: supplier?.providerName.trim() ?? null,
+      taxpayerRifNumber: this.formatRIF(supplier?.taxId),
+      reason: order?.reason.trim() ?? null
     }
   }
 
   private mapToReportBody(order: PaymentOrderEntity): ReportBodyDto {
-    const documents    = order?.DOCUMENTS ?? []
-    const withHoldings = order?.WITHHOLDINGS ?? []
+    const documents    = order?.documents ?? []
+    const withHoldings = order?.withholdingOps ?? []
 
     let totalGrossAmount: number      = 0
     let totalAmountVat: number        = 0
     let totalNetTaxableIncome: number = 0
     let totalTaxExempt: number        = 0
 
-    let taxBase                         = withHoldings[0]?.baseImponible ? Number(withHoldings[0].baseImponible) : 0
-    let withholdingPercentage: number   = withHoldings[0]?.montoRetencion ? Number(withHoldings[0].montoRetencion) : 0
+    let taxBase                         = withHoldings[0]?.taxableBase ? Number(withHoldings[0].taxableBase) : 0
+    let withholdingPercentage: number   = withHoldings[0]?.retentionAmount ? Number(withHoldings[0].retentionAmount) : 0
 
     const listWithholding: WithholdingDto[] = []
 
