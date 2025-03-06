@@ -7,15 +7,17 @@ import { INestApplication } from '@nestjs/common';
  * @param app Instancia de la aplicación NestJS
  * @param allowedOrigins Array de orígenes permitidos
  */
-export function configureCors(app: INestApplication, allowedOrigins: string[]): void {
+const configureCors = (app: INestApplication, allowedOrigins: string[], environment: string): void => {
   const logger = new Logger('CORS')
+  logger.log(`Configurando CORS para el entorno: ${environment}`)
 
   const corsOptions: CorsOptions = {
     origin: (origin, callback) => {
       // Manejar solicitudes sin origen (como las de Postman o curl)
       if (!origin) {
         logger.warn('Solicitud recibida sin origen definido')
-        if (process.env.NODE_ENV === 'development') {
+
+        if (environment === 'development') {
           return callback(null, true)
         }
 
@@ -37,7 +39,9 @@ export function configureCors(app: INestApplication, allowedOrigins: string[]): 
     preflightContinue: false,
     allowedHeaders: 'Content-Type, Authorization, x-refresh-token',
     exposedHeaders: 'access-control-allow-origin'
-  };
+  }
 
   app.enableCors(corsOptions)
 }
+
+export default configureCors
