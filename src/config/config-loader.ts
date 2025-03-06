@@ -4,7 +4,7 @@ export const configLoader = () => ({
     prefix: process.env.PREFIX,
     allowedOrigins: process.env.ALLOWED_ORIGINS
   },
-  environment: 'development',
+  environment: process.env.NODE_ENV,
   database: {
     postgres: {
       name: process.env.DB_CONNECTION_NAME,

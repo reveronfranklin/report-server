@@ -27,47 +27,36 @@ import { PaymentOrderController } from './infrastructure/http/controllers/paymen
 
 /* Module Descriptive */
 import { DescriptiveModel } from './infrastructure/persistence/models/descriptive.model';
-import { DescriptiveRepository } from './infrastructure/persistence/repositories/descriptive.repository';
 
 /* Module Supplier */
 import { SupplierModel } from './infrastructure/persistence/models/supplier.model';
-import { SupplierRepository } from './infrastructure/persistence/repositories/supplier.repository';
 
 /* Module Beneficiary */
 import { BeneficiaryModel } from './infrastructure/persistence/models/beneficiary.model';
-import { BeneficiaryRepository } from './infrastructure/persistence/repositories/beneficiary.repository';
 
 /* Module Balance */
 import { BalanceModel } from './infrastructure/persistence/models/balance.model';
-import { BalanceRepository } from './infrastructure/persistence/repositories/balance.repository';
 
 /* Module PucPaymentOrder */
 import { PucPaymentOrderModel } from './infrastructure/persistence/models/puc-payment-order.model';
-import { PucPaymentOrderRepository } from './infrastructure/persistence/repositories/puc-payment-order.repository';
 
 /* Module CommitmentModel */
 import { CommitmentModel } from './infrastructure/persistence/models/commitment.model';
-import { CommitmentRepository } from './infrastructure/persistence/repositories/commitment.repository';
 
 /* Module PreCommitmentModel */
 import { PreCommitmentModel } from './infrastructure/persistence/models/pre-commitment.model';
-import { PreCommitmentRepository } from './infrastructure/persistence/repositories/pre-commitment.repository';
 
 /* Module WithholdingOpModel */
 import { WithholdingOpModel } from './infrastructure/persistence/models/withholding-op.model';
-import { WithholdingOpRepository } from './infrastructure/persistence/repositories/withholding-op.repository';
 
 /* Module WithholdingModel */
 import { WithholdingModel } from './infrastructure/persistence/models/withholding.model';
-import { WithholdingRepository } from './infrastructure/persistence/repositories/withholding.repository';
 
 /* Module DocumentModel */
 import { DocumentModel } from './infrastructure/persistence/models/document.model';
-import { DocumentRepository } from './infrastructure/persistence/repositories/document.repository';
 
 /* Module TaxDocumentModel */
 import { TaxDocumentModel } from './infrastructure/persistence/models/tax-document.model';
-import { TaxDocumentRepository } from './infrastructure/persistence/repositories/tax-document.repository';
 
 /* Module IncomeTaxWithholdingVoucher */
 import { IncomeTaxWithholdingVoucherController} from './infrastructure/http/controllers/income-tax-withholding-voucher.controller';
@@ -82,10 +71,10 @@ import { TaxStampVoucherController} from './infrastructure/http/controllers/tax-
 import { TaxStampVoucherService } from './application/services/tax-stamp-voucher.service';
 
 /* Resources */
-import { PdfGeneratorAdapterPaymentOrder } from './infrastructure/pdf/pdf-generator-payment-order.adapter';
-import { PdfGeneratorAdapterIncomeTaxWithholdingVoucher } from './infrastructure/pdf/pdf-generator-income-tax-withholding-voucher';
-import { PdfGeneratorAdapterVatWithholdingVoucher } from './infrastructure/pdf/pdf-generator-vat-withholding-voucher';
-import { PdfGeneratorAdapterTaxStampVoucher } from './infrastructure/pdf/pdf-generator-tax-stamp-voucher';
+import { PdfGeneratorAdapterPaymentOrder } from './infrastructure/pdf/adapters/payment-order';
+import { PdfGeneratorAdapterIncomeTaxWithholdingVoucher } from './infrastructure/pdf/adapters/income-tax-withholding-voucher';
+import { PdfGeneratorAdapterVatWithholdingVoucher } from './infrastructure/pdf/adapters/vat-withholding-voucher';
+import { PdfGeneratorAdapterTaxStampVoucher } from './infrastructure/pdf/adapters/tax-stamp-voucher';
 import { PrinterModule } from 'src/shared/modules/printer/printer.module';
 
 /* Factories */
@@ -138,50 +127,6 @@ import { PdfGeneratorFactory } from './infrastructure/pdf/pdf-generator.factory'
     {
       provide: 'IPaymentOrderRepository',
       useClass: PaymentOrderRepository
-    },
-    {
-      provide: 'IDescriptiveRepository',
-      useClass: DescriptiveRepository
-    },
-    {
-      provide: 'ISupplierRepository',
-      useClass: SupplierRepository
-    },
-    {
-      provide: 'IBeneficiaryRepository',
-      useClass: BeneficiaryRepository
-    },
-    {
-      provide: 'IBalanceRepository',
-      useClass: BalanceRepository
-    },
-    {
-      provide: 'IPucPaymentOrderRepository',
-      useClass: PucPaymentOrderRepository
-    },
-    {
-      provide: 'ICommitmentRepository',
-      useClass: CommitmentRepository
-    },
-    {
-      provide: 'IPreCommitmentRepository',
-      useClass: PreCommitmentRepository
-    },
-    {
-      provide: 'IWithholdingOpRepository',
-      useClass: WithholdingOpRepository
-    },
-    {
-      provide: 'IWithholdingRepository',
-      useClass: WithholdingRepository,
-    },
-    {
-      provide: 'IDocumentRepository',
-      useClass: DocumentRepository
-    },
-    {
-      provide: 'ITaxDocumentRepository',
-      useClass: TaxDocumentRepository,
     },
     {
       provide: 'IPdfGenerator',
