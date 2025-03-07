@@ -10,18 +10,17 @@ import { envSchema } from './config/env-schema';
 import { DatabaseModule } from './shared/modules/db/database.module';
 
 /* Middleware Auth */
-import { AuthRepository } from './domain/repositories/auth.repository';
+import { AuthRepository } from './domain/repositories/auth.repository.interface';
 import { AuthAdapter } from './infrastructure/http/adapters/auth.adapter';
 import { AuthMiddleware } from './infrastructure/http/middleware/auth.middleware';
 
 /* Middleware Replicate Payment Order */
-import { ReplicatePaymentOrderRepository } from './domain/repositories/replicate-payment-order.repository';
+import { ReplicatePaymentOrderRepository } from './domain/repositories/replicate-payment-order.repository.interface';
 import { ReplicatePaymentOrderAdapter } from './infrastructure/http/adapters/replicate-payment-order.adapter';
 import { ReplicatePaymentOrderMiddleware } from './infrastructure/http/middleware/replicate-payment-order.middleware';
 
 /* Module Payment Order */
 import { PaymentOrderModel } from './infrastructure/persistence/models/payment-order.model';
-import { PaymentOrderRepository } from './infrastructure/persistence/repositories/payment-order.repository';
 import { PaymentOrderService } from './application/services/payment-order.service';
 import { PaymentOrderController } from './infrastructure/http/controllers/payment-order.controller';
 
@@ -77,6 +76,12 @@ import { PdfGeneratorAdapterVatWithholdingVoucher } from './infrastructure/pdf/a
 import { PdfGeneratorAdapterTaxStampVoucher } from './infrastructure/pdf/adapters/tax-stamp-voucher';
 import { PrinterModule } from 'src/shared/modules/printer/printer.module';
 
+/* Repositories */
+import { PaymentOrderRepository } from './infrastructure/persistence/repositories/payment-order.repository';
+import { VatWithholdingVoucherRepository } from './infrastructure/persistence/repositories/vat-withholding-voucher.repository';
+import { TaxStampVoucherRepository } from './infrastructure/persistence/repositories/tax-stamp-voucher.repository';
+import { IncomeTaxWithholdingVoucherRepository } from './infrastructure/persistence/repositories/income-tax-withholding-voucher.repository';
+
 /* Factories */
 import { PdfGeneratorFactory } from './infrastructure/pdf/pdf-generator.factory';
 
@@ -127,6 +132,18 @@ import { PdfGeneratorFactory } from './infrastructure/pdf/pdf-generator.factory'
     {
       provide: 'IPaymentOrderRepository',
       useClass: PaymentOrderRepository
+    },
+    {
+      provide: 'IVatWithholdingVoucherRepository',
+      useClass: VatWithholdingVoucherRepository
+    },
+    {
+      provide: 'ITaxStampVoucherRepository',
+      useClass: TaxStampVoucherRepository
+    },
+    {
+      provide: 'IIncomeTaxWithholdingVoucherRepository',
+      useClass: IncomeTaxWithholdingVoucherRepository
     },
     {
       provide: 'IPdfGenerator',

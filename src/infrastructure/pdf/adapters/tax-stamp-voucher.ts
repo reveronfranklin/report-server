@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { IPdfGenerator } from '../../../domain/repositories/pdf-generator.interface';
+import { IPdfGenerator } from '../../../domain/repositories/pdf-generator.repository.interface';
 import { PrinterService } from 'src/shared/modules/printer/printer.service';
 import { createTaxStampVoucherTemplate } from './templates/taxStampVoucher/tax-stamp-voucher'
 import { ReportSchemeDto } from '../../../application/dtos/taxStampVoucher/report-scheme.dto';
