@@ -7,12 +7,12 @@ import { DescriptiveModel } from './descriptive.model';
   withISLR: {
     include: [{
       model: DescriptiveModel,
-      as: 'TIPO_RETENCION',
+      as: 'retentionType',
       where: {
-        CODIGO: 'ISLR'
+        code: 'ISLR'
       },
       attributes: [
-        'CODIGO'
+        'code'
       ]
     }]
   }
@@ -28,7 +28,7 @@ export class TaxDocumentModel extends Model<TaxDocumentModel> {
     primaryKey: true,
     field: 'CODIGO_IMPUESTO_DOCUMENTO_OP'
   })
-  CODIGO_IMPUESTO_DOCUMENTO_OP!: number;
+  taxDocumentOperationCode!: number;
 
   /* Foreing Keys */
 
@@ -36,108 +36,58 @@ export class TaxDocumentModel extends Model<TaxDocumentModel> {
   @Column({
     field: 'CODIGO_DOCUMENTO_OP'
   })
-  CODIGO_DOCUMENTO_OP!: number;
+  documentOperationCode!: number;
 
   @ForeignKey(() => WithholdingModel)
   @Column({
     field: 'CODIGO_RETENCION'
   })
-  CODIGO_RETENCION!: number;
+  retentionCode!: number;
 
   @ForeignKey(() => DescriptiveModel)
   @Column({
     field: 'TIPO_RETENCION_ID'
   })
-  TIPO_RETENCION_ID!: number;
+  retentionTypeId!: number;
 
   /* Foreing Keys */
 
-  /* Associations */
-
-  @BelongsTo(() => DocumentModel, { foreignKey: 'CODIGO_DOCUMENTO_OP', as: 'DOCUMENT' })
-  DOCUMENT: DocumentModel;
-
-  @BelongsTo(() => WithholdingModel, { foreignKey: 'CODIGO_RETENCION', as: 'WITHHOLDING' })
-  WITHHOLDING: WithholdingModel;
-
-  @BelongsTo(() => DescriptiveModel, 'TIPO_RETENCION_ID')
-  TIPO_RETENCION: DescriptiveModel;
-
-  /* Associations */
-
-  @Column({
-    field: 'TIPO_IMPUESTO_ID'
-  })
-  TIPO_IMPUESTO_ID!: number;
-
-  @Column({
-    field: 'PERIODO_IMPOSITIVO'
-  })
-  PERIODO_IMPOSITIVO!: string;
-
-  @Column({
-    field: 'BASE_IMPONIBLE',
-    type: DataType.DECIMAL(18, 2)
-  })
-  BASE_IMPONIBLE!: number;
-
-  @Column({
-    field: 'MONTO_IMPUESTO',
-    type: DataType.DECIMAL(18, 2)
-  })
-  MONTO_IMPUESTO!: number;
 
   @Column({
     field: 'MONTO_IMPUESTO_EXENTO',
     type: DataType.DECIMAL(18, 2)
   })
-  MONTO_IMPUESTO_EXENTO!: number;
+  exemptTaxAmount!: number;
 
   @Column({
-    field: 'MONTO_RETENIDO',
+    field: 'BASE_IMPONIBLE',
     type: DataType.DECIMAL(18, 2)
   })
-  MONTO_RETENIDO!: number;
+  taxableBase!: number;
 
   @Column({
-    field: 'EXTRA1'
+    field: 'MONTO_IMPUESTO',
+    type: DataType.DECIMAL(18, 2)
   })
-  EXTRA1!: string;
+  taxAmount!: number;
 
-  @Column({
-    field: 'EXTRA2'
-  })
-  EXTRA2!: string;
 
-  @Column({
-    field: 'EXTRA3'
-  })
-  EXTRA3!: string;
+  /* Associations */
 
-  @Column({
-    field: 'USUARIO_INS'
+  @BelongsTo(() => DocumentModel, {
+    foreignKey: 'CODIGO_DOCUMENTO_OP',
+    as: 'document'
   })
-  USUARIO_INS!: string;
+  document: DocumentModel;
 
-  @Column({
-    field: 'FECHA_INS',
-    type: DataType.DATE
+  @BelongsTo(() => WithholdingModel, {
+    foreignKey: 'CODIGO_RETENCION',
+    as: 'withholding'
   })
-  FECHA_INS!: Date;
+  withholding: WithholdingModel;
 
-  @Column({
-    field: 'USUARIO_UPD'
-  })
-  USUARIO_UPD!: string;
+  @BelongsTo(() => DescriptiveModel, 'TIPO_RETENCION_ID')
+  retentionType: DescriptiveModel;
 
-  @Column({
-    field: 'FECHA_UPD',
-    type: DataType.DATE
-  })
-  FECHA_UPD!: Date;
-
-  @Column({
-    field: 'CODIGO_EMPRESA'
-  })
-  CODIGO_EMPRESA!: number;
+  /* Associations */
 }

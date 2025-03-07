@@ -19,7 +19,7 @@ export class PaymentOrderModel extends Model<PaymentOrderModel> implements IPaym
     autoIncrement: true,
     field: 'CODIGO_ORDEN_PAGO'
   })
-  CODIGO_ORDEN_PAGO: number;
+  paymentOrderCode: number;
 
   /* Foreing Keys */
 
@@ -28,369 +28,162 @@ export class PaymentOrderModel extends Model<PaymentOrderModel> implements IPaym
     type: DataType.INTEGER,
     field: 'TIPO_ORDEN_PAGO_ID'
   })
-  TIPO_ORDEN_PAGO_ID: number;
+  paymentOrderTypeId: number;
 
   @ForeignKey(() => DescriptiveModel)
   @Column({
     type: DataType.INTEGER,
     field: 'FRECUENCIA_PAGO_ID'
   })
-  FRECUENCIA_PAGO_ID: number;
+  paymentFrequencyId: number;
 
   @ForeignKey(() => SupplierModel)
   @Column({
     type: DataType.INTEGER,
     field: 'CODIGO_PROVEEDOR'
   })
-  CODIGO_PROVEEDOR: number;
+  supplierCode: number;
 
   /* Foreing Keys */
-
-  /* Associations */
-
-  @BelongsTo(() => DescriptiveModel, { foreignKey: 'TIPO_ORDEN_PAGO_ID', as: 'TIPO_ORDEN_PAGO' })
-  TIPO_ORDEN_PAGO: DescriptiveModel;
-
-  @BelongsTo(() => DescriptiveModel, { foreignKey: 'FRECUENCIA_PAGO_ID', as: 'FRECUENCIA_PAGO' })
-  FRECUENCIA_PAGO: DescriptiveModel;
-
-  @BelongsTo(() => SupplierModel, { foreignKey: 'CODIGO_PROVEEDOR', as: 'PROVEEDOR' })
-  PROVEEDOR: SupplierModel;
-
-  @HasMany(() => PucPaymentOrderModel, { foreignKey: 'CODIGO_ORDEN_PAGO' })
-  PUC_PAYMENT_ORDERS: PucPaymentOrderModel[];
-
-  @HasMany(() => WithholdingOpModel, { foreignKey: 'CODIGO_ORDEN_PAGO' })
-  WITHHOLDINGS: WithholdingOpModel[];
-
-  @HasMany(() => DocumentModel, { foreignKey: 'CODIGO_ORDEN_PAGO' })
-  DOCUMENTS: DocumentModel[];
-
-  @HasOne(() => CommitmentModel, { foreignKey: 'CODIGO_ORDEN_PAGO' })
-  COMMITMENT: CommitmentModel;
-
-  /* Associations */
 
   @Column({
     type: DataType.STRING,
     field: 'MONTO_LETRAS'
   })
-  MONTO_LETRAS: string;
-
-  @Column({
-    type: DataType.STRING,
-    field: 'TITULO_REPORTE'
-  })
-  TITULO_REPORTE: string;
-
-  @Column({
-    type: DataType.INTEGER,
-    field: 'ANO',
-    allowNull: true
-  })
-  ANO: number | null;
-
-  @Column({
-    type: DataType.INTEGER,
-    field: 'CODIGO_COMPROMISO',
-    allowNull: true
-  })
-  CODIGO_COMPROMISO: number | null;
-
-  @Column({
-    type: DataType.INTEGER,
-    field: 'CODIGO_ORDEN_COMPRA',
-    allowNull: true
-  })
-  CODIGO_ORDEN_COMPRA: number | null;
-
-  @Column({
-    type: DataType.INTEGER,
-    field: 'CODIGO_CONTRATO',
-    allowNull: true
-  })
-  CODIGO_CONTRATO: number | null;
-
-  @Column({
-    type: DataType.STRING,
-    field: 'NUMERO_ORDEN_PAGO'
-  })
-  NUMERO_ORDEN_PAGO: string;
-
-  @Column({
-    type: DataType.STRING,
-    field: 'REFERENCIA_ORDEN_PAGO'
-  })
-  REFERENCIA_ORDEN_PAGO: string;
-
-  @Column({
-    type: DataType.DATE,
-    field: 'FECHA_ORDEN_PAGO'
-  })
-  FECHA_ORDEN_PAGO: Date;
-
-  @Column({
-    type: DataType.DATE,
-    field: 'FECHA_PLAZO_DESDE'
-  })
-  FECHA_PLAZO_DESDE: Date;
+  amountInWords: string;
 
   @Column({
     type: DataType.DATE,
     field: 'FECHA_PLAZO_HASTA'
   })
-  FECHA_PLAZO_HASTA: Date;
+  deadlineEndDate: Date;
+
+  @Column({
+    type: DataType.DATE,
+    field: 'FECHA_PLAZO_DESDE'
+  })
+  deadlineStartDate: Date;
+
+  @Column({
+    type: DataType.DATE,
+    field: 'FECHA_INS'
+  })
+  insertionDate: Date;
 
   @Column({
     type: DataType.FLOAT,
     field: 'CANTIDAD_PAGO',
     allowNull: true
   })
-  CANTIDAD_PAGO: number | null;
+  paymentAmount: number | null;
 
   @Column({
-    type: DataType.INTEGER,
-    field: 'NUMERO_PAGO',
-    allowNull: true
+    type: DataType.DATE,
+    field: 'FECHA_ORDEN_PAGO'
   })
-  NUMERO_PAGO: number | null;
-
-  @Column({
-    type: DataType.INTEGER,
-    field: 'TIPO_PAGO_ID',
-    allowNull: true
-  })
-  TIPO_PAGO_ID: number | null;
-
-  @Column({
-    type: DataType.INTEGER,
-    field: 'NUMERO_VALUACION',
-    allowNull: true
-  })
-  NUMERO_VALUACION: number | null;
+  paymentOrderDate: Date;
 
   @Column({
     type: DataType.STRING,
-    field: 'STATUS',
-    allowNull: true
+    field: 'NUMERO_ORDEN_PAGO'
   })
-  STATUS: string | null;
+  paymentOrderNumber: string;
 
   @Column({
     type: DataType.STRING,
     field: 'MOTIVO',
     allowNull: true
   })
-  MOTIVO: string | null;
-
-  @Column({
-    type: DataType.STRING,
-    field: 'EXTRA1',
-    allowNull: true
-  })
-  EXTRA1: string | null;
-
-  @Column({
-    type: DataType.STRING,
-    field: 'EXTRA2',
-    allowNull: true
-  })
-  EXTRA2: string | null;
-
-  @Column({
-    type: DataType.STRING,
-    field: 'EXTRA3',
-    allowNull: true
-  })
-  EXTRA3: string | null;
-
-  @Column({
-    type: DataType.INTEGER,
-    field: 'USUARIO_INS'
-  })
-  USUARIO_INS: number;
-
-  @Column({
-    type: DataType.DATE,
-    field: 'FECHA_INS'
-  })
-  FECHA_INS: Date;
-
-  @Column({
-    type: DataType.INTEGER,
-    field: 'USUARIO_UPD'
-  })
-  USUARIO_UPD: number;
-
-  @Column({
-    type: DataType.DATE,
-    field: 'FECHA_UPD'
-  })
-  FECHA_UPD: Date;
-
-  @Column({
-    type: DataType.INTEGER,
-    field: 'CODIGO_EMPRESA'
-  })
-  CODIGO_EMPRESA: number;
-
-  @Column({
-    type: DataType.INTEGER,
-    field: 'CODIGO_PRESUPUESTO'
-  })
-  CODIGO_PRESUPUESTO: number;
-
-  @Column({
-    type: DataType.STRING,
-    field: 'EXTRA4',
-    allowNull: true
-  })
-  EXTRA4: string | null;
-
-  @Column({
-    type: DataType.STRING,
-    field: 'EXTRA5',
-    allowNull: true
-  })
-  EXTRA5: string | null;
-
-  @Column({
-    type: DataType.STRING,
-    field: 'EXTRA6',
-    allowNull: true
-  })
-  EXTRA6: string | null;
-
-  @Column({
-    type: DataType.STRING,
-    field: 'EXTRA7',
-    allowNull: true
-  })
-  EXTRA7: string | null;
-
-  @Column({
-    type: DataType.STRING,
-    field: 'EXTRA8',
-    allowNull: true
-  })
-  EXTRA8: string | null;
-
-  @Column({
-    type: DataType.STRING,
-    field: 'EXTRA9',
-    allowNull: true
-  })
-  EXTRA9: string | null;
-
-  @Column({
-    type: DataType.STRING,
-    field: 'EXTRA10',
-    allowNull: true
-  })
-  EXTRA10: string | null;
-
-  @Column({
-    type: DataType.STRING,
-    field: 'EXTRA11',
-    allowNull: true
-  })
-  EXTRA11: string | null;
-
-  @Column({
-    type: DataType.STRING,
-    field: 'EXTRA12',
-    allowNull: true
-  })
-  EXTRA12: string | null;
-
-  @Column({
-    type: DataType.STRING,
-    field: 'EXTRA13',
-    allowNull: true
-  })
-  EXTRA13: string | null;
-
-  @Column({
-    type: DataType.STRING,
-    field: 'EXTRA14',
-    allowNull: true
-  })
-  EXTRA14: string | null;
-
-  @Column({
-    type: DataType.STRING,
-    field: 'EXTRA15',
-    allowNull: true
-  })
-  EXTRA15: string | null;
+  reason: string | null;
 
   @Column({
     type: DataType.INTEGER,
     field: 'NUMERO_COMPROBANTE',
     allowNull: true
   })
-  NUMERO_COMPROBANTE: number | null;
-
-  @Column({
-    type: DataType.DATE,
-    field: 'FECHA_COMPROBANTE',
-    allowNull: true
-  })
-  FECHA_COMPROBANTE: Date | null;
-
-  @Column({
-    type: DataType.INTEGER,
-    field: 'NUMERO_COMPROBANTE2',
-    allowNull: true
-  })
-  NUMERO_COMPROBANTE2: number | null;
-
-  @Column({
-    type: DataType.INTEGER,
-    field: 'NUMERO_COMPROBANTE3',
-    allowNull: true
-  })
-  NUMERO_COMPROBANTE3: number | null;
-
-  @Column({
-    type: DataType.INTEGER,
-    field: 'NUMERO_COMPROBANTE4',
-    allowNull: true
-  })
-  NUMERO_COMPROBANTE4: number | null;
+  receiptNumber: number | null;
 
   @Column({
     type: DataType.STRING,
-    field: 'SEARCH_TEXT',
-    allowNull: true
+    field: 'TITULO_REPORTE'
   })
-  SEARCH_TEXT: string | null;
+  reportTitle: string;
 
   @Column({
     type: DataType.STRING,
-    field: 'NOMBRE_AGENTE_RETENCION',
+    field: 'STATUS',
     allowNull: true
   })
-  NOMBRE_AGENTE_RETENCION: string | null;
-
-  @Column({
-    type: DataType.STRING,
-    field: 'TELEFONO_AGENTE_RETENCION',
-    allowNull: true
-  })
-  TELEFONO_AGENTE_RETENCION: string | null;
-
-  @Column({
-    type: DataType.STRING,
-    field: 'RIF_AGENTE_RETENCION',
-    allowNull: true
-  })
-  RIF_AGENTE_RETENCION: string | null;
+  status: string | null;
 
   @Column({
     type: DataType.STRING,
     field: 'DIRECCION_AGENTE_RETENCION',
     allowNull: true
   })
-  DIRECCION_AGENTE_RETENCION: string | null;
+  withholdingAgentAddress: string | null;
+
+  @Column({
+    type: DataType.STRING,
+    field: 'NOMBRE_AGENTE_RETENCION',
+    allowNull: true
+  })
+  withholdingAgentName: string | null;
+
+  @Column({
+    type: DataType.STRING,
+    field: 'TELEFONO_AGENTE_RETENCION',
+    allowNull: true
+  })
+  withholdingAgentPhone: string | null;
+
+  @Column({
+    type: DataType.STRING,
+    field: 'RIF_AGENTE_RETENCION',
+    allowNull: true
+  })
+  withholdingAgentRIF: string | null;
+
+
+  /* Associations */
+
+  @BelongsTo(() => DescriptiveModel, {
+    foreignKey: 'TIPO_ORDEN_PAGO_ID',
+    as: 'paymentOrderType'
+  })
+  paymentOrderType: DescriptiveModel;
+
+  @BelongsTo(() => DescriptiveModel, {
+    foreignKey: 'FRECUENCIA_PAGO_ID',
+    as: 'paymentFrequency'
+  })
+  paymentFrequency: DescriptiveModel;
+
+  @BelongsTo(() => SupplierModel, {
+    foreignKey: 'CODIGO_PROVEEDOR',
+    as: 'supplier'
+  })
+  supplier: SupplierModel;
+
+  @HasMany(() => PucPaymentOrderModel, {
+    foreignKey: 'CODIGO_ORDEN_PAGO'
+  })
+  pucPaymentOrders: PucPaymentOrderModel[];
+
+  @HasMany(() => WithholdingOpModel, {
+    foreignKey: 'CODIGO_ORDEN_PAGO'
+  })
+  withholdingOps: WithholdingOpModel[];
+
+  @HasMany(() => DocumentModel, {
+    foreignKey: 'CODIGO_ORDEN_PAGO'
+  })
+  documents: DocumentModel[];
+
+  @HasOne(() => CommitmentModel, {
+    foreignKey: 'CODIGO_ORDEN_PAGO'
+  })
+  commitment: CommitmentModel;
+
+  /* Associations */
 }

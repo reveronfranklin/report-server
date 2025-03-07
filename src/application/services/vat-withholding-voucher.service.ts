@@ -35,7 +35,7 @@ export class VatWithholdingVoucherService {
     }
 
     try {
-      const status = (paymentOrder.STATUS === 'AP') ?  'approved' : 'annulled'
+      const status = (paymentOrder.status === 'AP') ?  'approved' : 'annulled'
 
       const reportScheme: ReportSchemeDto = {
         name: 'vat-withholding-voucher',
@@ -128,23 +128,23 @@ export class VatWithholdingVoucherService {
   }
 
   private mapToReportSubHeader(order: PaymentOrderEntity): ReportSubHeaderDto {
-    const supplier = order?.PROVEEDOR ?? null
+    const supplier = order?.supplier ?? null
 
     return {
-      date: this.formatDate(order.FECHA_INS),
-      voucherNumber: order.NUMERO_COMPROBANTE,
-      nameWithholdingAgent:  order.NOMBRE_AGENTE_RETENCION,
-      withholdingAgentRif: this.formatRIF(order.RIF_AGENTE_RETENCION),
-      withholdingAgentAddress: order.DIRECCION_AGENTE_RETENCION,
-      fiscalPeriod: this.formatFiscalPeriod(order.FECHA_INS),
-      subjectNameWithheld: supplier.NOMBRE_PROVEEDOR,
-      subjectNameWithheldRif: this.formatRIF(supplier?.RIF),
-      paymentOrderNumber: order.NUMERO_ORDEN_PAGO
+      date: this.formatDate(order.insertionDate),
+      voucherNumber: order.receiptNumber,
+      nameWithholdingAgent:  order.withholdingAgentName,
+      withholdingAgentRif: this.formatRIF(order.withholdingAgentRIF),
+      withholdingAgentAddress: order.withholdingAgentAddress,
+      fiscalPeriod: this.formatFiscalPeriod(order.insertionDate),
+      subjectNameWithheld: supplier.providerName,
+      subjectNameWithheldRif: this.formatRIF(supplier?.taxId),
+      paymentOrderNumber: order.paymentOrderNumber
     }
   }
 
   private mapToReportBody(order: PaymentOrderEntity): ReportBodyDto {
-    const documents = order?.DOCUMENTS ?? []
+    const documents = order?.documents ?? []
 
     let totalPurchasesVat: number     = 0
     let totalPurchasesCredit: number  = 0
@@ -156,27 +156,27 @@ export class VatWithholdingVoucherService {
 
     documents.forEach((document, index) => {
       const operationNumber   = index + 1
-      const transactionType   = document.TYPE_DOCUMENT?.EXTRA1
+      const transactionType   = document.typeDocument?.extra1
       /* Review with franklin */
-      const debitNoteNumber   = null //document.TYPE_DOCUMENT?.EXTRA2
-      const creditNoteNumber  = null //document.TYPE_DOCUMENT?.EXTRA3
-      const taxType           = document.TAX_TYPE?.EXTRA1
+      const debitNoteNumber   = null //document.typeDocument?.extra2
+      const creditNoteNumber  = null //document.typeDocument?.extra3
+      const taxType           = document.taxType?.extra1
 
       const data = {
         operationNumber,
-        invoiceDate: this.formatDate(document.FECHA_DOCUMENTO),
-        invoiceNumber: document.NUMERO_DOCUMENTO,
-        invoiceControlNumber: document.NUMERO_CONTROL_DOCUMENTO ?? '00-00000000',
+        invoiceDate: this.formatDate(document.documentDate),
+        invoiceNumber: document.documentNumber,
+        invoiceControlNumber: document.documentControlNumber ?? '00-00000000',
         debitNoteNumber,
         creditNoteNumber,
         transactionType,
-        affectedInvoiceNumber: this.rpad(document.NUMERO_DOCUMENTO_AFECTADO, 20),
-        totalPurchasesIncludingVat: document.MONTO_DOCUMENTO,
-        purchasesWithoutVatCredit: document.MONTO_IMPUESTO_EXENTO,
-        taxableIncome: document.BASE_IMPONIBLE,
+        affectedInvoiceNumber: this.rpad(document.affectedDocumentNumber, 20),
+        totalPurchasesIncludingVat: document.documentAmount,
+        purchasesWithoutVatCredit: document.exemptTaxAmount,
+        taxableIncome: document.taxableBase,
         alicuota: `${taxType}%`,
-        vatTax: document.MONTO_IMPUESTO,
-        vatWithheld: document.MONTO_RETENIDO
+        vatTax: document.taxAmount,
+        vatWithheld: document.withheldAmount
       }
 
       totalPurchasesVat     += Number(data.totalPurchasesIncludingVat)

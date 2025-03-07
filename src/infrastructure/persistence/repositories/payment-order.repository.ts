@@ -31,50 +31,145 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
 
   async findByIdWithPaymentOrder(id: number): Promise<PaymentOrderEntity | null> {
     const options = {
+      attributes: [
+        'amountInWords',
+        'deadlineEndDate',
+        'deadlineStartDate',
+        'paymentAmount',
+        'paymentFrequencyId',
+        'paymentOrderCode',
+        'paymentOrderDate',
+        'paymentOrderNumber',
+        'paymentOrderTypeId',
+        'reason',
+        'reportTitle',
+        'status',
+        'supplierCode'
+      ],
       include: [
-        { model: DescriptiveModel, as: 'TIPO_ORDEN_PAGO' },
-        { model: DescriptiveModel, as: 'FRECUENCIA_PAGO' },
+        {
+          model: DescriptiveModel,
+          as: 'paymentOrderType',
+          attributes: [
+            'code',
+            'description',
+            'descriptionId'
+          ]
+        },
+        {
+          model: DescriptiveModel,
+          as: 'paymentFrequency',
+          attributes: [
+            'code',
+            'description',
+            'descriptionId'
+          ]
+        },
         {
           model: SupplierModel,
-          as: 'PROVEEDOR',
+          as: 'supplier',
+          attributes: [
+            'identificationCard',
+            'providerCode',
+            'providerName',
+            'taxId'
+          ],
           include: [
             {
               model: BeneficiaryModel,
-              as: 'BENEFICIARIES',
-              where: { PRINCIPAL: 1 },
-              required: false  // This makes it a LEFT OUTER JOIN
+              as: 'beneficiaries',
+              attributes: [
+                'firstName',
+                'identification',
+                'identificationId',
+                'lastName',
+                'providerCode',
+                'providerContactCode'
+              ],
+              where: {
+                PRINCIPAL: 1
+              },
+              required: false // This makes it a LEFT OUTER JOIN
             }
           ]
         },
         {
           model: PucPaymentOrderModel,
-          as: 'PUC_PAYMENT_ORDERS',
+          as: 'pucPaymentOrders',
           required: false,
-          // Testear
+          attributes: [
+            'amount',
+            'balanceCode',
+            'paymentOrderCode',
+            'pucPaymentOrderCode'
+          ],
           where: this.sequelize.literal(`
             "CODIGO_PUC_ORDEN_PAGO" IN (
-              SELECT DISTINCT ON ("CODIGO_SALDO") "CODIGO_PUC_ORDEN_PAGO"
-              FROM public."ADM_PUC_ORDEN_PAGO"
-              ORDER BY "CODIGO_SALDO", "CODIGO_PUC_ORDEN_PAGO"
+              SELECT
+                DISTINCT ON ("CODIGO_SALDO") "CODIGO_PUC_ORDEN_PAGO"
+              FROM
+                public."ADM_PUC_ORDEN_PAGO"
+              ORDER BY
+                "CODIGO_SALDO",
+                "CODIGO_PUC_ORDEN_PAGO"
             )
           `),
-          //order: [['CODIGO_PUC_ORDEN_PAGO', 'DESC']],
           include: [
-            { model: BalanceModel, as: 'BALANCE' }
+            {
+              model: BalanceModel,
+              as: 'balance',
+              attributes: [
+                'balanceCode',
+                'financedDescription',
+                'icpCodeConcat',
+                'pucCodeConcat',
+                'pucDenomination',
+                'year'
+              ]
+            }
           ]
         },
         {
           model: CommitmentModel,
-          as: 'COMMITMENT',
+          as: 'commitment',
+          attributes: [
+            'commitmentCodeOp',
+            'identifierCode',
+            'paymentOrderCode'
+          ],
           include: [
-            { model: PreCommitmentModel, as: 'PRE_COMMITMENT' }
+            {
+              model:
+              PreCommitmentModel,
+              as: 'preCommitment',
+              attributes: [
+                'commitmentCode',
+                'commitmentDate',
+                'commitmentNumber'
+              ]
+            }
           ]
         },
         {
           model: WithholdingOpModel,
-          as: 'WITHHOLDINGS',
+          as: 'withholdingOps',
+          attributes: [
+            'byRetention',
+            'opRetentionCode',
+            'paymentOrderCode',
+            'retentionAmount',
+            'withholdingTypeId'
+          ],
           include: [
-            { model: DescriptiveModel, as: 'DESCRIPCION' }
+            {
+              model: DescriptiveModel,
+              as: 'retentionType',
+              attributes: [
+                'code',
+                'description',
+                'descriptionId'
+              ]
+            }
           ]
         }
       ]
@@ -82,57 +177,61 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
 
     const paymentOrderModel = await this.paymentOrderModel.findByPk(id, options)
 
-    /* responses */
     return paymentOrderModel ? PaymentOrderMapper.toDomain(paymentOrderModel) : null
   }
 
   async findByIdWithHoldingISLR(id: number): Promise<PaymentOrderEntity | null> {
     const options = {
       attributes: [
-        'NOMBRE_AGENTE_RETENCION',
-        'TELEFONO_AGENTE_RETENCION',
-        'RIF_AGENTE_RETENCION',
-        'DIRECCION_AGENTE_RETENCION',
-        'FECHA_INS',
-        'NUMERO_ORDEN_PAGO',
-        'STATUS'
+        'insertionDate',
+        'paymentOrderCode',
+        'paymentOrderNumber',
+        'status',
+        'withholdingAgentAddress',
+        'withholdingAgentName',
+        'withholdingAgentPhone',
+        'withholdingAgentRIF'
       ],
       include: [
         {
           model: SupplierModel,
           attributes: [
-            'NOMBRE_PROVEEDOR',
-            'RIF'
+            'providerName',
+            'taxId'
           ],
-          as: 'PROVEEDOR',
+          as: 'supplier',
           required: false
         },
         {
           model: DocumentModel,
-          as: 'DOCUMENTS',
+          as: 'documents',
           attributes: [
-            'NUMERO_DOCUMENTO',
-            'FECHA_DOCUMENTO'
+            'documentOperationCode',
+            'documentNumber',
+            'documentDate'
           ],
           include: [
             {
               /* El scope condiciona: (SELECT X.DESCRIPCION_ID FROM ADM_DESCRIPTIVAS X WHERE X.CODIGO= 'ISLR') */
               model: TaxDocumentModel.scope('withISLR'),
-              as: 'TAX_DOCUMENT',
+              as: 'taxDocument',
               attributes: [
-                'MONTO_IMPUESTO_EXENTO',
-                'MONTO_IMPUESTO',
-                'BASE_IMPONIBLE'
+                'documentOperationCode',
+                'exemptTaxAmount',
+                'taxableBase',
+                'taxAmount',
+                'taxDocumentOperationCode'
               ],
               required: true,
               include: [
                 {
                   model: WithholdingModel,
                   attributes: [
-                    'CONCEPTO_PAGO',
-                    'POR_RETENCION'
+                    'retentionCode',
+                    'paymentConcept',
+                    'byRetention',
                   ],
-                  as: 'WITHHOLDING',
+                  as: 'withholding',
                   required: false
                 }
               ]
@@ -144,65 +243,67 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
 
     const paymentOrderModel = await this.paymentOrderModel.findByPk(id, options)
 
-    /* responses */
     return paymentOrderModel ? PaymentOrderMapper.toDomain(paymentOrderModel) : null
   }
 
   async findByIdWithHoldingVat(id: number): Promise<PaymentOrderEntity | null> {
     const options = {
       attributes: [
-        'NUMERO_COMPROBANTE',
-        'NOMBRE_AGENTE_RETENCION',
-        'RIF_AGENTE_RETENCION',
-        'DIRECCION_AGENTE_RETENCION',
-        'FECHA_INS',
-        'NUMERO_ORDEN_PAGO',
-        'STATUS'
+        'insertionDate',
+        'paymentOrderCode',
+        'paymentOrderNumber',
+        'receiptNumber',
+        'status',
+        'withholdingAgentAddress',
+        'withholdingAgentName',
+        'withholdingAgentPhone',
+        'withholdingAgentRIF'
       ],
       include: [
         {
           model: SupplierModel,
           attributes: [
-            'NOMBRE_PROVEEDOR',
-            'RIF'
+            'providerName',
+            'taxId'
           ],
-          as: 'PROVEEDOR',
+          as: 'supplier',
           required: false
         },
         {
           model: DocumentModel,
-          as: 'DOCUMENTS',
+          as: 'documents',
           attributes: [
-            'NUMERO_DOCUMENTO',
-            'FECHA_DOCUMENTO',
-            'NUMERO_CONTROL_DOCUMENTO',
-            'NUMERO_DOCUMENTO_AFECTADO',
-            'MONTO_DOCUMENTO',
-            'MONTO_IMPUESTO_EXENTO',
-            'BASE_IMPONIBLE',
-            'MONTO_IMPUESTO',
-            'MONTO_RETENIDO',
-            'TIPO_DOCUMENTO_ID'
+            'affectedDocumentNumber',
+            'documentAmount',
+            'documentControlNumber',
+            'documentDate',
+            'documentNumber',
+            'documentTypeId',
+            'exemptTaxAmount',
+            'taxableBase',
+            'taxAmount',
+            'withheldAmount'
           ],
           required: false,
-          //order: [['NUMERO_DOCUMENTO', 'ASC']],
           include: [
             {
               model: DescriptiveModel,
-              as: 'TYPE_DOCUMENT',
+              as: 'typeDocument',
               attributes: [
-                'EXTRA1',
-                'EXTRA2',
-                'EXTRA3',
-                'CODIGO'
+                'code',
+                'descriptionId',
+                'extra1',
+                'extra2',
+                'extra3'
               ]
             },
             {
               model: DescriptiveModel,
-              as: 'TAX_TYPE',
+              as: 'taxType',
               attributes: [
-                'EXTRA1',
-                'CODIGO'
+                'code',
+                'descriptionId',
+                'extra1'
               ]
             }
           ]
@@ -212,76 +313,62 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
 
     const paymentOrderModel = await this.paymentOrderModel.findByPk(id, options)
 
-    /* responses */
     return paymentOrderModel ? PaymentOrderMapper.toDomain(paymentOrderModel) : null
   }
 
   async findByIdTaxStamp(id: number): Promise<PaymentOrderEntity | null> {
     const options = {
       attributes: [
-        'NOMBRE_AGENTE_RETENCION',
-        'RIF_AGENTE_RETENCION',
-        'NUMERO_ORDEN_PAGO',
-        'STATUS',
-        'MOTIVO'
+        'paymentOrderCode',
+        'paymentOrderNumber',
+        'reason',
+        'status',
+        'withholdingAgentName',
+        'withholdingAgentRIF'
       ],
       include: [
         {
           /* El scope condiciona: (SELECT X.DESCRIPCION_ID FROM ADM_DESCRIPTIVAS X WHERE X.CODIGO= 'LT') */
           model: WithholdingOpModel.scope('withLT'),
           attributes: [
-            'codigoOrdenPago',
-            'tipoRetencionId',
-            'codigoRetencion',
-            'baseImponible',
-            'montoRetencion'
+            'opRetentionCode',
+            'paymentOrderCode',
+            'retentionAmount',
+            'retentionCode',
+            'taxableBase',
+            'withholdingTypeId'
           ],
-          as: 'WITHHOLDINGS',
-          required: false,
-          /* Consultar a franklin, el monto de retención no se puede obtener de la tabla ADM_RETENCIONES,
-          sino que se debe consultar a la tabla ADM_RETENCIONES_OP */
-          /* include: [
-            {
-              model: WithholdingModel,
-              attributes: [
-                'CODIGO_RETENCION',
-                'POR_RETENCION'
-              ],
-              as: 'WITHHOLDING',
-              required: false
-            }
-          ] */
+          as: 'withholdingOps',
+          required: false
         },
         {
           model: SupplierModel,
           attributes: [
-            'NOMBRE_PROVEEDOR',
-            'RIF'
+            'providerName',
+            'taxId'
           ],
-          as: 'PROVEEDOR',
+          as: 'supplier',
           required: false
         },
         {
           model: DocumentModel,
-          as: 'DOCUMENTS',
+          as: 'documents',
           attributes: [
-            'CODIGO_ORDEN_PAGO',
-            'NUMERO_CONTROL_DOCUMENTO',
-            'NUMERO_DOCUMENTO',
-            'MONTO_DOCUMENTO',
-            'MONTO_IMPUESTO',
-            'MONTO_IMPUESTO_EXENTO'
+            'documentAmount',
+            'documentControlNumber',
+            'documentNumber',
+            'documentOperationCode',
+            'exemptTaxAmount',
+            'paymentOrderCode',
+            'taxAmount'
           ],
           required: false
         }
-      ],
-      plain: true
-      //order: [['NUMERO_ORDEN_PAGO', 'DESC']]
+      ]
     }
 
     const paymentOrderModel = await this.paymentOrderModel.findByPk(id, options)
 
-    /* responses */
     return paymentOrderModel ? PaymentOrderMapper.toDomain(paymentOrderModel) : null
   }
 }

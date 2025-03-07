@@ -1,30 +1,6 @@
 export interface ISupplier {
-  CODIGO_PROVEEDOR: number;
-  NOMBRE_PROVEEDOR: string;
-  TIPO_PROVEEDOR_ID: number;
-  NACIONALIDAD: string;
-  CEDULA: string;
-  RIF: string;
-  FECHA_RIF: Date | null;
-  NIT: string | null;
-  FECHA_NIT: Date | null;
-  NUMERO_REGISTRO_CONTRALORIA: string | null;
-  FECHA_REGISTRO_CONTRALORIA: Date | null;
-  CAPITAL_PAGADO: number | null;
-  CAPITAL_SUSCRITO: number | null;
-  TIPO_IMPUESTO_ID: number | null;
-  STATUS: string;
-  EXTRA1: string | null;
-  EXTRA2: string | null;
-  EXTRA3: string | null;
-  USUARIO_INS: number;
-  FECHA_INS: Date;
-  USUARIO_UPD: number;
-  FECHA_UPD: Date;
-  CODIGO_EMPRESA: number;
-  CODIGO_PERSONA: number | null;
-  CODIGO_AUXILIAR_GASTO_X_PAGAR: string | null;
-  CODIGO_AUXILIAR_ORDEN_PAGO: string | null;
-  ESTATUS_FISCO_ID: number | null;
-  NUMERO_CUENTA: string | null;
+  identificationCard: string;
+  providerCode: number;
+  providerName: string;
+  taxId: string;
 }

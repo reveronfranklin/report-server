@@ -35,7 +35,7 @@ export class IncomeTaxWithholdingVoucherService {
     }
 
     try {
-      const status = (paymentOrder.STATUS === 'AP') ?  'approved' : 'annulled'
+      const status = (paymentOrder.status === 'AP') ?  'approved' : 'annulled'
 
       const reportScheme: ReportSchemeDto = {
         name: 'income-tax-withholding-voucher',
@@ -114,23 +114,23 @@ export class IncomeTaxWithholdingVoucherService {
   }
 
   private mapToReportSubHeader(order: PaymentOrderEntity): ReportSubHeaderDto {
-    const supplier = order?.PROVEEDOR ?? null
+    const supplier = order?.supplier ?? null
 
     return {
-      NOMBRE_AGENTE_RETENCION: order.NOMBRE_AGENTE_RETENCION,
-      TELEFONO_AGENTE_RETENCION: order.TELEFONO_AGENTE_RETENCION,
-      RIF_AGENTE_RETENCION: this.formatRIF(order.RIF_AGENTE_RETENCION),
-      DIRECCION_AGENTE_RETENCION: order.DIRECCION_AGENTE_RETENCION,
-      FECHA: this.formatDate(order.FECHA_INS),
-      PERIODO_FISCAL: this.formatFiscalPeriod(order.FECHA_INS),
-      NOMBRE_SUJETO_RETENIDO: supplier.NOMBRE_PROVEEDOR,
-      RIF_SUJETO_RETENIDO: this.formatRIF(supplier?.RIF),
-      NRO_ORDEN_PAGO: order.NUMERO_ORDEN_PAGO
+      NOMBRE_AGENTE_RETENCION: order.withholdingAgentName,
+      TELEFONO_AGENTE_RETENCION: order.withholdingAgentPhone,
+      RIF_AGENTE_RETENCION: this.formatRIF(order.withholdingAgentRIF),
+      DIRECCION_AGENTE_RETENCION: order.withholdingAgentAddress,
+      FECHA: this.formatDate(order.insertionDate),
+      PERIODO_FISCAL: this.formatFiscalPeriod(order.insertionDate),
+      NOMBRE_SUJETO_RETENIDO: supplier.providerName,
+      RIF_SUJETO_RETENIDO: this.formatRIF(supplier?.taxId),
+      NRO_ORDEN_PAGO: order.paymentOrderNumber
     }
   }
 
   private mapToReportBody(order: PaymentOrderEntity): ReportBodyDto {
-    const documents = order?.DOCUMENTS ?? []
+    const documents = order?.documents ?? []
 
     let totalTaxableIncome: number = 0
     let totalIncomeTaxWithheld: number = 0
@@ -138,22 +138,22 @@ export class IncomeTaxWithholdingVoucherService {
     const listWithholding: WithholdingDto[] = [];
 
     documents.forEach((document) => {
-      const taxDocument = document.TAX_DOCUMENT
-      const withholding = taxDocument?.WITHHOLDING
+      const taxDocument = document.taxDocument
+      const withholding = taxDocument?.withholding
 
       const data = {
-        invoiceNumber: document.NUMERO_DOCUMENTO,
-        invoiceDate: this.formatDate(document.FECHA_DOCUMENTO),
-        conceptPayment: withholding?.CONCEPTO_PAGO,
-        extensiveTax: taxDocument?.MONTO_IMPUESTO_EXENTO,
-        taxableIncome: taxDocument?.BASE_IMPONIBLE,
-        alicuota: this.formatPercentageRetention(withholding?.POR_RETENCION ?? 0),
-        incomeTaxWithheld: taxDocument?.MONTO_IMPUESTO,
+        invoiceNumber: document.documentNumber,
+        invoiceDate: this.formatDate(document.documentDate),
+        conceptPayment: withholding?.paymentConcept,
+        extensiveTax: taxDocument?.exemptTaxAmount,
+        taxableIncome: taxDocument?.taxableBase,
+        alicuota: this.formatPercentageRetention(withholding?.byRetention ?? 0),
+        incomeTaxWithheld: taxDocument?.taxAmount,
         subtrahend: null
       }
 
-      totalTaxableIncome      += Number(taxDocument?.BASE_IMPONIBLE)
-      totalIncomeTaxWithheld  += Number(taxDocument?.MONTO_IMPUESTO)
+      totalTaxableIncome      += Number(taxDocument?.taxableBase)
+      totalIncomeTaxWithheld  += Number(taxDocument?.taxAmount)
 
       listWithholding.push(data)
     })

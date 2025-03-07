@@ -36,7 +36,7 @@ export class PaymentOrderService {
     }
 
     try {
-      const status = (paymentOrder.STATUS === 'AP') ?  'approved' : 'annulled'
+      const status = (paymentOrder.status === 'AP') ?  'approved' : 'annulled'
 
       const reportScheme: ReportSchemeDto = {
         name: 'payment-order',
@@ -67,43 +67,59 @@ export class PaymentOrderService {
     return formattedDate.tz('UTC').format('DD/MM/YYYY')
   }
 
+  /* Pasar utils */
+
+  public formatRIF(rif: any): any {
+    if (!rif) {
+      return null
+    }
+    // Eliminar cualquier guión existente en el RIF
+    const cleanRIF = rif.replace(/-/g, '');
+    // Obtener el primer carácter
+    const firstChar = cleanRIF.charAt(0);
+    // Obtener el resto de los caracteres, rellenando con ceros a la izquierda si es necesario
+    const restOfRIF = cleanRIF.slice(1).padStart(9, '0');
+    return `${firstChar}-${restOfRIF}`;
+  }
+
   private mapToReportHeader(order: PaymentOrderEntity): ReportHeaderDto {
-    const paymentOrderType  = order.TIPO_ORDEN_PAGO ?? null
-    const commitment        = order?.COMMITMENT ?? null
-    const preCommitment     = commitment?.PRE_COMMITMENT ?? null
-    const dateOrderPayment  = this.formatDate(order.FECHA_ORDEN_PAGO)
-    const dateCommitment    = this.formatDate(preCommitment?.FECHA_COMPROMISO)
+    const paymentOrderType  = order.paymentOrderType ?? null
+    const commitment        = order?.commitment ?? null
+    const preCommitment     = commitment?.preCommitment ?? null
+    const dateOrderPayment  = this.formatDate(order.paymentOrderDate)
+    const dateCommitment    = this.formatDate(preCommitment?.commitmentDate)
 
     return {
-      DESCRIPCION: paymentOrderType?.DESCRIPCION,
-      TITULO: order.TITULO_REPORTE,
-      NUMERO_COMPROMISO: preCommitment?.NUMERO_COMPROMISO,
-      NUMERO_ORDEN_PAGO: order.NUMERO_ORDEN_PAGO,
+      DESCRIPCION: paymentOrderType?.description,
+      TITULO: order.reportTitle,
+      NUMERO_COMPROMISO: preCommitment?.commitmentNumber,
+      NUMERO_ORDEN_PAGO: order.paymentOrderNumber,
       FECHA_ORDEN_PAGO: dateOrderPayment,
       FECHA_COMPROMISO: dateCommitment
     }
   }
 
   private mapToReportSubHeader(order: PaymentOrderEntity): ReportSubHeaderDto {
-    const methodOfPayment   = order.FRECUENCIA_PAGO ?? null
-    const supplier          = order.PROVEEDOR ?? null
-    const beneficiary       = supplier?.BENEFICIARIES[0] ?? null
+    const methodOfPayment   = order.paymentFrequency ?? null
+    const supplier          = order.supplier ?? null
+    const beneficiary       = supplier?.beneficiaries[0] ?? null
 
-    const dateSince = this.isValidDate(order.FECHA_PLAZO_DESDE) ? order.FECHA_PLAZO_DESDE : null
-    const dateUntil = this.isValidDate(order.FECHA_PLAZO_HASTA) ? order.FECHA_PLAZO_HASTA : null
+    const dateSince = this.isValidDate(order.deadlineStartDate) ? order.deadlineStartDate : null
+    const dateUntil = this.isValidDate(order.deadlineEndDate) ? order.deadlineEndDate : null
 
     return {
-      NOMBRE_PROVEEDOR: supplier?.NOMBRE_PROVEEDOR,
-      CEDULA_PROVEEDOR: supplier?.CEDULA,
-      RIF_PROVEEDOR: supplier?.RIF,
-      NOMBRE_BENEFICIARIO: beneficiary?.NOMBRE,
-      APELLIDO_BENEFICIARIO: beneficiary?.APELLIDO,
-      CEDULA_BENEFICIARIO: beneficiary?.IDENTIFICACION,
+      NOMBRE_PROVEEDOR: supplier?.providerName,
+      CEDULA_PROVEEDOR: supplier?.identificationCard,
+      RIF_PROVEEDOR: this.formatRIF(supplier?.taxId),
+      NOMBRE_BENEFICIARIO: beneficiary?.firstName,
+      APELLIDO_BENEFICIARIO: beneficiary?.lastName,
+      /* colocar separadores de miles */
+      CEDULA_BENEFICIARIO: beneficiary?.identification,
       FECHA_PLAZO_DESDE: dateSince,
       FECHA_PLAZO_HASTA: dateUntil,
-      MONTO_LETRAS: order?.MONTO_LETRAS ?? null,
-      FORMA_DE_PAGO: methodOfPayment?.DESCRIPCION,
-      CANTIDAD_PAGO: order.CANTIDAD_PAGO
+      MONTO_LETRAS: order?.amountInWords ?? null,
+      FORMA_DE_PAGO: methodOfPayment?.description,
+      CANTIDAD_PAGO: order.paymentAmount
     }
   }
 
@@ -115,34 +131,34 @@ export class PaymentOrderService {
     const listPucOrder: FundsDto[] = [];
     const listWithholding: WithholdingDto[] = [];
 
-    const pucOrders = order?.PUC_PAYMENT_ORDERS ?? []
-    const withholdings = order?.WITHHOLDINGS ?? []
+    const pucOrders = order?.pucPaymentOrders ?? []
+    const withholdings = order?.withholdingOps ?? []
 
     pucOrders.forEach((pucOrder) => {
-      const balance = pucOrder?.BALANCE ?? null
-      titleEspecifica= balance?.DENOMINACION_PUC ?? ''
+      const balance = pucOrder?.balance ?? null
+      titleEspecifica= balance?.pucDenomination ?? ''
 
       const data = {
-        ANO: balance?.ANO,
-        DESCRIPCION_FINANCIADO: balance?.DESCRIPCION_FINANCIADO,
-        CODIGO_ICP_CONCAT: balance?.CODIGO_ICP_CONCAT,
-        CODIGO_PUC_CONCAT: balance.CODIGO_PUC_CONCAT,
-        MONTO: pucOrder.MONTO,
-        PERIODICO: (pucOrder.MONTO / order.CANTIDAD_PAGO)
+        ANO: balance?.year,
+        DESCRIPCION_FINANCIADO: balance?.financedDescription,
+        CODIGO_ICP_CONCAT: balance?.icpCodeConcat,
+        CODIGO_PUC_CONCAT: balance?.pucCodeConcat,
+        MONTO: pucOrder.amount,
+        PERIODICO: (pucOrder.amount / order.paymentAmount)
       }
 
-      total += Number(pucOrder.MONTO)
+      total += Number(pucOrder.amount)
 
       listPucOrder.push(data)
     })
 
     withholdings.forEach((withholding) => {
       const data = {
-        DESCRIPCION:`${withholding.porRetencion ?? ''}% ${withholding?.descripcion?.DESCRIPCION ?? ''}`,
-        MONTO_RETENIDO: withholding.montoRetencion ?? 0
+        DESCRIPCION:`${withholding.byRetention ?? ''}% ${withholding?.retentionType?.description ?? ''}`,
+        MONTO_RETENIDO: withholding.retentionAmount ?? 0
       }
 
-      totalRetenciones += Number(withholding.montoRetencion)
+      totalRetenciones += Number(withholding.retentionAmount)
 
       listWithholding.push(data)
     })
@@ -153,7 +169,7 @@ export class PaymentOrderService {
       TOTAL_ORDEN_PAGO: total,
       MONTO_PAGAR: (total - totalRetenciones),
       TITULO_ESPECIFICA: titleEspecifica,
-      MOTIVO: order.MOTIVO
+      MOTIVO: order.reason.trim()
     }
 
     return body
