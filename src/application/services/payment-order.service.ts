@@ -67,8 +67,6 @@ export class PaymentOrderService {
     return formattedDate.tz('UTC').format('DD/MM/YYYY')
   }
 
-  /* Pasar utils */
-
   public formatRIF(rif: any): any {
     if (!rif) {
       return null
@@ -90,12 +88,12 @@ export class PaymentOrderService {
     const dateCommitment    = this.formatDate(preCommitment?.commitmentDate)
 
     return {
-      DESCRIPCION: paymentOrderType?.description,
-      TITULO: order.reportTitle,
-      NUMERO_COMPROMISO: preCommitment?.commitmentNumber,
-      NUMERO_ORDEN_PAGO: order.paymentOrderNumber,
-      FECHA_ORDEN_PAGO: dateOrderPayment,
-      FECHA_COMPROMISO: dateCommitment
+      description: paymentOrderType?.description,
+      commitmentNumber: preCommitment?.commitmentNumber,
+      title: order.reportTitle,
+      paymentOrderNumber: order.paymentOrderNumber,
+      paymentOrderDate: dateOrderPayment,
+      commitmentDate: dateCommitment
     }
   }
 
@@ -108,43 +106,42 @@ export class PaymentOrderService {
     const dateUntil = this.isValidDate(order.deadlineEndDate) ? order.deadlineEndDate : null
 
     return {
-      NOMBRE_PROVEEDOR: supplier?.providerName,
-      CEDULA_PROVEEDOR: supplier?.identificationCard,
-      RIF_PROVEEDOR: this.formatRIF(supplier?.taxId),
-      NOMBRE_BENEFICIARIO: beneficiary?.firstName,
-      APELLIDO_BENEFICIARIO: beneficiary?.lastName,
-      /* colocar separadores de miles */
-      CEDULA_BENEFICIARIO: beneficiary?.identification,
-      FECHA_PLAZO_DESDE: dateSince,
-      FECHA_PLAZO_HASTA: dateUntil,
-      MONTO_LETRAS: order?.amountInWords ?? null,
-      FORMA_DE_PAGO: methodOfPayment?.description,
-      CANTIDAD_PAGO: order.paymentAmount
+      supplierName: supplier?.providerName,
+      supplierIdCard: supplier?.identificationCard,
+      supplierRIF: this.formatRIF(supplier?.taxId),
+      beneficiaryName: beneficiary?.firstName,
+      beneficiaryLastName: beneficiary?.lastName,
+      beneficiaryIdCard: beneficiary?.identification,
+      deadlineStartDate: dateSince,
+      deadlineEndDate: dateUntil,
+      amountInWords: order?.amountInWords ?? null,
+      paymentMethod: methodOfPayment?.description,
+      paymentAmount: order.paymentAmount
     }
   }
 
   private mapToReportBody(order: PaymentOrderEntity): ReportBodyDto {
-    let total: number = 0
-    let totalRetenciones: number = 0
-    let titleEspecifica: string = ''
+    let total: number             = 0
+    let totalRetenciones: number  = 0
+    let specificTitle: string     = ''
 
-    const listPucOrder: FundsDto[] = [];
-    const listWithholding: WithholdingDto[] = [];
+    const listPucOrder: FundsDto[]          = []
+    const listWithholding: WithholdingDto[] = []
 
-    const pucOrders = order?.pucPaymentOrders ?? []
-    const withholdings = order?.withholdingOps ?? []
+    const pucOrders     = order?.pucPaymentOrders ?? []
+    const withholdings  = order?.withholdingOps ?? []
 
     pucOrders.forEach((pucOrder) => {
       const balance = pucOrder?.balance ?? null
-      titleEspecifica= balance?.pucDenomination ?? ''
+      specificTitle = balance?.pucDenomination ?? ''
 
       const data = {
-        ANO: balance?.year,
-        DESCRIPCION_FINANCIADO: balance?.financedDescription,
-        CODIGO_ICP_CONCAT: balance?.icpCodeConcat,
-        CODIGO_PUC_CONCAT: balance?.pucCodeConcat,
-        MONTO: pucOrder.amount,
-        PERIODICO: (pucOrder.amount / order.paymentAmount)
+        year: balance?.year,
+        financedDescription: balance?.financedDescription,
+        icpCodeConcat: balance?.icpCodeConcat,
+        pucCodeConcat: balance?.pucCodeConcat,
+        amount: pucOrder.amount,
+        periodic: (pucOrder.amount / order.paymentAmount)
       }
 
       total += Number(pucOrder.amount)
@@ -154,8 +151,8 @@ export class PaymentOrderService {
 
     withholdings.forEach((withholding) => {
       const data = {
-        DESCRIPCION:`${withholding.byRetention ?? ''}% ${withholding?.retentionType?.description ?? ''}`,
-        MONTO_RETENIDO: withholding.retentionAmount ?? 0
+        description:`${withholding.byRetention ?? ''}% ${withholding?.retentionType?.description ?? ''}`,
+        withheldAmount: withholding.retentionAmount ?? 0
       }
 
       totalRetenciones += Number(withholding.retentionAmount)
@@ -164,12 +161,12 @@ export class PaymentOrderService {
     })
 
     const body = {
-      FUNDS: listPucOrder,
-      WITHHOLDING: listWithholding,
-      TOTAL_ORDEN_PAGO: total,
-      MONTO_PAGAR: (total - totalRetenciones),
-      TITULO_ESPECIFICA: titleEspecifica,
-      MOTIVO: order.reason.trim()
+      funds: listPucOrder,
+      withholding: listWithholding,
+      totalPaymentOrder: total,
+      amountToPay: (total - totalRetenciones),
+      specificTitle: specificTitle,
+      reason: order.reason.trim()
     }
 
     return body

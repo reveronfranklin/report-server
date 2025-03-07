@@ -4,20 +4,20 @@ import { WithholdingDto } from './withholding.dto';
 
 export class ReportBodyDto {
   @IsArray()
-  FUNDS: FundsDto[];
+  funds: FundsDto[];
 
   @IsArray()
-  WITHHOLDING: WithholdingDto[];
+  withholding: WithholdingDto[];
 
   @IsNumber()
-  TOTAL_ORDEN_PAGO: number;
+  totalPaymentOrder: number;
 
   @IsNumber()
-  MONTO_PAGAR: number;
+  amountToPay: number;
 
   @IsString()
-  TITULO_ESPECIFICA: string;
+  specificTitle: string;
 
   @IsString()
-  MOTIVO: string;
+  reason: string;
 }

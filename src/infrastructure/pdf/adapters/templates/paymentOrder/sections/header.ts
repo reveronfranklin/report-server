@@ -16,7 +16,7 @@ interface HeaderOptions {
 export const headerSection = (options: HeaderOptions): Content => {
   const { header  } = options
 
-  const words = header.TITULO ? header.TITULO.trim().split(/\s+/) : '';
+  const words = header.title ? header.title.trim().split(/\s+/) : '';
   const wordCount = words.length;
   const titleStyle = wordCount > 3 ? 'orderTitleVariable' : 'orderTitle';
 
@@ -32,7 +32,7 @@ export const headerSection = (options: HeaderOptions): Content => {
       ]
     };
   } else {
-    formattedTitle = { text: header.TITULO, style: titleStyle };
+    formattedTitle = { text: header.title, style: titleStyle };
   }
 
   const contentPdf: Content = {
@@ -55,19 +55,19 @@ export const headerSection = (options: HeaderOptions): Content => {
           {
             text: [
               { text: 'TIPO DE ORDEN\n', style: 'tableHeader' },
-              { text: `${header.DESCRIPCION}`, style: 'tableContent' }
+              { text: `${header.description}`, style: 'tableContent' }
             ]
           },
           {
             text: [
               { text: 'ORDEN DE PAGO #\n', style: 'tableHeader' },
-              { text: `${header.NUMERO_ORDEN_PAGO}`, style: 'tableContent' }
+              { text: `${header.paymentOrderNumber}`, style: 'tableContent' }
             ]
           },
           {
             text: [
               { text: 'FECHA ORDEN DE PAGO\n', style: 'tableHeader' },
-              { text: `${header.FECHA_ORDEN_PAGO}`, style: 'tableContent' }
+              { text: `${header.paymentOrderDate}`, style: 'tableContent' }
             ]
           }
         ],
@@ -77,13 +77,13 @@ export const headerSection = (options: HeaderOptions): Content => {
             colSpan: 2,
             text: [
               { text: 'NUMERO COMPROMISO #\n', style: 'tableHeader' },
-              { text: `${ header.NUMERO_COMPROMISO ?? '' }`, style: 'tableContent' }
+              { text: `${ header.commitmentNumber ?? '' }`, style: 'tableContent' }
             ]
           }, {},
           {
             text: [
               { text: 'FECHA COMPROMISO\n', style: 'tableHeader' },
-              { text: `${header.FECHA_COMPROMISO}`, style: 'tableContent' }
+              { text: `${header.commitmentDate}`, style: 'tableContent' }
             ]
           }
         ],

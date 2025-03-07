@@ -18,7 +18,7 @@ export const subHeaderSection = (options: HeaderOptions): Content => {
             colSpan: 6,
             text: [
               { text: 'NOMBRE APELLIDO O RAZON SOCIAL DEL PROVEEDOR:\n', style: 'tableSubHeader' },
-              { text: `${subHeader.NOMBRE_PROVEEDOR ?? ''}`, style: 'tableContentSubHeader' }
+              { text: `${subHeader.supplierName ?? ''}`, style: 'tableContentSubHeader' }
             ]
           },
           {}, {}, {}, {}, {},
@@ -26,7 +26,7 @@ export const subHeaderSection = (options: HeaderOptions): Content => {
             colSpan: 4,
             text: [
               { text: 'CÉDULA o RIF:\n', style: 'tableSubHeader' },
-              { text: `${subHeader.RIF_PROVEEDOR ?? ''}`, style: 'tableContentSubHeader' }
+              { text: `${subHeader.supplierRIF ?? ''}`, style: 'tableContentSubHeader' }
             ]
           },
           {},
@@ -38,13 +38,13 @@ export const subHeaderSection = (options: HeaderOptions): Content => {
             colSpan: 4,
             text: [
               { text: 'APELLIDOS Y NOMBRES:\n', style: 'tableSubHeader' },
-              { text: `${subHeader.NOMBRE_BENEFICIARIO ?? ''} ${subHeader.APELLIDO_BENEFICIARIO ?? ''}`, style: 'tableContentSubHeader' }
+              { text: `${subHeader.beneficiaryName ?? ''} ${subHeader.beneficiaryLastName ?? ''}`, style: 'tableContentSubHeader' }
             ]
           }, {}, {}, {},
           {
             text: [
               { text: 'CÉDULA:\n', style: 'tableSubHeader' },
-              { text: `${subHeader.CEDULA_BENEFICIARIO ?? ''}`, style: 'tableContentSubHeader' }
+              { text: `${subHeader.beneficiaryIdCard ?? ''}`, style: 'tableContentSubHeader' }
             ]
           },
           {
@@ -62,13 +62,13 @@ export const subHeaderSection = (options: HeaderOptions): Content => {
           {
             text: [
               { text: 'Nº DE PAGO\n', style: 'tableSubHeaderNPay' },
-              { text: `${subHeader.CANTIDAD_PAGO}`, style: 'tableContentSubHeaderNPay' }
+              { text: `${subHeader.paymentAmount}`, style: 'tableContentSubHeaderNPay' }
             ]
           },
           {
             text: [
               { text: 'FORMA DE PAGO\n', style: 'tableSubHeader' },
-              { text: `${subHeader.FORMA_DE_PAGO}`, style: 'tableContentSubHeader' }
+              { text: `${subHeader.paymentMethod}`, style: 'tableContentSubHeader' }
             ]
           },
           {
@@ -81,7 +81,7 @@ export const subHeaderSection = (options: HeaderOptions): Content => {
             colSpan: 7,
             text: [
               { text: 'ÚNICO O PERIÓDICO (BOLÍVARES EN LETRAS)\n', style: 'tableSubHeaderAmountLetters' },
-              { text: `${subHeader.MONTO_LETRAS ?? ''}`, style: 'tableContentSubHeaderAmountLetters' }
+              { text: `${subHeader.amountInWords ?? ''}`, style: 'tableContentSubHeaderAmountLetters' }
             ]
           }, {}, {}, {}, {}, {}, {}
         ]

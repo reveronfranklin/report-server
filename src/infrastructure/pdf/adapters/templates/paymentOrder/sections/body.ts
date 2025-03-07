@@ -21,10 +21,10 @@ const formatPrice = (price: number, currency: string) => {
 }
 
 const getTableWithholdings = (body: HeaderOptions['body']): TableCell[][] => {
-  const tableBody: TableCell[][] = [];
+  const tableBody: TableCell[][] = []
 
   for (let i = 0; i < numberOfRowForTableWithholdings; i++) {
-    const row = body.WITHHOLDING[i] || {};
+    const row = body.withholding[i] || {};
 
     const firstRow = (i === 0);
     const lastRow = (i === (numberOfRowForTableWithholdings - 1));
@@ -32,99 +32,99 @@ const getTableWithholdings = (body: HeaderOptions['body']): TableCell[][] => {
     const data: TableCell[] = [
       {
         colSpan: 2,
-        text: firstRow ? formatPrice(body.TOTAL_ORDEN_PAGO, 'VES') : '',
+        text: firstRow ? formatPrice(body.totalPaymentOrder, 'VES') : '',
         style: firstRow ? 'tableBodyWithholdings' : '',
         border: [true, firstRow, true, lastRow]
       },
       {},
       {
         colSpan: 6,
-        text: row.DESCRIPCION ?? '',
+        text: row.description ?? '',
         style: 'withholdings',
         border: [true, firstRow, true, lastRow]
       },
       {}, {}, {}, {}, {},
       {
         colSpan: 2,
-        text: row.MONTO_RETENIDO ? formatPrice(row.MONTO_RETENIDO, 'VES') : '',
+        text: row.withheldAmount ? formatPrice(row.withheldAmount, 'VES') : '',
         style: 'tableBodyWithholdings',
         border: [true, firstRow, true, lastRow]
       },
       {},
       {
         colSpan: 2,
-        text: firstRow ? formatPrice(body.MONTO_PAGAR, 'VES') : '',
+        text: firstRow ? formatPrice(body.amountToPay, 'VES') : '',
         style: firstRow ? 'tableBodyWithholdings' : '',
         border: [true, firstRow, true, lastRow]
       },
       {}
-    ];
+    ]
 
-    tableBody.push(data);
+    tableBody.push(data)
   }
 
-  return tableBody;
-};
+  return tableBody
+}
 
 const getTableFunds = (body: HeaderOptions['body']): TableCell[][] => {
   const tableBody: TableCell[][] = []
 
   for (let i = 0; i < numberOfRowForTableFunds; i++) {
-    const row = body[i] || {};
+    const row = body[i] || {}
 
     const data: TableCell[] = [
       {
-        text: row.ANO?.toString() || '',
+        text: row.year?.toString() || '',
         style: 'tableBody',
         border: [true, false]
       },
       {
         colSpan: 3,
-        text: row.DESCRIPCION_FINANCIADO || '',
+        text: row.financedDescription || '',
         style: 'tableBodyDescription',
          border: [true, false]
       },
       {}, {},
       {
         colSpan: 2,
-        text: row.CODIGO_ICP_CONCAT || '',
+        text: row.icpCodeConcat || '',
         style: 'tableBody',
          border: [true, false]
       },
       {},
       {
         colSpan: 2,
-        text: row.CODIGO_PUC_CONCAT || '',
+        text: row.pucCodeConcat || '',
         style: 'tableBody',
         border: [true, false]
       },
       {},
       {
         colSpan: 2,
-        text: row.PERIODICO ? formatPrice(row.PERIODICO, 'VES') : '',
+        text: row.periodic ? formatPrice(row.periodic, 'VES') : '',
         style: 'tableBodyAmount',
         border: [true, false]
       },
       {},
       {
         colSpan: 2,
-        text: row.MONTO ? formatPrice(row.MONTO, 'VES') : '',
+        text: row.amount ? formatPrice(row.amount, 'VES') : '',
         style: 'tableBodyAmount',
         border: [true, false, true, false]
       },
       {}
     ]
 
-    tableBody.push(data);
+    tableBody.push(data)
   }
 
-  return tableBody;
-};
+  return tableBody
+}
 
 export const bodySection = (options: HeaderOptions): Content => {
   const { body  } = options
 
-  const tableFunds = getTableFunds(body.FUNDS)
+  const tableFunds        = getTableFunds(body.funds)
   const tableWithholdings = getTableWithholdings(body)
 
   const contentPdf: Content = {
@@ -207,13 +207,13 @@ export const bodySection = (options: HeaderOptions): Content => {
           }, {}, {}, {}, {}, {}, {}, {},
           {
             colSpan: 2,
-            text: formatPrice(body.TOTAL_ORDEN_PAGO, 'VES'),
+            text: formatPrice(body.totalPaymentOrder, 'VES'),
             style: 'tableTotal'
           },
           {},
           {
             colSpan: 2,
-            text: formatPrice(body.TOTAL_ORDEN_PAGO, 'VES'),
+            text: formatPrice(body.totalPaymentOrder, 'VES'),
             style: 'tableTotal'
           },
           {}
@@ -221,7 +221,7 @@ export const bodySection = (options: HeaderOptions): Content => {
         [
           {
             colSpan: 8,
-            text: body?.TITULO_ESPECIFICA ? body?.TITULO_ESPECIFICA.trim() : '',
+            text: body?.specificTitle ? body?.specificTitle.trim() : '',
             style: 'tableFooter',
             margin: [5, 0],
             border: [true, false, true, true]
@@ -249,7 +249,7 @@ export const bodySection = (options: HeaderOptions): Content => {
                 style: 'tableHeaderReason'
               },
               {
-                text: body?.MOTIVO ? body?.MOTIVO.trim() : '',
+                text: body?.reason ? body?.reason.trim() : '',
                 style: 'tableReason'
               }
             ],

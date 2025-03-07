@@ -109,7 +109,7 @@ export class IncomeTaxWithholdingVoucherService {
     const subTitle = 'CONCEJO MUNICIPAL DEL MUNICIPIO CHACAO'
 
     return {
-      SUB_TITULO: subTitle
+      subTitle
     }
   }
 
@@ -117,25 +117,25 @@ export class IncomeTaxWithholdingVoucherService {
     const supplier = order?.supplier ?? null
 
     return {
-      NOMBRE_AGENTE_RETENCION: order.withholdingAgentName,
-      TELEFONO_AGENTE_RETENCION: order.withholdingAgentPhone,
-      RIF_AGENTE_RETENCION: this.formatRIF(order.withholdingAgentRIF),
-      DIRECCION_AGENTE_RETENCION: order.withholdingAgentAddress,
-      FECHA: this.formatDate(order.insertionDate),
-      PERIODO_FISCAL: this.formatFiscalPeriod(order.insertionDate),
-      NOMBRE_SUJETO_RETENIDO: supplier.providerName,
-      RIF_SUJETO_RETENIDO: this.formatRIF(supplier?.taxId),
-      NRO_ORDEN_PAGO: order.paymentOrderNumber
+      retentionAgentName: order.withholdingAgentName,
+      retentionAgentPhone: order.withholdingAgentPhone,
+      retentionAgentRif: this.formatRIF(order.withholdingAgentRIF),
+      retentionAgentAddress: order.withholdingAgentAddress,
+      date: this.formatDate(order.insertionDate),
+      fiscalPeriod: this.formatFiscalPeriod(order.insertionDate),
+      retainedSubjectName: supplier.providerName,
+      retainedSubjectRif: this.formatRIF(supplier?.taxId),
+      paymentOrderNumber: order.paymentOrderNumber
     }
   }
 
   private mapToReportBody(order: PaymentOrderEntity): ReportBodyDto {
     const documents = order?.documents ?? []
 
-    let totalTaxableIncome: number = 0
+    let totalTaxableIncome: number     = 0
     let totalIncomeTaxWithheld: number = 0
 
-    const listWithholding: WithholdingDto[] = [];
+    const listWithholding: WithholdingDto[] = []
 
     documents.forEach((document) => {
       const taxDocument = document.taxDocument
