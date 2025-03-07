@@ -138,22 +138,22 @@ export class IncomeTaxWithholdingVoucherService {
     const listWithholding: WithholdingDto[] = [];
 
     documents.forEach((document) => {
-      const taxDocument = document.TAX_DOCUMENT
-      const withholding = taxDocument?.WITHHOLDING
+      const taxDocument = document.taxDocument
+      const withholding = taxDocument?.withholding
 
       const data = {
-        invoiceNumber: document.NUMERO_DOCUMENTO,
-        invoiceDate: this.formatDate(document.FECHA_DOCUMENTO),
-        conceptPayment: withholding?.CONCEPTO_PAGO,
-        extensiveTax: taxDocument?.MONTO_IMPUESTO_EXENTO,
-        taxableIncome: taxDocument?.BASE_IMPONIBLE,
-        alicuota: this.formatPercentageRetention(withholding?.POR_RETENCION ?? 0),
-        incomeTaxWithheld: taxDocument?.MONTO_IMPUESTO,
+        invoiceNumber: document.documentNumber,
+        invoiceDate: this.formatDate(document.documentDate),
+        conceptPayment: withholding?.paymentConcept,
+        extensiveTax: taxDocument?.exemptTaxAmount,
+        taxableIncome: taxDocument?.taxableBase,
+        alicuota: this.formatPercentageRetention(withholding?.byRetention ?? 0),
+        incomeTaxWithheld: taxDocument?.taxAmount,
         subtrahend: null
       }
 
-      totalTaxableIncome      += Number(taxDocument?.BASE_IMPONIBLE)
-      totalIncomeTaxWithheld  += Number(taxDocument?.MONTO_IMPUESTO)
+      totalTaxableIncome      += Number(taxDocument?.taxableBase)
+      totalIncomeTaxWithheld  += Number(taxDocument?.taxAmount)
 
       listWithholding.push(data)
     })

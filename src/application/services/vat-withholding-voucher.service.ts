@@ -156,27 +156,27 @@ export class VatWithholdingVoucherService {
 
     documents.forEach((document, index) => {
       const operationNumber   = index + 1
-      const transactionType   = document.TYPE_DOCUMENT?.extra1
+      const transactionType   = document.typeDocument?.extra1
       /* Review with franklin */
-      const debitNoteNumber   = null //document.TYPE_DOCUMENT?.extra2
-      const creditNoteNumber  = null //document.TYPE_DOCUMENT?.extra3
-      const taxType           = document.TAX_TYPE?.extra1
+      const debitNoteNumber   = null //document.typeDocument?.extra2
+      const creditNoteNumber  = null //document.typeDocument?.extra3
+      const taxType           = document.taxType?.extra1
 
       const data = {
         operationNumber,
-        invoiceDate: this.formatDate(document.FECHA_DOCUMENTO),
-        invoiceNumber: document.NUMERO_DOCUMENTO,
-        invoiceControlNumber: document.NUMERO_CONTROL_DOCUMENTO ?? '00-00000000',
+        invoiceDate: this.formatDate(document.documentDate),
+        invoiceNumber: document.documentNumber,
+        invoiceControlNumber: document.documentControlNumber ?? '00-00000000',
         debitNoteNumber,
         creditNoteNumber,
         transactionType,
-        affectedInvoiceNumber: this.rpad(document.NUMERO_DOCUMENTO_AFECTADO, 20),
-        totalPurchasesIncludingVat: document.MONTO_DOCUMENTO,
-        purchasesWithoutVatCredit: document.MONTO_IMPUESTO_EXENTO,
-        taxableIncome: document.BASE_IMPONIBLE,
+        affectedInvoiceNumber: this.rpad(document.affectedDocumentNumber, 20),
+        totalPurchasesIncludingVat: document.documentAmount,
+        purchasesWithoutVatCredit: document.exemptTaxAmount,
+        taxableIncome: document.taxableBase,
         alicuota: `${taxType}%`,
-        vatTax: document.MONTO_IMPUESTO,
-        vatWithheld: document.MONTO_RETENIDO
+        vatTax: document.taxAmount,
+        vatWithheld: document.withheldAmount
       }
 
       totalPurchasesVat     += Number(data.totalPurchasesIncludingVat)

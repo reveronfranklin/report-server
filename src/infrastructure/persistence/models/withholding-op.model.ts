@@ -8,12 +8,12 @@ import { WithholdingModel } from './withholding.model';
   withLT: {
     include: [{
       model: DescriptiveModel,
-      as: 'DESCRIPCION',
+      as: 'retentionType',
       where: {
-        CODIGO: 'LT'
+        code: 'LT'
       },
       attributes: [
-        'CODIGO'
+        'code'
       ]
     }]
   }

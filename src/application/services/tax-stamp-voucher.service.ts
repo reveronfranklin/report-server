@@ -129,14 +129,14 @@ export class TaxStampVoucherService {
 
     documents.forEach((document) => {
       const data = {
-        invoiceControlNumber: document.NUMERO_CONTROL_DOCUMENTO ?? '00-00000000',
-        invoiceNumber: document.NUMERO_DOCUMENTO,
-        documentAmount: document.MONTO_DOCUMENTO
+        invoiceControlNumber: document.documentControlNumber ?? '00-00000000',
+        invoiceNumber: document.documentNumber,
+        documentAmount: document.documentAmount
       }
 
-      totalGrossAmount      += Number(document.MONTO_DOCUMENTO)
-      totalAmountVat        += Number(document.MONTO_IMPUESTO)
-      totalTaxExempt        += Number(document.MONTO_IMPUESTO_EXENTO)
+      totalGrossAmount      += Number(document.documentAmount)
+      totalAmountVat        += Number(document.taxAmount)
+      totalTaxExempt        += Number(document.exemptTaxAmount)
 
       listWithholding.push(data)
     })
