@@ -18,25 +18,25 @@ export const subHeaderSection = (options: HeaderOptions): Content => {
           {
             text: [
               { text: 'Nombre o Razón Social del Agente de Retención\n', style: 'titleSubHeader' },
-              { text: `${subHeader?.NOMBRE_AGENTE_RETENCION ?? '' }`, style: 'descriptionSubHeader' }
+              { text: `${subHeader?.retentionAgentName ?? '' }`, style: 'descriptionSubHeader' }
             ]
           },
           {
             text: [
               { text: 'Telefonos del Agente de Retencion\n', style: 'titleSubHeader' },
-              { text: `${subHeader?.TELEFONO_AGENTE_RETENCION ?? '' }`, style: 'descriptionSubHeader' }
+              { text: `${subHeader?.retentionAgentPhone ?? '' }`, style: 'descriptionSubHeader' }
             ]
           },
           {
             text: [
               { text: 'RIF del Agente de Retención\n', style: 'titleSubHeader' },
-              { text: `${subHeader?.RIF_AGENTE_RETENCION ?? '' }`, style: 'descriptionSubHeader' }
+              { text: `${subHeader?.retentionAgentRif ?? '' }`, style: 'descriptionSubHeader' }
             ]
           },
           {
             text: [
               { text: 'FECHA\n', style: 'titleSubHeader' },
-              { text: `${subHeader?.FECHA ?? '' }`, style: 'descriptionSubHeader' }
+              { text: `${subHeader?.date ?? '' }`, style: 'descriptionSubHeader' }
             ]
           }
         ],
@@ -45,7 +45,7 @@ export const subHeaderSection = (options: HeaderOptions): Content => {
             colSpan: 2,
             text: [
               { text: 'Dirección Fiscal del Agente de Retención\n', style: 'titleSubHeader' },
-              { text: `${subHeader?.DIRECCION_AGENTE_RETENCION ?? '' }`, style: 'descriptionSubHeader' }
+              { text: `${subHeader?.retentionAgentAddress ?? '' }`, style: 'descriptionSubHeader' }
             ]
           },
           {},
@@ -53,7 +53,7 @@ export const subHeaderSection = (options: HeaderOptions): Content => {
             colSpan: 2,
             text: [
               { text: 'Período Fiscal\n', style: 'titleSubHeader' },
-              { text: `${subHeader?.PERIODO_FISCAL ?? '' }`, style: 'descriptionSubHeader' }
+              { text: `${subHeader?.fiscalPeriod ?? '' }`, style: 'descriptionSubHeader' }
             ]
           },
           {}
@@ -63,23 +63,23 @@ export const subHeaderSection = (options: HeaderOptions): Content => {
             colSpan: 2,
             text: [
               { text: 'Nombre o Razón Social del Sujeto Retenido\n', style: 'titleSubHeader' },
-              { text: `${subHeader?.NOMBRE_SUJETO_RETENIDO ?? '' }`, style: 'descriptionSubHeader' }
+              { text: `${subHeader?.retainedSubjectName ?? '' }`, style: 'descriptionSubHeader' }
             ]
           },
           {},
           {
             text: [
               { text: 'RIF del Sujeto Retenido\n', style: 'titleSubHeader' },
-              { text: `${subHeader?.RIF_SUJETO_RETENIDO ?? '' }`, style: 'descriptionSubHeader' }
+              { text: `${subHeader?.retainedSubjectRif ?? '' }`, style: 'descriptionSubHeader' }
             ]
           },
           {
             text: [
               { text: 'Nro. Orden Pago\n', style: 'titleSubHeader' },
-              { text: `${subHeader?.NRO_ORDEN_PAGO ?? '' }`, style: 'descriptionSubHeader' }
+              { text: `${subHeader?.paymentOrderNumber ?? '' }`, style: 'descriptionSubHeader' }
             ]
           }
-        ],
+        ]
       ]
     }
   }

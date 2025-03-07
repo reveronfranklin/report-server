@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
-import { ReplicatePaymentOrderRepository } from '../../../domain/repositories/replicate-payment-order.repository';
+import { ReplicatePaymentOrderRepository } from '../../../domain/repositories/replicate-payment-order.repository.interface';
 import { ReplicatePaymentOrderResult } from '../../../domain/interfaces/replicate-payment-order.interface';
 import { firstValueFrom } from 'rxjs';
 

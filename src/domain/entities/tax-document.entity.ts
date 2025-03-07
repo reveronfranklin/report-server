@@ -11,6 +11,7 @@ export class TaxDocumentEntity implements ITaxDocument {
     public exemptTaxAmount: number,
     public taxAmount: number,
 
+    /* Relations */
     public withholding?: WithholdingEntity
   ) {}
 }

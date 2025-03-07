@@ -16,7 +16,7 @@ interface HeaderOptions {
 export const headerSection = (options: HeaderOptions): Content => {
   const { header  } = options
 
-  const subTitle = header?.SUB_TITULO ?? null;
+  const subTitle = header?.subTitle ?? null;
 
   const contentPdf: Content = {
     layout: 'noBorders', // optional

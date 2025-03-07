@@ -3,25 +3,25 @@ import { IsNumber, IsPositive, IsString, IsNotEmpty } from 'class-validator';
 export class FundsDto {
   @IsNumber()
   @IsPositive()
-  MONTO: number;
+  amount: number;
 
   @IsNumber()
   @IsPositive()
-  ANO: number;
+  year: number;
 
   @IsNumber()
   @IsPositive()
-  PERIODICO: number;
+  periodic: number;
 
   @IsString()
   @IsNotEmpty()
-  DESCRIPCION_FINANCIADO: string;
+  financedDescription: string;
 
   @IsString()
   @IsNotEmpty()
-  CODIGO_ICP_CONCAT: string;
+  icpCodeConcat: string;
 
   @IsString()
   @IsNotEmpty()
-  CODIGO_PUC_CONCAT: string;
+  pucCodeConcat: string;
 }
