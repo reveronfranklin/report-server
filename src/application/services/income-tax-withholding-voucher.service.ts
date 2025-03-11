@@ -2,10 +2,10 @@
 import { Injectable, Inject } from '@nestjs/common';
 
 /* Repositories */
-import { IIncomeTaxWithholdingVoucherRepository } from '../../domain/repositories/report/income-tax-withholding-voucher.repository.interface';
+import { IIncomeTaxWithholdingVoucherRepository } from '../../domain/repositories/income-tax-withholding-voucher.repository.interface';
 
-/* Services Pdf (revisar para que no tenga detalles de implementacion de la capa de infraestructura) */
-import { PdfGeneratorFactory } from '../../infrastructure/pdf/pdf-generator.factory';
+/* Domain Services */
+import { IPdfGeneratorFactory } from '../../domain/services/pdf-generator-factory.interface';
 
 /* Dtos */
 import { ReportSchemeDto } from '../dtos/incomeTaxWithholdingVoucher/report-scheme.dto';
@@ -15,8 +15,8 @@ export class IncomeTaxWithholdingVoucherService {
   constructor(
     @Inject('IIncomeTaxWithholdingVoucherRepository')
     private incomeTaxWithholdingVoucherRepository: IIncomeTaxWithholdingVoucherRepository,
-    @Inject('IPdfGenerator')
-    private pdfGeneratorFactory: PdfGeneratorFactory
+    @Inject('IPdfGeneratorFactory')
+    private pdfGeneratorFactory: IPdfGeneratorFactory
   ) {}
 
   async generateReport(id: number): Promise<PDFKit.PDFDocument> {

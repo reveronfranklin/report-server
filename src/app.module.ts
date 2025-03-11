@@ -4,77 +4,47 @@ import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { HttpModule } from '@nestjs/axios';
 
-/* Config */
-import { configLoader } from './config/config-loader';
-import { envSchema } from './config/env-schema';
-import { DatabaseModule } from './shared/modules/db/database.module';
+/* Domain */
+import { AuthRepository } from './domain/services/auth.interface';
+import { ReplicatePaymentOrderRepository } from './domain/services/replicate-payment-order.interface';
 
-/* Middleware Auth */
-import { AuthRepository } from './domain/repositories/auth.repository.interface';
+/* Application */
+import { PaymentOrderService } from './application/services/payment-order.service';
+import { IncomeTaxWithholdingVoucherService } from './application/services/income-tax-withholding-voucher.service';
+import { VatWithholdingVoucherService } from './application/services/vat-withholding-voucher.service';
+import { TaxStampVoucherService } from './application/services/tax-stamp-voucher.service';
+
+/* Models */
+import { BalanceModel } from './infrastructure/persistence/models/balance.model';
+import { BeneficiaryModel } from './infrastructure/persistence/models/beneficiary.model';
+import { CommitmentModel } from './infrastructure/persistence/models/commitment.model';
+import { DescriptiveModel } from './infrastructure/persistence/models/descriptive.model';
+import { DocumentModel } from './infrastructure/persistence/models/document.model';
+import { PaymentOrderModel } from './infrastructure/persistence/models/payment-order.model';
+import { PreCommitmentModel } from './infrastructure/persistence/models/pre-commitment.model';
+import { PucPaymentOrderModel } from './infrastructure/persistence/models/puc-payment-order.model';
+import { SupplierModel } from './infrastructure/persistence/models/supplier.model';
+import { TaxDocumentModel } from './infrastructure/persistence/models/tax-document.model';
+import { WithholdingModel } from './infrastructure/persistence/models/withholding.model';
+import { WithholdingOpModel } from './infrastructure/persistence/models/withholding-op.model';
+
+/* Middlewares */
 import { AuthAdapter } from './infrastructure/http/adapters/auth.adapter';
 import { AuthMiddleware } from './infrastructure/http/middleware/auth.middleware';
-
-/* Middleware Replicate Payment Order */
-import { ReplicatePaymentOrderRepository } from './domain/repositories/replicate-payment-order.repository.interface';
 import { ReplicatePaymentOrderAdapter } from './infrastructure/http/adapters/replicate-payment-order.adapter';
 import { ReplicatePaymentOrderMiddleware } from './infrastructure/http/middleware/replicate-payment-order.middleware';
 
-/* Module Payment Order */
-import { PaymentOrderModel } from './infrastructure/persistence/models/payment-order.model';
-import { PaymentOrderService } from './application/services/payment-order.service';
+/* Controllers */
 import { PaymentOrderController } from './infrastructure/http/controllers/payment-order.controller';
-
-/* Module Descriptive */
-import { DescriptiveModel } from './infrastructure/persistence/models/descriptive.model';
-
-/* Module Supplier */
-import { SupplierModel } from './infrastructure/persistence/models/supplier.model';
-
-/* Module Beneficiary */
-import { BeneficiaryModel } from './infrastructure/persistence/models/beneficiary.model';
-
-/* Module Balance */
-import { BalanceModel } from './infrastructure/persistence/models/balance.model';
-
-/* Module PucPaymentOrder */
-import { PucPaymentOrderModel } from './infrastructure/persistence/models/puc-payment-order.model';
-
-/* Module CommitmentModel */
-import { CommitmentModel } from './infrastructure/persistence/models/commitment.model';
-
-/* Module PreCommitmentModel */
-import { PreCommitmentModel } from './infrastructure/persistence/models/pre-commitment.model';
-
-/* Module WithholdingOpModel */
-import { WithholdingOpModel } from './infrastructure/persistence/models/withholding-op.model';
-
-/* Module WithholdingModel */
-import { WithholdingModel } from './infrastructure/persistence/models/withholding.model';
-
-/* Module DocumentModel */
-import { DocumentModel } from './infrastructure/persistence/models/document.model';
-
-/* Module TaxDocumentModel */
-import { TaxDocumentModel } from './infrastructure/persistence/models/tax-document.model';
-
-/* Module IncomeTaxWithholdingVoucher */
 import { IncomeTaxWithholdingVoucherController} from './infrastructure/http/controllers/income-tax-withholding-voucher.controller';
-import { IncomeTaxWithholdingVoucherService } from './application/services/income-tax-withholding-voucher.service';
-
-/* Module VatWithholdingVoucher */
 import { VatWithholdingVoucherController} from './infrastructure/http/controllers/vat-withholding-voucher.controller';
-import { VatWithholdingVoucherService } from './application/services/vat-withholding-voucher.service';
-
-/* Module TaxStampVoucher */
 import { TaxStampVoucherController} from './infrastructure/http/controllers/tax-stamp-voucher.controller';
-import { TaxStampVoucherService } from './application/services/tax-stamp-voucher.service';
 
-/* Resources */
-import { PdfGeneratorAdapterPaymentOrder } from './infrastructure/pdf/adapters/payment-order';
-import { PdfGeneratorAdapterIncomeTaxWithholdingVoucher } from './infrastructure/pdf/adapters/income-tax-withholding-voucher';
-import { PdfGeneratorAdapterVatWithholdingVoucher } from './infrastructure/pdf/adapters/vat-withholding-voucher';
-import { PdfGeneratorAdapterTaxStampVoucher } from './infrastructure/pdf/adapters/tax-stamp-voucher';
-import { PrinterModule } from 'src/shared/modules/printer/printer.module';
+/* Generators */
+import { PaymentOrderPdf } from './infrastructure/pdf/generators/payment-order';
+import { IncomeTaxWithholdingVoucherPdf } from './infrastructure/pdf/generators/income-tax-withholding-voucher';
+import { VatWithholdingVoucherPdf } from './infrastructure/pdf/generators/vat-withholding-voucher';
+import { TaxStampVoucherPdf } from './infrastructure/pdf/generators/tax-stamp-voucher';
 
 /* Repositories */
 import { PaymentOrderRepository } from './infrastructure/persistence/repositories/payment-order.repository';
@@ -85,6 +55,13 @@ import { IncomeTaxWithholdingVoucherRepository } from './infrastructure/persiste
 /* Factories */
 import { PdfGeneratorFactory } from './infrastructure/pdf/pdf-generator.factory';
 
+/* Config */
+import { configLoader } from './config/config-loader';
+import { envSchema } from './config/env-schema';
+
+/* Shared Modules */
+import { SharedModule } from './shared/shared.module';
+
 @Module({
   imports: [
     /* Configs */
@@ -93,7 +70,7 @@ import { PdfGeneratorFactory } from './infrastructure/pdf/pdf-generator.factory'
       load: [configLoader],
       validationSchema: envSchema
     }),
-    DatabaseModule,
+    SharedModule,
     HttpModule,
     SequelizeModule.forFeature([
       PaymentOrderModel,
@@ -108,19 +85,17 @@ import { PdfGeneratorFactory } from './infrastructure/pdf/pdf-generator.factory'
       WithholdingModel,
       DocumentModel,
       TaxDocumentModel
-    ]),
-    PrinterModule
+    ])
   ],
   providers: [
     PaymentOrderService,
     IncomeTaxWithholdingVoucherService,
     VatWithholdingVoucherService,
     TaxStampVoucherService,
-    PdfGeneratorAdapterPaymentOrder,
-    PdfGeneratorAdapterIncomeTaxWithholdingVoucher,
-    PdfGeneratorAdapterVatWithholdingVoucher,
-    PdfGeneratorAdapterTaxStampVoucher,
-    PdfGeneratorFactory,
+    PaymentOrderPdf,
+    IncomeTaxWithholdingVoucherPdf,
+    VatWithholdingVoucherPdf,
+    TaxStampVoucherPdf,
     {
       provide: AuthRepository,
       useClass: AuthAdapter
@@ -146,7 +121,7 @@ import { PdfGeneratorFactory } from './infrastructure/pdf/pdf-generator.factory'
       useClass: IncomeTaxWithholdingVoucherRepository
     },
     {
-      provide: 'IPdfGenerator',
+      provide: 'IPdfGeneratorFactory',
       useClass: PdfGeneratorFactory
     }
   ],

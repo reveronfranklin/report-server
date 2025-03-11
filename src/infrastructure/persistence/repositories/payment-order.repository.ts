@@ -4,7 +4,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Sequelize } from 'sequelize-typescript';
 
 /* Domain */
-import { IPaymentOrderRepository } from '../../../domain/repositories/report/payment-order.repository.interface';
+import { IPaymentOrderRepository } from '../../../domain/repositories/payment-order.repository.interface';
 
 /* Models */
 import { PaymentOrderModel } from '../models/payment-order.model';

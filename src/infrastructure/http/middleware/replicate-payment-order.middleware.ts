@@ -1,8 +1,8 @@
 import { Injectable, NestMiddleware, UseInterceptors } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
-import { ReplicatePaymentOrderRepository } from '../../../domain/repositories/replicate-payment-order.repository.interface';
-import { ApiResponseInterceptor } from '../../interceptors/response/response.interceptor';
-import { ResponseDto } from '../../interceptors/response/response.dto';
+import { ReplicatePaymentOrderRepository } from '../../../domain/services/replicate-payment-order.interface';
+import { ApiResponseInterceptor } from '../../../interceptors/response.interceptor';
+import { ResponseDto } from '../../../interceptors/response.dto';
 
 @Injectable()
 @UseInterceptors(ApiResponseInterceptor)

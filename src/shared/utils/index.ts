@@ -50,6 +50,19 @@ const formatPercentageRetention = (percentage: number | string): any => {
   return formattedNumber.trim()
 }
 
+const formatPrice = (price: number, currency: string) => {
+  const formattedPrice = new Intl.NumberFormat('es-ES', {
+    style: 'currency',
+    currency: currency,
+    useGrouping: true,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }).format(price);
+
+  // Eliminar 'VES' si aparece al final, con o sin espacio
+  return formattedPrice.replace(/\s*VES$/, '').trim();
+}
+
 const formatRIF = (rif: any): any => {
   if (!rif) {
     return null
@@ -90,6 +103,7 @@ export {
   formatDate,
   formatFiscalPeriod,
   formatPercentageRetention,
+  formatPrice,
   formatRIF,
   isValidDate,
   rpad
