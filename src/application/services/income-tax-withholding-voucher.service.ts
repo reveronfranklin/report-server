@@ -1,14 +1,10 @@
 /* Dependencies */
 import { Injectable, Inject } from '@nestjs/common';
 
-/* Repositories */
 import { IIncomeTaxWithholdingVoucherRepository } from '../../domain/repositories/income-tax-withholding-voucher.repository.interface';
-
-/* Domain Services */
 import { IPdfGeneratorFactory } from '../../domain/services/pdf-generator-factory.interface';
-
-/* Dtos */
 import { ReportSchemeDto } from '../dtos/incomeTaxWithholdingVoucher/report-scheme.dto';
+import { CustomException } from '../../exceptions/custom.exception';
 
 @Injectable()
 export class IncomeTaxWithholdingVoucherService {
@@ -24,7 +20,7 @@ export class IncomeTaxWithholdingVoucherService {
     const incomeTaxWithholdingVoucherReport: ReportSchemeDto | null = await this.incomeTaxWithholdingVoucherRepository.findById(id)
 
     if (!incomeTaxWithholdingVoucherReport) {
-      throw new Error('Income Tax Withholding Voucher Report not found')
+      throw new CustomException('Income Tax Withholding Voucher Report not found')
     }
 
     try {
@@ -37,7 +33,7 @@ export class IncomeTaxWithholdingVoucherService {
       return pdfDocument
     } catch (error) {
       console.error('generateReport -> error', error)
-      throw error
+      throw new CustomException(`Error generating report incomeTaxWithholdingVoucherService: ${error.message}`)
     }
   }
 }

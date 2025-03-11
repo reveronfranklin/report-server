@@ -1,14 +1,10 @@
 /* Dependencies */
 import { Injectable, Inject } from '@nestjs/common';
 
-/* Repositories */
 import { IVatWithholdingVoucherRepository } from '../../domain/repositories/vat-withholding-voucher.repository.interface';
-
-/* Domain Services */
 import { IPdfGeneratorFactory } from '../../domain/services/pdf-generator-factory.interface';
-
-/* Dtos */
 import { ReportSchemeDto } from '../dtos/vatWithholdingVoucher/report-scheme.dto';
+import { CustomException } from '../../exceptions/custom.exception';
 
 @Injectable()
 export class VatWithholdingVoucherService {
@@ -24,7 +20,7 @@ export class VatWithholdingVoucherService {
     const vatWithholdingVoucherReport: ReportSchemeDto | null = await this.vatWithholdingVoucherRepository.findById(id)
 
     if (!vatWithholdingVoucherReport) {
-      throw new Error('Vat Withholding Voucher Report not found')
+      throw new CustomException('Vat Withholding Voucher Report not found')
     }
 
     try {
@@ -37,7 +33,7 @@ export class VatWithholdingVoucherService {
       return pdfDocument
     } catch (error) {
       console.error('generateReport -> error', error)
-      throw error
+      throw new CustomException(`Error generating report VatWithholdingVoucherService: ${error.message}`)
     }
   }
 }

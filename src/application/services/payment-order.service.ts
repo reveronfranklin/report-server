@@ -1,14 +1,10 @@
 /* Dependencies */
 import { Injectable, Inject } from '@nestjs/common';
 
-/* Repositories */
 import { IPaymentOrderRepository } from '../../domain/repositories/payment-order.repository.interface';
-
-/* Domain Services */
 import { IPdfGeneratorFactory } from '../../domain/services/pdf-generator-factory.interface';
-
-/* Dtos */
 import { ReportSchemeDto } from '../dtos/paymentOrder/report-scheme.dto';
+import { CustomException } from '../../exceptions/custom.exception';
 
 @Injectable()
 export class PaymentOrderService {
@@ -24,7 +20,7 @@ export class PaymentOrderService {
     const paymentOrderReport: ReportSchemeDto | null = await this.paymentOrderRepository.findById(id)
 
     if (!paymentOrderReport) {
-      throw new Error('Payment Order Report not found')
+      throw new CustomException('Payment Order Report not found')
     }
 
     try {
@@ -37,7 +33,7 @@ export class PaymentOrderService {
       return pdfDocument
     } catch (error) {
       console.error('generateReport -> error', error)
-      throw error
+      throw new CustomException(`Error generating report PaymentOrderService: ${error.message}`)
     }
   }
 }
