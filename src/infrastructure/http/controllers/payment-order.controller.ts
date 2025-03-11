@@ -1,13 +1,13 @@
-import { Controller, Post, Body, UseInterceptors, StreamableFile, Header } from '@nestjs/common';
+import { Controller, Post, Body, StreamableFile, Header } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import blobStream from 'blob-stream';
+
 import { PaymentOrderService } from '../../../application/services/payment-order.service';
 import { GenerateReportDto } from '../dtos/generate-report.dto';
-import { ApiResponseInterceptor } from '../../interceptors/response/response.interceptor';
-import blobStream from 'blob-stream';
+import { CustomException } from '../../../exceptions/custom.exception';
 
 @ApiTags('payment-orders')
 @Controller('payment-orders')
-@UseInterceptors(ApiResponseInterceptor)
 export class PaymentOrderController {
   constructor(private paymentOrderService: PaymentOrderService) {}
 
@@ -19,33 +19,33 @@ export class PaymentOrderController {
   @Header('Content-Disposition', 'attachment; filename="report.pdf"')
   async generateReport(@Body() generateReportDto: GenerateReportDto): Promise<StreamableFile> {
     try {
-      const pdfDocument = await this.paymentOrderService.generateReport(generateReportDto.CodigoOrdenPago);
+      const pdfDocument = await this.paymentOrderService.generateReport(generateReportDto.CodigoOrdenPago)
 
       // Create a blob stream
-      const stream = blobStream();
+      const stream = blobStream()
 
       // Pipe the PDF document to the blob stream
-      pdfDocument.pipe(stream);
+      pdfDocument.pipe(stream)
 
       // End the document
-      pdfDocument.end();
+      pdfDocument.end()
 
       // Get the blob from the stream
       const blob = await new Promise<Blob>((resolve) => {
         stream.on('finish', () => {
-          resolve(stream.toBlob('application/pdf'));
+          resolve(stream.toBlob('application/pdf'))
         });
       });
 
       // Convert blob to buffer
-      const arrayBuffer = await blob.arrayBuffer();
-      const buffer = Buffer.from(arrayBuffer);
+      const arrayBuffer = await blob.arrayBuffer()
+      const buffer = Buffer.from(arrayBuffer)
 
       // Return a StreamableFile
-      return new StreamableFile(buffer);
+      return new StreamableFile(buffer)
     } catch (error) {
-      console.error('Error generating report:', error);
-      throw new Error('Error generating report: ' + error.message);
+      console.error('Error generating report:', error)
+      throw new CustomException(`Error generating report paymentOrderController: ${error.message}`)
     }
   }
 }

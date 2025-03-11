@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 
 /* Domain */
-import { ITaxStampVoucherRepository } from '../../../domain/repositories/report/tax-stamp-voucher.repository.interface';
+import { ITaxStampVoucherRepository } from '../../../domain/repositories/tax-stamp-voucher.repository.interface';
 
 /* Models */
 import { PaymentOrderModel } from '../models/payment-order.model';

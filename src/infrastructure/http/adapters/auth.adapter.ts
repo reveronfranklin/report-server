@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
-import { AuthRepository } from '../../../domain/repositories/auth.repository.interface';
+import { AuthRepository } from '../../../domain/services/auth.interface';
 import { RefreshToken } from '../../../domain/entities/refresh-token.entity';
 import { ResultValidationToken } from '../../../domain/interfaces/auth.interface';
 import { firstValueFrom } from 'rxjs';
