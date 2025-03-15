@@ -6,8 +6,8 @@ export class CustomException extends HttpException {
     const response: IResponse<null> = {
       data: null,
       isValid: false,
-      linkData: '',
-      linkDataArlternative: '',
+      linkData: null,
+      linkDataArlternative: null,
       message: `${message}`,
       page: 1,
       totalPage: 1,
