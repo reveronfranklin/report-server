@@ -46,7 +46,8 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
         'reason',
         'reportTitle',
         'status',
-        'supplierCode'
+        'supplierCode',
+        'commitmentNumber'
       ],
       include: [
         {

@@ -35,8 +35,7 @@ export class IncomeTaxWithholdingVoucherRepository implements IIncomeTaxWithhold
         'withholdingAgentAddress',
         'withholdingAgentName',
         'withholdingAgentPhone',
-        'withholdingAgentRIF',
-        'commitmentNumber'
+        'withholdingAgentRIF'
       ],
       include: [
         {
