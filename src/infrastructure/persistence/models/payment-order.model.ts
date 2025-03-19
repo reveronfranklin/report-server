@@ -144,6 +144,13 @@ export class PaymentOrderModel extends Model<PaymentOrderModel> implements IPaym
   })
   withholdingAgentRIF: string | null;
 
+  @Column({
+    type: DataType.STRING,
+    field: 'NUMERO_COMPROMISO',
+    allowNull: true
+  })
+  commitmentNumber: string | null;
+
 
   /* Associations */
 

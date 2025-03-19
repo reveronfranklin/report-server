@@ -37,7 +37,7 @@ export class PaymentOrderMapper {
 
     return {
       description: paymentOrderType?.description,
-      commitmentNumber: preCommitment?.commitmentNumber,
+      commitmentNumber: preCommitment?.commitmentNumber ?? order?.commitmentNumber,
       title: order.reportTitle,
       paymentOrderNumber: order.paymentOrderNumber,
       paymentOrderDate: dateOrderPayment,

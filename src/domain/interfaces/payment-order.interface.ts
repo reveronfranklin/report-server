@@ -18,4 +18,5 @@ export interface IPaymentOrder {
   withholdingAgentName: string | null;
   withholdingAgentPhone: string | null;
   withholdingAgentRIF: string | null;
+  commitmentNumber: string | null;
 }
