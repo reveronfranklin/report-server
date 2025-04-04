@@ -3,25 +3,25 @@ import { IsString, IsDate, IsNotEmpty } from 'class-validator';
 export class ReportHeaderDto {
   @IsString()
   @IsNotEmpty()
-  DESCRIPCION: string;
+  description: string;
 
   @IsString()
   @IsNotEmpty()
-  NUMERO_COMPROMISO: string;
+  commitmentNumber: string;
 
   @IsString()
   @IsNotEmpty()
-  TITULO: string;
+  title: string;
 
   @IsString()
   @IsNotEmpty()
-  NUMERO_ORDEN_PAGO: string;
+  paymentOrderNumber: string;
 
   @IsDate()
   @IsNotEmpty()
-  FECHA_ORDEN_PAGO: Date;
+  paymentOrderDate: Date;
 
   @IsDate()
   @IsNotEmpty()
-  FECHA_COMPROMISO: Date;
+  commitmentDate: Date;
 }

@@ -1,7 +1,4 @@
-import { PaymentOrderEntity } from '../entities/payment-order.entity';
-
 export interface IPaymentOrderRepository {
-  findByIdWithPaymentOrder(id: number): Promise<PaymentOrderEntity | null>;
-  findByIdWithHoldingISLR(id: number): Promise<PaymentOrderEntity | null>;
-  findByIdWithHoldingVat(id: number): Promise<PaymentOrderEntity | null>;
+  /* any es el tipo de retorno del mapper temporal */
+  findById(id: number): Promise<any | null>
 }

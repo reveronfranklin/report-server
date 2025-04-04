@@ -15,171 +15,119 @@ export class DocumentModel extends Model<DocumentModel> implements IDocument {
     type: DataType.INTEGER,
     field: 'CODIGO_DOCUMENTO_OP'
   })
-  CODIGO_DOCUMENTO_OP!: number | null;
+  documentOperationCode!: number | null;
 
   /* Foreing Keys */
 
   @ForeignKey(() => PaymentOrderModel)
-  @Column({ field: 'CODIGO_ORDEN_PAGO' })
-  CODIGO_ORDEN_PAGO!: number | null;
+  @Column({
+    field: 'CODIGO_ORDEN_PAGO'
+  })
+  paymentOrderCode!: number | null;
 
   @ForeignKey(() => DescriptiveModel)
   @Column({
     field: 'TIPO_DOCUMENTO_ID'
   })
-  TIPO_DOCUMENTO_ID!: string | null;
+  documentTypeId!: string | null;
 
   @ForeignKey(() => DescriptiveModel)
   @Column({
     field: 'TIPO_OPERACION_ID'
   })
-  TIPO_OPERACION_ID!: string | null;
+  operationTypeId!: string | null;
 
   @ForeignKey(() => DescriptiveModel)
   @Column({
     field: 'TIPO_IMPUESTO_ID'
   })
-  TIPO_IMPUESTO_ID!: string | null;
+  taxTypeId!: string | null;
 
   /* Foreing Keys */
 
-  /* Associations */
-
-  @BelongsTo(() => PaymentOrderModel, { foreignKey: 'CODIGO_ORDEN_PAGO', as: 'PAYMENT_ORDER' })
-  PAYMENT_ORDER: PaymentOrderModel;
-
-  @BelongsTo(() => DescriptiveModel, { foreignKey: 'TIPO_DOCUMENTO_ID', as: 'TYPE_DOCUMENT' })
-  TYPE_DOCUMENT: DescriptiveModel;
-
-  @BelongsTo(() => DescriptiveModel, { foreignKey: 'TIPO_IMPUESTO_ID', as: 'TAX_TYPE' })
-  TAX_TYPE: DescriptiveModel;
-
-  @HasOne(() => TaxDocumentModel, { foreignKey: 'CODIGO_DOCUMENTO_OP', as: 'TAX_DOCUMENT' })
-  TAX_DOCUMENT: TaxDocumentModel;
-
-  /* Associations */
 
   @Column({
-    field: 'FECHA_COMPROBANTE',
-    type: DataType.DATE
+    field: 'NUMERO_DOCUMENTO_AFECTADO'
   })
-  FECHA_COMPROBANTE!: Date | null;
+  affectedDocumentNumber!: string | null;
 
   @Column({
-    field: 'PERIODO_IMPOSITIVO'
+    field: 'MONTO_DOCUMENTO',
+    type: DataType.INTEGER
   })
-  PERIODO_IMPOSITIVO!: string | null;
+  documentAmount!: number | null;
+
+  @Column({
+    field: 'NUMERO_CONTROL_DOCUMENTO'
+  })
+  documentControlNumber!: string | null;
 
   @Column({
     field: 'FECHA_DOCUMENTO',
     type: DataType.DATE
   })
-  FECHA_DOCUMENTO!: Date | null;
+  documentDate!: Date | null;
 
   @Column({
     field: 'NUMERO_DOCUMENTO'
   })
-  NUMERO_DOCUMENTO!: string | null;
-
-  @Column({
-    field: 'NUMERO_CONTROL_DOCUMENTO'
-  })
-  NUMERO_CONTROL_DOCUMENTO!: string | null;
-
-  @Column({
-    field: 'MONTO_DOCUMENTO',
-    type: DataType.DECIMAL(18, 2)
-  })
-  MONTO_DOCUMENTO!: number | null;
-
-  @Column({
-    field: 'BASE_IMPONIBLE',
-    type: DataType.DECIMAL(18, 2)
-  })
-  BASE_IMPONIBLE!: number | null;
-
-  @Column({
-    field: 'MONTO_IMPUESTO',
-    type: DataType.DECIMAL(18, 2)
-  })
-  MONTO_IMPUESTO!: number | null;
-
-  @Column({
-    field: 'NUMERO_DOCUMENTO_AFECTADO'
-  })
-  NUMERO_DOCUMENTO_AFECTADO!: string | null;
-
-  @Column({
-    field: 'TIPO_TRANSACCION_ID'
-  })
-  TIPO_TRANSACCION_ID!: string | null;
+  documentNumber!: string | null;
 
   @Column({
     field: 'MONTO_IMPUESTO_EXENTO',
     type: DataType.DECIMAL(18, 2)
   })
-  MONTO_IMPUESTO_EXENTO!: number | null;
+  exemptTaxAmount!: number | null;
+
+  @Column({
+    field: 'BASE_IMPONIBLE',
+    type: DataType.DECIMAL(18, 2)
+  })
+  taxableBase!: number | null;
+
+  @Column({
+    field: 'MONTO_IMPUESTO',
+    type: DataType.DECIMAL(18, 2)
+  })
+  taxAmount!: number | null;
+
+  @Column({
+    field: 'TIPO_TRANSACCION_ID'
+  })
+  transactionTypeId!: string | null;
 
   @Column({
     field: 'MONTO_RETENIDO',
     type: DataType.DECIMAL(18, 2)
   })
-  MONTO_RETENIDO!: number | null;
+  withheldAmount!: number | null;
 
-  @Column({
-    field: 'EXTRA1'
-  })
-  EXTRA1!: string | null;
 
-  @Column({
-    field: 'EXTRA2'
-  })
-  EXTRA2!: string | null;
+  /* Associations */
 
-  @Column({
-    field: 'EXTRA3'
+  @BelongsTo(() => PaymentOrderModel, {
+    foreignKey: 'CODIGO_ORDEN_PAGO',
+    as: 'paymentOrder'
   })
-  EXTRA3!: string | null;
+  paymentOrder: PaymentOrderModel;
 
-  @Column({
-    field: 'USUARIO_INS'
+  @BelongsTo(() => DescriptiveModel, {
+    foreignKey: 'TIPO_DOCUMENTO_ID',
+    as: 'typeDocument'
   })
-  USUARIO_INS!: string | null;
+  typeDocument: DescriptiveModel;
 
-  @Column({
-    field: 'FECHA_INS',
-    type: DataType.DATE
+  @BelongsTo(() => DescriptiveModel, {
+    foreignKey: 'TIPO_IMPUESTO_ID',
+    as: 'taxType'
   })
-  FECHA_INS!: Date | null;
+  taxType: DescriptiveModel;
 
-  @Column({
-    field: 'USUARIO_UPD'
+  @HasOne(() => TaxDocumentModel, {
+    foreignKey: 'CODIGO_DOCUMENTO_OP',
+    as: 'taxDocument'
   })
-  USUARIO_UPD!: string | null;
+  taxDocument: TaxDocumentModel;
 
-  @Column({
-    field: 'FECHA_UPD',
-    type: DataType.DATE
-  })
-  FECHA_UPD!: Date | null;
-
-  @Column({
-    field: 'CODIGO_EMPRESA'
-  })
-  CODIGO_EMPRESA!: string | null;
-
-  @Column({
-    field: 'CODIGO_PRESUPUESTO'
-  })
-  CODIGO_PRESUPUESTO!: string | null;
-
-  @Column({
-    field: 'NUMERO_EXPEDIENTE'
-  })
-  NUMERO_EXPEDIENTE!: string | null;
-
-  @Column({
-    field: 'ESTATUS_FISCO_ID'
-  })
-  ESTATUS_FISCO_ID!: string | null;
+  /* Associations */
 }

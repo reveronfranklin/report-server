@@ -1,7 +1,23 @@
-import { Model, Column, ForeignKey, BelongsTo, Table, DataType } from 'sequelize-typescript';
+import { Model, Column, ForeignKey, BelongsTo, Table, Scopes, DataType } from 'sequelize-typescript';
 import { IWithholdingOp } from '../../../domain/interfaces/withholding-op.interface';
 import { DescriptiveModel } from './descriptive.model';
 import { PaymentOrderModel } from './payment-order.model';
+import { WithholdingModel } from './withholding.model';
+
+@Scopes(() => ({
+  withLT: {
+    include: [{
+      model: DescriptiveModel,
+      as: 'retentionType',
+      where: {
+        code: 'LT'
+      },
+      attributes: [
+        'code'
+      ]
+    }]
+  }
+}))
 
 @Table({
   schema: 'public',
@@ -9,70 +25,73 @@ import { PaymentOrderModel } from './payment-order.model';
   timestamps: false // Desactiva los timestamps
 })
 export class WithholdingOpModel extends Model<WithholdingOpModel> implements IWithholdingOp {
-  @Column({ primaryKey: true, field: 'CODIGO_RETENCION_OP' })
-  codigoRetencionOp!: string;
+  @Column({
+    primaryKey: true,
+    field: 'CODIGO_RETENCION_OP'
+  })
+  opRetentionCode!: string;
 
   /* Foreing Keys */
-  @ForeignKey(() => PaymentOrderModel)
-  @Column({ field: 'CODIGO_ORDEN_PAGO' })
-  codigoOrdenPago!: number;
 
+  @ForeignKey(() => PaymentOrderModel)
+  @Column({
+    field: 'CODIGO_ORDEN_PAGO'
+  })
+  paymentOrderCode!: number;
 
   @ForeignKey(() => DescriptiveModel)
-  @Column({ field: 'TIPO_RETENCION_ID' })
-  tipoRetencionId!: string;
+  @Column({
+    field: 'TIPO_RETENCION_ID'
+  })
+  withholdingTypeId!: string;
+
+  @ForeignKey(() => WithholdingModel)
+  @Column({
+    field: 'CODIGO_RETENCION'
+  })
+  retentionCode!: string;
 
   /* Foreing Keys */
 
+
+  @Column({
+    field: 'POR_RETENCION',
+    type: DataType.INTEGER
+  })
+  byRetention!: number;
+
+  @Column({
+    field: 'MONTO_RETENCION',
+    type: DataType.INTEGER
+  })
+  retentionAmount!: number;
+
+  @Column({
+    field: 'BASE_IMPONIBLE',
+    type: DataType.INTEGER
+  })
+  taxableBase!: number;
+
+
   /* Associations */
 
-  @BelongsTo(() => DescriptiveModel, { foreignKey: 'TIPO_RETENCION_ID', as: 'DESCRIPCION' })
-  DESCRIPCION: DescriptiveModel;
+  @BelongsTo(() => DescriptiveModel, {
+    foreignKey: 'TIPO_RETENCION_ID',
+    as: 'retentionType',
+  })
+  retentionType: DescriptiveModel;
 
-  @BelongsTo(() => PaymentOrderModel, { foreignKey: 'CODIGO_ORDEN_PAGO', as: 'PAYMENT_ORDER' })
-  PAYMENT_ORDER: PaymentOrderModel;
+  @BelongsTo(() => PaymentOrderModel, {
+    foreignKey: 'CODIGO_ORDEN_PAGO',
+    as: 'paymentOrder'
+  })
+  paymentOrder: PaymentOrderModel;
+
+  @BelongsTo(() => WithholdingModel, {
+    foreignKey: 'CODIGO_RETENCION',
+    as: 'withholding'
+  })
+  withholding: WithholdingModel;
 
   /* Associations */
-
-  @Column({ field: 'CODIGO_RETENCION' })
-  codigoRetencion!: string;
-
-  @Column({ field: 'POR_RETENCION', type: DataType.DECIMAL(10, 2) })
-  porRetencion!: number;
-
-  @Column({ field: 'MONTO_RETENCION', type: DataType.DECIMAL(18, 2) })
-  montoRetencion!: number;
-
-  @Column({ field: 'EXTRA1' })
-  extra1!: string;
-
-  @Column({ field: 'EXTRA2' })
-  extra2!: string;
-
-  @Column({ field: 'EXTRA3' })
-  extra3!: string;
-
-  @Column({ field: 'USUARIO_INS' })
-  usuarioIns!: string;
-
-  @Column({ field: 'FECHA_INS' })
-  fechaIns!: Date;
-
-  @Column({ field: 'USUARIO_UPD' })
-  usuarioUpd!: string;
-
-  @Column({ field: 'FECHA_UPD' })
-  fechaUpd!: Date;
-
-  @Column({ field: 'CODIGO_EMPRESA' })
-  codigoEmpresa!: string;
-
-  @Column({ field: 'CODIGO_PRESUPUESTO' })
-  codigoPresupuesto!: string;
-
-  @Column({ field: 'EXTRA4' })
-  extra4!: string;
-
-  @Column({ field: 'BASE_IMPONIBLE', type: DataType.DECIMAL(18, 2) })
-  baseImponible!: number;
 }

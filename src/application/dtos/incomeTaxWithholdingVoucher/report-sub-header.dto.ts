@@ -3,37 +3,37 @@ import { IsString, IsDate, IsNotEmpty } from 'class-validator';
 export class ReportSubHeaderDto {
   @IsString()
   @IsNotEmpty()
-  NOMBRE_AGENTE_RETENCION: string;
+  retentionAgentName: string;
 
   @IsString()
   @IsNotEmpty()
-  TELEFONO_AGENTE_RETENCION: string;
+  retentionAgentPhone: string;
 
   @IsString()
   @IsNotEmpty()
-  RIF_AGENTE_RETENCION: string;
+  retentionAgentRif: string;
 
   @IsString()
   @IsNotEmpty()
-  DIRECCION_AGENTE_RETENCION: string;
+  retentionAgentAddress: string;
 
   @IsDate()
   @IsNotEmpty()
-  FECHA: Date;
+  date: Date;
 
   @IsString()
   @IsNotEmpty()
-  PERIODO_FISCAL: string;
+  fiscalPeriod: string;
 
   @IsString()
   @IsNotEmpty()
-  NOMBRE_SUJETO_RETENIDO: string;
+  retainedSubjectName: string;
 
   @IsString()
   @IsNotEmpty()
-  RIF_SUJETO_RETENIDO: string;
+  retainedSubjectRif: string;
 
   @IsString()
   @IsNotEmpty()
-  NRO_ORDEN_PAGO: string;
+  paymentOrderNumber: string;
 }
