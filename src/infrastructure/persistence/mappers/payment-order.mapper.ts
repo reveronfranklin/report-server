@@ -15,7 +15,7 @@ import { isValidDate, formatDate, formatRIF } from '../../../shared/utils';
 
 export class PaymentOrderMapper {
   static toDomain(paymentOrderModel: PaymentOrderModel): ReportSchemeDto {
-    const status = (paymentOrderModel.status === 'AP') ?  'approved' : 'annulled'
+    const status = (paymentOrderModel.status === 'AN') ?  'annulled' : 'approved'
 
     const reportScheme: ReportSchemeDto = {
       name: 'payment-order-report',

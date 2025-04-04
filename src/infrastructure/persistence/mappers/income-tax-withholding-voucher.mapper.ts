@@ -14,7 +14,7 @@ import { formatDate, formatRIF, formatFiscalPeriod, formatPercentageRetention } 
 
 export class IncomeTaxWithholdingVoucherMapper {
   static toDomain(paymentOrderModel: PaymentOrderModel): ReportSchemeDto {
-    const status = (paymentOrderModel.status === 'AP') ?  'approved' : 'annulled'
+    const status = (paymentOrderModel.status === 'AN') ?  'annulled' : 'approved'
 
     const reportScheme: ReportSchemeDto = {
       name: 'income-tax-withholding-voucher-report',

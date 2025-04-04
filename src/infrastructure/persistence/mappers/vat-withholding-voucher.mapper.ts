@@ -14,7 +14,7 @@ import { formatDate, formatFiscalPeriod, formatRIF, rpad } from '../../../shared
 
 export class VatWithholdingVoucherMapper {
   static toDomain(paymentOrderModel: PaymentOrderModel): ReportSchemeDto {
-    const status = (paymentOrderModel.status === 'AP') ?  'approved' : 'annulled'
+    const status = (paymentOrderModel.status === 'AN') ?  'annulled' : 'approved'
 
     const reportScheme: ReportSchemeDto = {
       name: 'vat-withholding-voucher-report',

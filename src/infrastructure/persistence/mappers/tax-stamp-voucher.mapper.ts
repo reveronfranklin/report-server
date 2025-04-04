@@ -14,7 +14,7 @@ import { formatDate, formatRIF, calculateTaxableIncome } from '../../../shared/u
 
 export class TaxStampVoucherMapper {
   static toDomain(paymentOrderModel: PaymentOrderModel): ReportSchemeDto {
-    const status = (paymentOrderModel.status === 'AP') ?  'approved' : 'annulled'
+    const status = (paymentOrderModel.status === 'AN') ?  'annulled' : 'approved'
 
     const reportScheme: ReportSchemeDto = {
       name: 'tax-stamp-voucher-report',
