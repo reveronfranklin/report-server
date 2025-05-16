@@ -1,11 +1,13 @@
+/* Dependencies */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Sequelize } from 'sequelize-typescript';
-import { PaymentOrderModel } from '../models/payment-order.model';
+
+/* Domain */
 import { IPaymentOrderRepository } from '../../../domain/repositories/payment-order.repository.interface';
-import { PaymentOrderEntity } from '../../../domain/entities/payment-order.entity';
 
 /* Models */
+import { PaymentOrderModel } from '../models/payment-order.model';
 import { DescriptiveModel } from '../models/descriptive.model';
 import { SupplierModel } from '../models/supplier.model';
 import { BeneficiaryModel } from '../models/beneficiary.model';
@@ -14,12 +16,12 @@ import { CommitmentModel } from '../models/commitment.model';
 import { PreCommitmentModel } from '../models/pre-commitment.model';
 import { BalanceModel } from '../models/balance.model';
 import { WithholdingOpModel } from '../models/withholding-op.model';
-import { DocumentModel } from '../models/document.model';
-import { TaxDocumentModel } from '../models/tax-document.model';
 
 /* Mappers */
 import { PaymentOrderMapper } from '../mappers/payment-order.mapper';
-import { WithholdingModel } from '../models/withholding.model';
+
+/* Dtos */
+import { ReportSchemeDto } from '../../../application/dtos/paymentOrder/report-scheme.dto';
 
 @Injectable()
 export class PaymentOrderRepository implements IPaymentOrderRepository {
@@ -29,111 +31,146 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
     private sequelize: Sequelize
   ) {}
 
-  async findByIdWithRelations(id: number): Promise<PaymentOrderEntity | null> {
+  async findById(id: number): Promise<ReportSchemeDto | null> {
     const options = {
+      attributes: [
+        'amountInWords',
+        'deadlineEndDate',
+        'deadlineStartDate',
+        'paymentAmount',
+        'paymentFrequencyId',
+        'paymentOrderCode',
+        'paymentOrderDate',
+        'paymentOrderNumber',
+        'paymentOrderTypeId',
+        'reason',
+        'reportTitle',
+        'status',
+        'supplierCode',
+        'commitmentNumber'
+      ],
       include: [
-        { model: DescriptiveModel, as: 'TIPO_ORDEN_PAGO' },
-        { model: DescriptiveModel, as: 'FRECUENCIA_PAGO' },
+        {
+          model: DescriptiveModel,
+          as: 'paymentOrderType',
+          attributes: [
+            'code',
+            'description',
+            'descriptionId'
+          ]
+        },
+        {
+          model: DescriptiveModel,
+          as: 'paymentFrequency',
+          attributes: [
+            'code',
+            'description',
+            'descriptionId'
+          ]
+        },
         {
           model: SupplierModel,
-          as: 'PROVEEDOR',
+          as: 'supplier',
+          attributes: [
+            'identificationCard',
+            'providerCode',
+            'providerName',
+            'taxId'
+          ],
           include: [
             {
               model: BeneficiaryModel,
-              as: 'BENEFICIARIES',
-              where: { PRINCIPAL: 1 },
-              required: false  // This makes it a LEFT OUTER JOIN
+              as: 'beneficiaries',
+              attributes: [
+                'firstName',
+                'identification',
+                'identificationId',
+                'lastName',
+                'providerCode',
+                'providerContactCode'
+              ],
+              where: {
+                PRINCIPAL: 1
+              },
+              required: false // This makes it a LEFT OUTER JOIN
             }
           ]
         },
         {
           model: PucPaymentOrderModel,
-          as: 'PUC_PAYMENT_ORDERS',
+          as: 'pucPaymentOrders',
           required: false,
-          // Testear
+          attributes: [
+            'amount',
+            'balanceCode',
+            'paymentOrderCode',
+            'pucPaymentOrderCode'
+          ],
           where: this.sequelize.literal(`
             "CODIGO_PUC_ORDEN_PAGO" IN (
-              SELECT DISTINCT ON ("CODIGO_SALDO") "CODIGO_PUC_ORDEN_PAGO"
-              FROM public."ADM_PUC_ORDEN_PAGO"
-              ORDER BY "CODIGO_SALDO", "CODIGO_PUC_ORDEN_PAGO"
+              SELECT
+                DISTINCT ON ("CODIGO_SALDO") "CODIGO_PUC_ORDEN_PAGO"
+              FROM
+                public."ADM_PUC_ORDEN_PAGO"
+              ORDER BY
+                "CODIGO_SALDO",
+                "CODIGO_PUC_ORDEN_PAGO"
             )
           `),
-          //order: [['CODIGO_PUC_ORDEN_PAGO', 'DESC']],
           include: [
-            { model: BalanceModel, as: 'BALANCE' }
+            {
+              model: BalanceModel,
+              as: 'balance',
+              attributes: [
+                'balanceCode',
+                'financedDescription',
+                'icpCodeConcat',
+                'pucCodeConcat',
+                'pucDenomination',
+                'year'
+              ]
+            }
           ]
         },
         {
           model: CommitmentModel,
-          as: 'COMMITMENT',
+          as: 'commitment',
+          attributes: [
+            'commitmentCodeOp',
+            'identifierCode',
+            'paymentOrderCode'
+          ],
           include: [
-            { model: PreCommitmentModel, as: 'PRE_COMMITMENT' }
+            {
+              model:
+              PreCommitmentModel,
+              as: 'preCommitment',
+              attributes: [
+                'commitmentCode',
+                'commitmentDate',
+                'commitmentNumber'
+              ]
+            }
           ]
         },
         {
           model: WithholdingOpModel,
-          as: 'WITHHOLDINGS',
-          include: [
-            { model: DescriptiveModel, as: 'DESCRIPCION' }
-          ]
-        }
-      ]
-    }
-
-    const paymentOrderModel = await this.paymentOrderModel.findByPk(id, options)
-
-    /* responses */
-    return paymentOrderModel ? PaymentOrderMapper.toDomain(paymentOrderModel) : null
-  }
-
-  async findByIdWithHoldings(id: number): Promise<PaymentOrderEntity | null> {
-    const options = {
-      attributes: [
-        'NOMBRE_AGENTE_RETENCION',
-        'TELEFONO_AGENTE_RETENCION',
-        'RIF_AGENTE_RETENCION',
-        'DIRECCION_AGENTE_RETENCION',
-        'FECHA_INS',
-        'NUMERO_ORDEN_PAGO'
-      ],
-      include: [
-        {
-          model: SupplierModel,
+          as: 'withholdingOps',
           attributes: [
-            'NOMBRE_PROVEEDOR',
-            'RIF'
-          ],
-          as: 'PROVEEDOR',
-          required: false
-        },
-        {
-          model: DocumentModel,
-          as: 'DOCUMENTS',
-          attributes: [
-            'NUMERO_DOCUMENTO',
-            'FECHA_DOCUMENTO'
+            'byRetention',
+            'opRetentionCode',
+            'paymentOrderCode',
+            'retentionAmount',
+            'withholdingTypeId'
           ],
           include: [
             {
-              /* El scope condiciona: (SELECT X.DESCRIPCION_ID FROM ADM_DESCRIPTIVAS X WHERE X.CODIGO= 'ISLR') */
-              model: TaxDocumentModel.scope('withISLR'),
-              as: 'TAX_DOCUMENT',
+              model: DescriptiveModel,
+              as: 'retentionType',
               attributes: [
-                'MONTO_IMPUESTO_EXENTO',
-                'MONTO_IMPUESTO',
-                'BASE_IMPONIBLE'
-              ],
-              required: true,
-              include: [
-                {
-                  model: WithholdingModel,
-                  attributes: [
-                    'CONCEPTO_PAGO',
-                    'POR_RETENCION'
-                  ],
-                  as: 'WITHHOLDING',
-                  required: false
-                }
+                'code',
+                'description',
+                'descriptionId'
               ]
             }
           ]
@@ -143,17 +180,10 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
 
     const paymentOrderModel = await this.paymentOrderModel.findByPk(id, options)
 
-    /* responses */
-    return paymentOrderModel ? PaymentOrderMapper.toDomain(paymentOrderModel) : null
-  }
+    if (paymentOrderModel) {
+      return PaymentOrderMapper.toDomain(paymentOrderModel)
+    }
 
-  async existPaymentOrder(id: number): Promise<boolean> {
-    const paymentOrderModel = await this.paymentOrderModel.findByPk(id)
-
-    /* console.log('paymentOrderModel', paymentOrderModel) */
-
-    console.log('exist payment order', !!paymentOrderModel)
-
-    return !!paymentOrderModel
+    return null
   }
 }

@@ -3,45 +3,45 @@ import { IsString, IsDate, IsNotEmpty } from 'class-validator';
 export class ReportSubHeaderDto {
   @IsString()
   @IsNotEmpty()
-  NOMBRE_PROVEEDOR: string;
+  supplierName: string;
 
   @IsString()
   @IsNotEmpty()
-  CEDULA_PROVEEDOR: string;
+  supplierIdCard: string;
 
   @IsString()
   @IsNotEmpty()
-  RIF_PROVEEDOR: string;
+  supplierRIF: string;
 
   @IsString()
   @IsNotEmpty()
-  NOMBRE_BENEFICIARIO: string;
+  beneficiaryName: string;
 
   @IsString()
   @IsNotEmpty()
-  APELLIDO_BENEFICIARIO: string;
+  beneficiaryLastName: string;
 
   @IsString()
   @IsNotEmpty()
-  CEDULA_BENEFICIARIO: string;
+  beneficiaryIdCard: string;
 
   @IsString()
   @IsNotEmpty()
-  FORMA_DE_PAGO: string;
+  paymentMethod: string;
 
   @IsDate()
   @IsNotEmpty()
-  FECHA_PLAZO_DESDE: Date;
+  deadlineStartDate: Date;
 
   @IsDate()
   @IsNotEmpty()
-  FECHA_PLAZO_HASTA: Date;
+  deadlineEndDate: Date;
 
   @IsString()
   @IsNotEmpty()
-  MONTO_LETRAS: string;
+  amountInWords: string;
 
   @IsString()
   @IsNotEmpty()
-  CANTIDAD_PAGO: number;
+  paymentAmount: number;
 }

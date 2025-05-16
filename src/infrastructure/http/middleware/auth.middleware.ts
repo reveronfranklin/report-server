@@ -1,6 +1,6 @@
 import { Injectable, NestMiddleware, UseInterceptors } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
-import { AuthRepository } from '../../../domain/repositories/auth.repository';
+import { AuthRepository } from '../../../domain/services/auth.interface';
 import { RefreshToken } from '../../../domain/entities/refresh-token.entity';
 import { ApiResponseInterceptor } from '../../../interceptors/response.interceptor';
 import { ResponseDto } from '../../../interceptors/response.dto';

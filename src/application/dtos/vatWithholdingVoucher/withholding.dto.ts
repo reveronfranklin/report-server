@@ -10,20 +10,20 @@ export class WithholdingDto {
   @IsString()
   invoiceNumber: string;
 
-  @IsNumber()
-  invoiceControlNumber: number;
+  @IsString()
+  invoiceControlNumber: string;
 
-  @IsNumber()
-  debitNoteNumber: number;
+  @IsString()
+  debitNoteNumber: string;
 
-  @IsNumber()
-  creditNoteNumber: number;
+  @IsString()
+  creditNoteNumber: string;
 
   @IsString()
   transactionType: string;
 
-  @IsNumber()
-  affectedInvoiceNumber: number;
+  @IsString()
+  affectedInvoiceNumber: string;
 
   @IsNumber()
   totalPurchasesIncludingVat: number;

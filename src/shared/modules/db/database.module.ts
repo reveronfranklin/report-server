@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { DatabaseSequelizeConfig } from '../../../config/db/database-sequelize.config';
+import { DatabaseSequelizeConfigService } from './database.service';
 
 @Module({
   imports: [
     SequelizeModule.forRootAsync({
-      useClass: DatabaseSequelizeConfig // Usa la clase de configuración
+      useClass: DatabaseSequelizeConfigService // Usa la clase de configuración
     })
   ],
 })

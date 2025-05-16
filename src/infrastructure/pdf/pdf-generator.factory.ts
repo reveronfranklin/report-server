@@ -1,27 +1,35 @@
+/* Dependencies */
 import { Injectable } from '@nestjs/common';
-import { PdfGeneratorAdapterPaymentOrder } from './pdf-generator-payment-order.adapter';
-import { PdfGeneratorAdapterIncomeTaxWithholdingVoucher } from './pdf-generator-income-tax-withholding-voucher';
-import { PdfGeneratorAdapterVatWithholdingVoucher } from './pdf-generator-vat-withholding-voucher';
+import { IPdfGeneratorFactory } from '../../domain/services/pdf-generator-factory.interface';
+import { IPdfGenerator } from '../../domain/services/pdf-generator.interface';
+
+/* Generators */
+import { PaymentOrderPdf } from './generators/payment-order';
+import { IncomeTaxWithholdingVoucherPdf } from './generators/income-tax-withholding-voucher';
+import { VatWithholdingVoucherPdf } from './generators/vat-withholding-voucher';
+import { TaxStampVoucherPdf } from './generators/tax-stamp-voucher';
 
 @Injectable()
-export class PdfGeneratorFactory {
+export class PdfGeneratorFactory implements IPdfGeneratorFactory {
   private generators: Map<string, any>;
 
   constructor(
-    private paymentOrderGenerator: PdfGeneratorAdapterPaymentOrder,
-    private incomeTaxWithholdingVoucherGenerator: PdfGeneratorAdapterIncomeTaxWithholdingVoucher,
-    private vatWithholdingVoucherGenerator: PdfGeneratorAdapterVatWithholdingVoucher
+    private paymentOrderPdf: PaymentOrderPdf,
+    private incomeTaxWithholdingVoucherPdf: IncomeTaxWithholdingVoucherPdf,
+    private vatWithholdingVoucherPdf: VatWithholdingVoucherPdf,
+    private taxStampVoucherPdf: TaxStampVoucherPdf
   ) {
-    this.generators = new Map();
-    this.generators.set('paymentOrder', paymentOrderGenerator);
-    this.generators.set('incomeTaxWithholdingVoucher', incomeTaxWithholdingVoucherGenerator);
-    this.generators.set('vatWithholdingVoucher', vatWithholdingVoucherGenerator);
+    this.generators = new Map()
+    this.generators.set('paymentOrder', paymentOrderPdf)
+    this.generators.set('incomeTaxWithholdingVoucher', incomeTaxWithholdingVoucherPdf)
+    this.generators.set('vatWithholdingVoucher', vatWithholdingVoucherPdf)
+    this.generators.set('taxStampVoucher', taxStampVoucherPdf)
   }
 
-  getGenerator(type: string) {
-    const generator = this.generators.get(type);
+  getGenerator(type: string): IPdfGenerator {
+    const generator = this.generators.get(type)
     if (!generator) {
-      throw new Error(`No PDF generator found for type: ${type}`);
+      throw new Error(`No PDF generator found for type: ${type}`)
     }
     return generator;
   }
