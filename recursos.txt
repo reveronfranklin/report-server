@@ -1,2 +1,3 @@
 
-docker build --tag ms-mail-nest .
+docker build --tag report-server-ossmma .
+docker run -d -p 3000:3000 -e "SERVER_PORT=4000" -e "DB_CONNECTION=postgres" -e "DB_HOST=216.244.81.116" -e "DB_PORT=5432" -e "DB_DATABASE=OSSMMASOFT" -e "PORT=4000" -e "DB_USERNAME=ossmmapg" -e "DB_PASSWORD=ossmm4ppgg" -e "DB_SSL=false" -e "DB_AUTO_LOAD_MODELS=false" -e "DB_SYNCHRONIZE=false" -e "DB_LOGGING=false" -e "API_AUTH_URL=http://216.244.81.115:5000/api" -e "ALLOWED_ORIGINS=http://ossmmasoft.com.ve:3000,https://ossmmasoft.com.ve:3001,http://localhost:3000,http://localhost:4000,http://localhost:5000" --log-driver json-file --log-opt max-size=20m --log-opt max-file=5 --name con-report-server-ossmma report-server-ossmma
