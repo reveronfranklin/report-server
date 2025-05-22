@@ -34,7 +34,7 @@ export class ReplicatePaymentOrderMiddleware implements NestMiddleware {
         result      = await this.replicatePaymentOrderRepository.replicatePaymentOrder(codigoOrdenPago)
 
         if (!result.isValid) {
-          result.message = 'No se pudo replicar la orden de pago';
+          result.message = result?.message ?? 'No se pudo replicar la orden de pago';
           return res.status(404).json(result);
         }
 
