@@ -33,7 +33,7 @@ export class PaymentOrderMapper {
     const commitment        = order?.commitment ?? null
     const preCommitment     = commitment?.preCommitment ?? null
     const dateOrderPayment  = formatDate(order.paymentOrderDate)
-    const dateCommitment    = formatDate(preCommitment?.commitmentDate)
+    const dateCommitment    = formatDate(preCommitment?.commitmentDate ?? order?.commitmentDate)
 
     return {
       description: paymentOrderType?.description,

@@ -145,6 +145,12 @@ export class PaymentOrderModel extends Model<PaymentOrderModel> implements IPaym
   withholdingAgentRIF: string | null;
 
   @Column({
+    type: DataType.DATE,
+    field: 'FECHA_COMPROMISO'
+  })
+  commitmentDate: Date;
+
+  @Column({
     type: DataType.STRING,
     field: 'NUMERO_COMPROMISO',
     allowNull: true

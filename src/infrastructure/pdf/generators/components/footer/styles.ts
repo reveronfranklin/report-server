@@ -3,7 +3,7 @@ import { StyleDictionary } from 'pdfmake/interfaces';
 export const footerStyles: StyleDictionary = {
   footer: {
     alignment: 'center',
-    margin: [40, 25, 80, 0],
+    margin: [40, 40, 80, 0],
     fontSize: 8
   },
   footerSignature: {
