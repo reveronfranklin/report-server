@@ -56,11 +56,12 @@ const getTableWithholdings = (body: HeaderOptions['body']): TableCell[][] => {
   return tableBody
 }
 
-const getTableFunds = (body: HeaderOptions['body']): TableCell[][] => {
+const getTableFunds = (funds: HeaderOptions['body']): TableCell[][] => {
   const tableBody: TableCell[][] = []
+  const countRow: number = (funds.length < numberOfRowForTableFunds) ? numberOfRowForTableFunds : funds.length
 
-  for (let i = 0; i < numberOfRowForTableFunds; i++) {
-    const row = body[i] || {}
+  for (let i = 0; i < countRow; i++) {
+    const row = funds[i] || {}
 
     const data: TableCell[] = [
       {
@@ -111,17 +112,30 @@ const getTableFunds = (body: HeaderOptions['body']): TableCell[][] => {
   return tableBody
 }
 
+const generateHeightTable = (quantity: number): number[] => {
+  const defaultHeight: number = 10
+  const heightFunds: number[] = []
+  const countRow: number      = (quantity > defaultHeight) ? quantity : defaultHeight
+
+  for (let i = 0; i < countRow; i++) {
+    heightFunds.push(defaultHeight)
+  }
+
+  return heightFunds
+}
+
 export const bodySection = (options: HeaderOptions): Content => {
   const { body } = options
 
   const tableFunds        = getTableFunds(body.funds)
   const tableWithholdings = getTableWithholdings(body)
+  const heightFunds       = generateHeightTable(tableFunds.length)
 
   const contentPdf: Content = {
     style: 'body',
     table: {
       widths: ['*', '*', '*', '*', 30, 30, 30, 30, '*', '*', '*', '*'],
-      heights: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 100, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+      heights: [10, 10, ...heightFunds, 10, 10, 100, 10, 10, 10, 10, 10, 10, 10, 10, 10],
       body: [
         /* header table */
         [
