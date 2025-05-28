@@ -28,7 +28,6 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
   constructor(
     @InjectModel(PaymentOrderModel)
     private paymentOrderModel: typeof PaymentOrderModel,
-    private sequelize: Sequelize
   ) {}
 
   async findById(id: number): Promise<ReportSchemeDto | null> {
@@ -106,17 +105,17 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
             'paymentOrderCode',
             'pucPaymentOrderCode'
           ],
-          where: this.sequelize.literal(`
+          /* where: this.sequelize.literal(`
             "CODIGO_PUC_ORDEN_PAGO" IN (
               SELECT
-                DISTINCT ON ("CODIGO_SALDO") "CODIGO_PUC_ORDEN_PAGO"
+                DISTINCT ON ("CODIGO_SALDO", "CODIGO_PUC_ORDEN_PAGO") "CODIGO_PUC_ORDEN_PAGO"
               FROM
                 public."ADM_PUC_ORDEN_PAGO"
               ORDER BY
                 "CODIGO_SALDO",
                 "CODIGO_PUC_ORDEN_PAGO"
             )
-          `),
+          `), */
           include: [
             {
               model: BalanceModel,
