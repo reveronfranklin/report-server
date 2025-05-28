@@ -46,6 +46,7 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
         'reportTitle',
         'status',
         'supplierCode',
+        'commitmentDate',
         'commitmentNumber'
       ],
       include: [
@@ -105,17 +106,6 @@ export class PaymentOrderRepository implements IPaymentOrderRepository {
             'paymentOrderCode',
             'pucPaymentOrderCode'
           ],
-          /* where: this.sequelize.literal(`
-            "CODIGO_PUC_ORDEN_PAGO" IN (
-              SELECT
-                DISTINCT ON ("CODIGO_SALDO", "CODIGO_PUC_ORDEN_PAGO") "CODIGO_PUC_ORDEN_PAGO"
-              FROM
-                public."ADM_PUC_ORDEN_PAGO"
-              ORDER BY
-                "CODIGO_SALDO",
-                "CODIGO_PUC_ORDEN_PAGO"
-            )
-          `), */
           include: [
             {
               model: BalanceModel,

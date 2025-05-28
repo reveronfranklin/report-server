@@ -27,6 +27,7 @@ export class PaymentOrderEntity implements IPaymentOrder {
     public withholdingAgentName: string | null,
     public withholdingAgentPhone: string | null,
     public withholdingAgentRIF: string | null,
+    public commitmentDate: Date | null,
     public commitmentNumber: string | null,
 
     /* Relations */

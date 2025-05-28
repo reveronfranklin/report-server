@@ -42,7 +42,7 @@ export function createPaymentOrderTemplate(data: ReportSchemeDto): TDocumentDefi
   })
 
   const bodyContent: Content = bodySection({
-    body,
+    body
   })
 
   const watermark = getWatermark(status)
@@ -50,7 +50,7 @@ export function createPaymentOrderTemplate(data: ReportSchemeDto): TDocumentDefi
   return {
     pageSize: 'LETTER',
     pageOrientation: 'portrait',
-    pageMargins: [20, 215, 60, 100],
+    pageMargins: [20, 215, 60, 120],
     styles: styles,
     watermark: watermark,
     header: {
