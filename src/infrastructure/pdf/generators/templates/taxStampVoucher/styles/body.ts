@@ -3,7 +3,7 @@ import { StyleDictionary } from 'pdfmake/interfaces';
 export const bodyStyles: StyleDictionary = {
   body: {
     alignment: 'center',
-    margin: [0, 0],
+    margin: [0, 10],
     fontSize: 8
   },
   titleBody: {

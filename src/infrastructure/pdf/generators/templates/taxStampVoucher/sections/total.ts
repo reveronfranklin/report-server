@@ -5,15 +5,17 @@ import { formatPrice } from '../../../../../../shared/utils';
 
 interface HeaderOptions {
   body: any;
+  countWithHolding: number;
 }
 
 export const bodyTotalSection = (options: HeaderOptions): Content => {
   const { totalGrossAmount, totalAmountVat, totalNetTaxableIncome, withholdingPercentage } = options.body
+  const { countWithHolding } = options;
 
   const contentPdf: Content = {
     style: 'total',
     table: {
-      headerRows: 1,
+      headerRows: (countWithHolding > 5 ? 1 : 0),
       widths: [60, 240, '*', '*'],
       heights: [10, 10, 10, 10, 10, 10, 10, 10],
       body: [
