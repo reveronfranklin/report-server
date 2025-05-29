@@ -3,7 +3,7 @@ import { StyleDictionary } from 'pdfmake/interfaces';
 export const totalStyles: StyleDictionary = {
   total: {
     alignment: 'center',
-    margin: [0, 10],
+    margin: [0, 0, 0, 0],
     fontSize: 8
   },
   totalHeader: {

@@ -49,7 +49,8 @@ export function createTaxStampVoucherTemplate(data: ReportSchemeDto): TDocumentD
   })
 
   const bodyTotalContent: Content = bodyTotalSection({
-    body
+    body,
+    countWithHolding: body?.withHolding.length ?? 0
   })
 
   const watermark = getWatermark(status)
@@ -57,7 +58,7 @@ export function createTaxStampVoucherTemplate(data: ReportSchemeDto): TDocumentD
   return {
     pageSize: 'LETTER',
     pageOrientation: 'portrait',
-    pageMargins: [30, 480, 30, 100],
+    pageMargins: [30, 460, 30, 110],
     styles: styles,
     watermark: watermark,
     header: {
