@@ -8,7 +8,7 @@ interface HeaderOptions {
 }
 
 const numberOfRowForTableFunds: number = 10;
-const numberOfRowForTableWithholdings: number = 8;
+const numberOfRowForTableWithholdings: number = 7;
 
 const getTableWithholdings = (body: HeaderOptions['body']): TableCell[][] => {
   const tableBody: TableCell[][] = []

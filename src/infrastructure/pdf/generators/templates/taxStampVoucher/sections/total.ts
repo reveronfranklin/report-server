@@ -15,7 +15,7 @@ export const bodyTotalSection = (options: HeaderOptions): Content => {
   const contentPdf: Content = {
     style: 'total',
     table: {
-      headerRows: (countWithHolding > 5 ? 1 : 0),
+      headerRows: (countWithHolding > 7 ? 1 : 0),
       widths: [60, 240, '*', '*'],
       heights: [10, 10, 10, 10, 10, 10, 10, 10],
       body: [

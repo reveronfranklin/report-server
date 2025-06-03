@@ -58,7 +58,7 @@ export function createTaxStampVoucherTemplate(data: ReportSchemeDto): TDocumentD
   return {
     pageSize: 'LETTER',
     pageOrientation: 'portrait',
-    pageMargins: [30, 460, 30, 110],
+    pageMargins: [25, 420, 25, 110],
     styles: styles,
     watermark: watermark,
     header: {
