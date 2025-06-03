@@ -3,7 +3,7 @@ import { StyleDictionary } from 'pdfmake/interfaces';
 export const subHeaderStyles: StyleDictionary = {
   subHeader: {
     alignment: 'center',
-    margin: [30, 10],
+    margin: [25, 5],
     fontSize: 8
   },
   titleSubHeader: {

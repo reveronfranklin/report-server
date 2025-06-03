@@ -11,7 +11,7 @@ export const subHeaderSection = (options: HeaderOptions): Content => {
     style: 'subHeader',
     table: {
       widths: ['*'],
-      heights: [35, 10, 20, 10, 35, 10, 20, 10, 80],
+      heights: [35, 5, 20, 5, 35, 5, 20, 5, 80],
       body: [
         [
           {
@@ -101,7 +101,7 @@ export const subHeaderSection = (options: HeaderOptions): Content => {
                 style: 'titleSubHeader'
               },
               {
-                text: `${subHeader?.reason ?? ''}`,
+                text: `${subHeader?.reason ? subHeader?.reason.trim() : ''}`,
                 style: 'descriptionSubHeader'
               }
             ]

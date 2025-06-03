@@ -31,7 +31,7 @@ export const bodyStyles: StyleDictionary = {
   tableHeaderReason: {
     bold: true,
     fontSize: 7,
-    lineHeight: 3,
+    lineHeight: 2,
     alignment: 'left',
   },
   tableReason: {
