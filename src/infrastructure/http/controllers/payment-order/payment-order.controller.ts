@@ -2,24 +2,24 @@ import { Controller, Post, Body, StreamableFile, Header } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import blobStream from 'blob-stream';
 
-import { TaxStampVoucherService } from '../../../application/services/tax-stamp-voucher.service';
-import { GenerateReportDto } from '../dtos/generate-report.dto';
-import { CustomException } from '../../../exceptions/custom.exception';
+import { PaymentOrderService } from '../../../../application/services/payment-order.service';
+import { GenerateReportDto } from '../../dtos/generate-report.dto';
+import { CustomException } from '../../../../exceptions/custom.exception';
 
-@ApiTags('tax-stamp-voucher')
-@Controller('tax-stamp-voucher')
-export class TaxStampVoucherController {
-  constructor(private taxStampVoucherService: TaxStampVoucherService) {}
+@ApiTags('payment-orders')
+@Controller('payment-orders')
+export class PaymentOrderController {
+  constructor(private paymentOrderService: PaymentOrderService) {}
 
   @Post('/pdf/report')
-  @ApiOperation({ summary: 'Generate a PDF report for a tax stamp voucher' })
+  @ApiOperation({ summary: 'Generate a PDF report for a payment order' })
   @ApiResponse({ status: 200, description: 'Report generated successfully' })
   @ApiResponse({ status: 400, description: 'Bad request' })
   @Header('Content-Type', 'application/pdf')
   @Header('Content-Disposition', 'attachment; filename="report.pdf"')
   async generateReport(@Body() generateReportDto: GenerateReportDto): Promise<StreamableFile> {
     try {
-      const pdfDocument = await this.taxStampVoucherService.generateReport(generateReportDto.CodigoOrdenPago)
+      const pdfDocument = await this.paymentOrderService.generateReport(generateReportDto.CodigoOrdenPago)
 
       // Create a blob stream
       const stream = blobStream()
@@ -44,8 +44,8 @@ export class TaxStampVoucherController {
       // Return a StreamableFile
       return new StreamableFile(buffer)
     } catch (error) {
-      console.error('Error generating report:', error);
-      throw new CustomException(`Error generating report taxStampVoucherController: ${error.message}`)
+      console.error('Error generating report:', error)
+      throw new CustomException(`Error generating report paymentOrderController: ${error.message}`)
     }
   }
 }

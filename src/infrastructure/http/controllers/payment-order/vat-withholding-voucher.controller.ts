@@ -2,24 +2,24 @@ import { Controller, Post, Body, StreamableFile, Header } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import blobStream from 'blob-stream';
 
-import { IncomeTaxWithholdingVoucherService } from '../../../application/services/income-tax-withholding-voucher.service';
-import { GenerateReportDto } from '../dtos/generate-report.dto';
-import { CustomException } from '../../../exceptions/custom.exception';
+import { VatWithholdingVoucherService } from '../../../../application/services/vat-withholding-voucher.service';
+import { GenerateReportDto } from '../../dtos/generate-report.dto';
+import { CustomException } from '../../../../exceptions/custom.exception';
 
-@ApiTags('income-tax-withholding-voucher')
-@Controller('income-tax-withholding-voucher')
-export class IncomeTaxWithholdingVoucherController {
-  constructor(private incomeTaxWithholdingVoucherService: IncomeTaxWithholdingVoucherService) {}
+@ApiTags('vat-withholding-voucher')
+@Controller('vat-withholding-voucher')
+export class VatWithholdingVoucherController {
+  constructor(private vatWithholdingVoucherService: VatWithholdingVoucherService) {}
 
   @Post('/pdf/report')
-  @ApiOperation({ summary: 'Generate a PDF report for a voucher ISLR' })
+  @ApiOperation({ summary: 'Generate a PDF report for a voucher IVA' })
   @ApiResponse({ status: 200, description: 'Report generated successfully' })
   @ApiResponse({ status: 400, description: 'Bad request' })
   @Header('Content-Type', 'application/pdf')
   @Header('Content-Disposition', 'attachment; filename="report.pdf"')
   async generateReport(@Body() generateReportDto: GenerateReportDto): Promise<StreamableFile> {
     try {
-      const pdfDocument = await this.incomeTaxWithholdingVoucherService.generateReport(generateReportDto.CodigoOrdenPago)
+      const pdfDocument = await this.vatWithholdingVoucherService.generateReport(generateReportDto.CodigoOrdenPago)
 
       // Create a blob stream
       const stream = blobStream()
@@ -45,7 +45,7 @@ export class IncomeTaxWithholdingVoucherController {
       return new StreamableFile(buffer)
     } catch (error) {
       console.error('Error generating report:', error)
-      throw new CustomException(`Error generating report incomeTaxWithholdingVoucherController: ${error.message}`)
+      throw new CustomException(`Error generating report vatWithholdingVoucherController: ${error.message}`)
     }
   }
 }

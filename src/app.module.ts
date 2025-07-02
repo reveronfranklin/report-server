@@ -34,11 +34,14 @@ import { AuthMiddleware } from './infrastructure/http/middleware/auth.middleware
 import { ReplicatePaymentOrderAdapter } from './infrastructure/http/adapters/replicate-payment-order.adapter';
 import { ReplicatePaymentOrderMiddleware } from './infrastructure/http/middleware/replicate-payment-order.middleware';
 
-/* Controllers */
-import { PaymentOrderController } from './infrastructure/http/controllers/payment-order.controller';
-import { IncomeTaxWithholdingVoucherController} from './infrastructure/http/controllers/income-tax-withholding-voucher.controller';
-import { VatWithholdingVoucherController} from './infrastructure/http/controllers/vat-withholding-voucher.controller';
-import { TaxStampVoucherController} from './infrastructure/http/controllers/tax-stamp-voucher.controller';
+/* Controllers - Payment Orders */
+import { PaymentOrderController } from './infrastructure/http/controllers/payment-order/payment-order.controller';
+import { IncomeTaxWithholdingVoucherController} from './infrastructure/http/controllers/payment-order/income-tax-withholding-voucher.controller';
+import { VatWithholdingVoucherController} from './infrastructure/http/controllers/payment-order/vat-withholding-voucher.controller';
+import { TaxStampVoucherController} from './infrastructure/http/controllers/payment-order/tax-stamp-voucher.controller';
+
+/* Controllers - Treasury (Lotes) */
+import { DebitNoteThirdPartiesController } from './infrastructure/http/controllers/treasury/debit-note-third-parties.controller';
 
 /* Generators */
 import { PaymentOrderPdf } from './infrastructure/pdf/generators/payment-order';
@@ -129,7 +132,8 @@ import { SharedModule } from './shared/shared.module';
     PaymentOrderController,
     IncomeTaxWithholdingVoucherController,
     VatWithholdingVoucherController,
-    TaxStampVoucherController
+    TaxStampVoucherController,
+    DebitNoteThirdPartiesController
   ]
 })
 export class AppModule implements NestModule {
