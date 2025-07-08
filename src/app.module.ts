@@ -17,6 +17,7 @@ import { SharedModule } from '@shared/shared.module';
 
 /* Features */
 import { PaymentOrderModule } from './features/payment-order/payment-order.module';
+import { TreasuryModule } from './features/treasury/treasury.module';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { PaymentOrderModule } from './features/payment-order/payment-order.modul
     }),
     SharedModule,
     HttpModule,
-    PaymentOrderModule
+    PaymentOrderModule,
+    TreasuryModule
   ],
   providers: [
     {

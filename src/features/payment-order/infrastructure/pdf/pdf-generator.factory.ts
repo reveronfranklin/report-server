@@ -1,7 +1,7 @@
 /* Dependencies */
 import { Injectable } from '@nestjs/common';
-import { IPdfGeneratorFactory } from '../../domain/services/pdf-generator-factory.interface';
-import { IPdfGenerator } from '../../domain/services/pdf-generator.interface';
+import { IPdfGeneratorFactory } from '@shared/modules/printer/interfaces/pdf-generator-factory.interface';
+import { IPdfGenerator } from '@shared/modules/printer/interfaces/pdf-generator.interface';
 
 /* Generators */
 import { PaymentOrderPdf } from './generators/payment-order';
@@ -28,9 +28,11 @@ export class PdfGeneratorFactory implements IPdfGeneratorFactory {
 
   getGenerator(type: string): IPdfGenerator {
     const generator = this.generators.get(type)
+
     if (!generator) {
       throw new Error(`No PDF generator found for type: ${type}`)
     }
-    return generator;
+
+    return generator
   }
 }
