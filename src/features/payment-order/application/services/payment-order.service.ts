@@ -1,10 +1,10 @@
 /* Dependencies */
 import { Injectable, Inject } from '@nestjs/common';
 
-import { IPaymentOrderRepository } from '../../domain/repositories/payment-order.repository.interface';
-import { IPdfGeneratorFactory } from '../../domain/services/pdf-generator-factory.interface';
-import { ReportSchemeDto } from '../dtos/paymentOrder/report-scheme.dto';
+import { IPdfGeneratorFactory } from '@shared/modules/printer/interfaces/pdf-generator-factory.interface';
 import { CustomException } from '@exceptions/custom.exception';
+import { IPaymentOrderRepository } from '../../domain/repositories/payment-order.repository.interface';
+import { ReportSchemeDto } from '../dtos/paymentOrder/report-scheme.dto';
 
 @Injectable()
 export class PaymentOrderService {

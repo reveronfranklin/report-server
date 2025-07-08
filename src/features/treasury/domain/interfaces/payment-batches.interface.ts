@@ -1,19 +1,19 @@
 export interface IPaymentBatches {
-    codigoLotePago:    number;
-    codigoCheque:      number;
-    numeroCheque:      number;
-    fechaCheque:       Date;
-    nombre:            string;
-    noCuenta:          string;
-    pagarALaOrdenDe:   string;
-    motivo:            string;
-    monto:             number;
-    endoso:            string;
-    usuarioIns:        string;
-    codigoProveedor:   number;
-    detalleOpIcpPuc:   string;
-    montoOpIcpPuc:     number;
-    detalleImpRet:     null;
-    montoImpRet:       number;
-    codigoPresupuesto: number;
+  paymentBatchCode:     number;
+  checkCode:            number;
+  checkNumber:          number;
+  checkDate:            Date;
+  name:                 string;
+  accountNumber:        string;
+  payToTheOrderOf:      string;
+  reason:               string;
+  amount:               number;
+  endorsement:          string;
+  userIns:              string
+  supplierCode:         number;
+  opIcpPucDetail:       string;
+  opIcpPucAmount:       number;
+  taxWithholdingDetail: string | null;
+  taxWithholdingAmount: number;
+  budgetCode:           number;
 }

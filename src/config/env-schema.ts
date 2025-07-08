@@ -15,5 +15,6 @@ export const envSchema = Joi.object({
   DB_SYNCHRONIZE: Joi.boolean().default(false),
   DB_LOGGING: Joi.boolean().default(false),
   DB_AUTO_LOAD_MODELS: Joi.boolean().required().default(true),
-  API_AUTH_URL: Joi.string().required()
+  API_AUTH_URL: Joi.string().required(),
+  API_BASE_URL: Joi.string().required()
 })

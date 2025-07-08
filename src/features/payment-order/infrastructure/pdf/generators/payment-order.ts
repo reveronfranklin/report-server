@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { IPdfGenerator } from '../../../domain/services/pdf-generator.interface';
+import { IPdfGenerator } from '@shared/modules/printer/interfaces/pdf-generator.interface';
+import { PrinterService } from '@shared/modules/printer/printer.service';
 import { createPaymentOrderTemplate } from './templates/paymentOrder/payment-order.template';
-import { PrinterService } from 'src/shared/modules/printer/printer.service';
 import { ReportSchemeDto } from '../../../application/dtos/paymentOrder/report-scheme.dto';
 
 @Injectable()

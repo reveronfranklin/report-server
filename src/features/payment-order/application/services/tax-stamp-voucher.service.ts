@@ -1,10 +1,10 @@
 /* Dependencies */
 import { Injectable, Inject } from '@nestjs/common';
 
-import { ITaxStampVoucherRepository } from '../../domain/repositories/tax-stamp-voucher.repository.interface';
-import { IPdfGeneratorFactory } from '../../domain/services/pdf-generator-factory.interface';
-import { ReportSchemeDto } from '../dtos/taxStampVoucher/report-scheme.dto';
 import { CustomException } from '@exceptions/custom.exception';
+import { IPdfGeneratorFactory } from '@shared/modules/printer/interfaces/pdf-generator-factory.interface';
+import { ITaxStampVoucherRepository } from '../../domain/repositories/tax-stamp-voucher.repository.interface';
+import { ReportSchemeDto } from '../dtos/taxStampVoucher/report-scheme.dto';
 
 @Injectable()
 export class TaxStampVoucherService {

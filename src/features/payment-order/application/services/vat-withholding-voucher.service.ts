@@ -1,10 +1,10 @@
 /* Dependencies */
 import { Injectable, Inject } from '@nestjs/common';
 
-import { IVatWithholdingVoucherRepository } from '../../domain/repositories/vat-withholding-voucher.repository.interface';
-import { IPdfGeneratorFactory } from '../../domain/services/pdf-generator-factory.interface';
-import { ReportSchemeDto } from '../dtos/vatWithholdingVoucher/report-scheme.dto';
+import { IPdfGeneratorFactory } from '@shared/modules/printer/interfaces/pdf-generator-factory.interface';
 import { CustomException } from '@exceptions/custom.exception';
+import { IVatWithholdingVoucherRepository } from '../../domain/repositories/vat-withholding-voucher.repository.interface';
+import { ReportSchemeDto } from '../dtos/vatWithholdingVoucher/report-scheme.dto';
 
 @Injectable()
 export class VatWithholdingVoucherService {
