@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { IPdfGenerator } from '../../../domain/services/pdf-generator.interface';
-import { PrinterService } from 'src/shared/modules/printer/printer.service';
+import { IPdfGenerator } from '@shared/modules/printer/interfaces/pdf-generator.interface';
+import { PrinterService } from '@shared/modules/printer/printer.service';
 import { createTaxStampVoucherTemplate } from './templates/taxStampVoucher/tax-stamp-voucher'
 import { ReportSchemeDto } from '../../../application/dtos/taxStampVoucher/report-scheme.dto';
 

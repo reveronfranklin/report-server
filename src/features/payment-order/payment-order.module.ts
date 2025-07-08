@@ -2,8 +2,9 @@
 import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { HttpModule } from '@nestjs/axios';
+import { SharedModule } from '@shared/shared.module';
 
-/* Application */
+/* Services */
 import { PaymentOrderService } from './application/services/payment-order.service';
 import { IncomeTaxWithholdingVoucherService } from './application/services/income-tax-withholding-voucher.service';
 import { VatWithholdingVoucherService } from './application/services/vat-withholding-voucher.service';
@@ -35,7 +36,6 @@ import { VatWithholdingVoucherController} from './infrastructure/http/controller
 import { TaxStampVoucherController} from './infrastructure/http/controllers/tax-stamp-voucher.controller';
 
 /* Generators */
-import { SharedModule } from '@shared/shared.module';
 import { PaymentOrderPdf } from './infrastructure/pdf/generators/payment-order';
 import { IncomeTaxWithholdingVoucherPdf } from './infrastructure/pdf/generators/income-tax-withholding-voucher';
 import { VatWithholdingVoucherPdf } from './infrastructure/pdf/generators/vat-withholding-voucher';
@@ -108,8 +108,7 @@ import { PdfGeneratorFactory } from './infrastructure/pdf/pdf-generator.factory'
       provide: 'IPdfGeneratorFactory',
       useClass: PdfGeneratorFactory
     }
-  ],
-  exports: []
+  ]
 })
 export class PaymentOrderModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
