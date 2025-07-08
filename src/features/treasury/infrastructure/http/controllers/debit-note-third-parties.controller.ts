@@ -20,11 +20,6 @@ export class DebitNoteThirdPartiesController {
   @Header('Content-Disposition', 'attachment; filename="report.pdf"')
 
   async generateReport(@Body() generateReportDto: GenerateReportDto)/* : Promise<StreamableFile> */ {
-    /* buscar mejores opciones */
-    if (!generateReportDto || !generateReportDto.codigoLotePago || generateReportDto.codigoPago === undefined) {
-      throw new CustomException('Invalid request data: codigoLotePago and codigoPago are required')
-    }
-
     try {
      /*  const stream      = blobStream() */
       const pdfDocument = await this.debitNoteThirdPartiesService.generateReport(generateReportDto)

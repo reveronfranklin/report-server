@@ -6,10 +6,11 @@ import { SharedModule } from '@shared/shared.module';
 /* Services */
 import { DebitNoteThirdPartiesService } from './application/services/debit-note-third-parties.service';
 
-/* Models */
-
 /* Controllers */
 import { DebitNoteThirdPartiesController } from './infrastructure/http/controllers/debit-note-third-parties.controller';
+
+/* api-clients (adapters) */
+import { DebitNoteThirdPartiesAdapter } from './infrastructure/api-clients/adapters/debit-note-third-parties.adapter';
 
 /* Generators */
 
@@ -25,7 +26,11 @@ import { DebitNoteThirdPartiesController } from './infrastructure/http/controlle
     DebitNoteThirdPartiesController
   ],
   providers: [
-    DebitNoteThirdPartiesService
+    DebitNoteThirdPartiesService,
+    {
+      provide: 'IDebitNoteThirdPartiesRepository',
+      useClass: DebitNoteThirdPartiesAdapter
+    }
   ]
 })
 export class TreasuryModule {}
