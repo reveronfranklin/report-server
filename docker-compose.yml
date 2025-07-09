@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  report-server-ossmma:
+    image: report-server-ossmma
+    build: .
+    container_name: con-report-server-ossmma
+    ports:
+      - '4000:4000'
+    environment:
+      - SERVER_PORT=4000
+      - DB_CONNECTION=postgres
+      - DB_HOST=216.244.81.116
+      - DB_PORT=5432
+      - DB_DATABASE=OSSMMASOFT
+      - PORT=4000
+      - DB_USERNAME=ossmmapg
+      - DB_PASSWORD=ossmm4ppgg
+      - DB_SSL=false
+      - DB_AUTO_LOAD_MODELS=false
+      - DB_SYNCHRONIZE=false
+      - DB_LOGGING=false
+      - API_BASE_URL=https://ossmmasoft.com.ve:5001/api
+      - API_AUTH_URL=http://216.244.81.115:5000/api
+      - ALLOWED_ORIGINS=http://ossmmasoft.com.ve:3000,https://ossmmasoft.com.ve:3001,http://localhost:3000,http://localhost:4000,http://localhost:5000
+    logging:
+      driver: json-file
+      options:
+        max-size: 20m
+        max-file: '5'
+    restart: unless-stopped
