@@ -20,7 +20,7 @@ export class DebitNoteThirdPartiesMapper {
       accountNumber: paymentBatch.accountNumber,
       checkDate: paymentBatch.checkDate,
       checkNumber: paymentBatch.checkNumber,
-      name: paymentBatch.name
+      name: paymentBatch.name.trim()
     }
   }
 
@@ -28,9 +28,9 @@ export class DebitNoteThirdPartiesMapper {
     return {
       amount: paymentBatch.amount,
       opIcpPucAmount: paymentBatch.opIcpPucAmount,
-      opIcpPucDetail: paymentBatch.opIcpPucDetail,
-      payToTheOrderOf: paymentBatch.payToTheOrderOf,
-      reason: paymentBatch.reason,
+      opIcpPucDetail: paymentBatch.opIcpPucDetail.trim(),
+      payToTheOrderOf: paymentBatch.payToTheOrderOf.trim(),
+      reason: paymentBatch.reason.trim(),
       taxWithholdingAmount: paymentBatch.taxWithholdingAmount,
     }
   }

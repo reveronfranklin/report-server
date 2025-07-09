@@ -9,13 +9,14 @@ import { DebitNoteThirdPartiesService } from './application/services/debit-note-
 /* Controllers */
 import { DebitNoteThirdPartiesController } from './infrastructure/http/controllers/debit-note-third-parties.controller';
 
-/* api-clients (adapters) */
+/* Api-clients (adapters) */
 import { DebitNoteThirdPartiesAdapter } from './infrastructure/api-clients/adapters/debit-note-third-parties.adapter';
 
 /* Generators */
+import { DebitNoteThridPartiesPdf } from './infrastructure/pdf/generators/templates/DebitNoteThridParties';
 
 /* Factories */
-/* import { PdfGeneratorFactory } from './infrastructure/pdf/pdf-generator.factory'; */
+import { PdfGeneratorFactory } from './infrastructure/pdf/pdf-generator.factory';
 
 @Module({
   imports: [
@@ -27,9 +28,14 @@ import { DebitNoteThirdPartiesAdapter } from './infrastructure/api-clients/adapt
   ],
   providers: [
     DebitNoteThirdPartiesService,
+    DebitNoteThridPartiesPdf,
     {
       provide: 'IDebitNoteThirdPartiesRepository',
       useClass: DebitNoteThirdPartiesAdapter
+    },
+    {
+      provide: 'IPdfGeneratorFactory',
+      useClass: PdfGeneratorFactory
     }
   ]
 })

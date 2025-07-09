@@ -16,19 +16,16 @@ export class PaymentOrderService {
   ) {}
 
   async generateReport(id: number): Promise<PDFKit.PDFDocument> {
-    /* Para que el tipo de retorno sea el correcto debemos pasar los Dtos al Domain */
-    const paymentOrderReport: ReportSchemeDto | null = await this.paymentOrderRepository.findById(id)
+    const paymentOrderData: ReportSchemeDto | null = await this.paymentOrderRepository.findById(id)
 
-    if (!paymentOrderReport) {
+    if (!paymentOrderData) {
       throw new CustomException('Payment Order Report not found')
     }
 
     try {
-      /* instancia el generador de PDF */
-      const pdfGenerator = this.pdfGeneratorFactory.getGenerator('paymentOrder')
-
-      /* Generar el documento PDF */
-      const pdfDocument = pdfGenerator.generatePdf(paymentOrderReport)
+      const pdfGenerator						= this.pdfGeneratorFactory.getGenerator('paymentOrder')
+      const pdfDocumentDefinitions	= await pdfGenerator.createDocumentDefinitions(paymentOrderData)
+      const pdfDocument 						= await pdfGenerator.generatePdf(pdfDocumentDefinitions)
 
       return pdfDocument
     } catch (error) {
