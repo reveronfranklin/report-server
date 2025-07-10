@@ -17,6 +17,11 @@ const formatDate = (date: any): any => {
   return formattedDate.tz('UTC').format('DD/MM/YYYY')
 }
 
+const twoDigitFormatDate = (date: any): any => {
+  const formattedDate = moment(date)
+  return formattedDate.tz('UTC').format('DD/MM/YY')
+}
+
 const formatFiscalPeriod = (date: any): any => {
   const formattedDate = moment(date)
   const year          = formattedDate.tz('UTC').format('YYYY')
@@ -106,5 +111,6 @@ export {
   formatPrice,
   formatRIF,
   isValidDate,
-  rpad
+  rpad,
+  twoDigitFormatDate
 }

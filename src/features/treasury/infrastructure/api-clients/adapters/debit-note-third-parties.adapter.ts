@@ -25,7 +25,19 @@ export class DebitNoteThirdPartiesAdapter implements IDebitNoteThirdPartiesRepos
         this.httpService.post<IResponse<any>>(`${this.apiBaseUrl}/AdmPagosNotasTerceros/GetByLotePago`, payload)
       )
 
-      return response.data.data.map((item: any) => new PaymentBatchEntity(item))
+      const responseData = response.data
+
+      if (!responseData?.data) {
+        console.warn('No data found in response:', response.data)
+        return []
+      }
+
+      if (responseData?.isValid == false || responseData.data.length === 0) {
+        console.warn('No payment batches found for the given payload:', payload)
+        return []
+      }
+
+      return responseData.data.map((item: any) => new PaymentBatchEntity(item))
     } catch (error) {
       console.error('Error fecthPaymentBatches:', error)
       throw new CustomException(`Error fecthPaymentBatches -> ${error.message}`)
@@ -41,7 +53,7 @@ export class DebitNoteThirdPartiesAdapter implements IDebitNoteThirdPartiesRepos
 
       const result = await this.fecthPaymentBatches(payload)
 
-      if (result) {
+      if (result.length > 0) {
         return DebitNoteThirdPartiesMapper.toDomain(result[0])
       } else {
         console.warn(`No payment batches found for batchCode: ${codigoLotePago}`, result)
@@ -61,7 +73,7 @@ export class DebitNoteThirdPartiesAdapter implements IDebitNoteThirdPartiesRepos
 
       const result = await this.fecthPaymentBatches(payload)
 
-      if (result) {
+      if (result.length > 0) {
         return DebitNoteThirdPartiesMapper.toDomain(result[0])
       } else {
         console.warn(`No specific payment batch found for batchCode: ${codigoLotePago} and paymentCode ${codigoPago}`, result)
