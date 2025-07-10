@@ -1,20 +1,16 @@
 import type { Content } from 'pdfmake/interfaces';
+import { ReportHeaderDto } from '../../../../../../application/dtos/debitNoteThirdParties/report-header.dto';
+import getLogoSection from '../../../components/logo';
 
-const logo: Content = {
-  image: 'src/assets/logoLeft.jpeg',
-  width: 120,
-  height: 60,
-  alignment: 'left',
-  fit: [130, 70],
-  margin: [4, 4, 10, 0]
-}
+const getHeaderSection = (options: ReportHeaderDto): Content => {
+  const {
+    checkNumber,
+    checkDate,
+    name,
+    accountNumber
+  } = options
 
-interface HeaderOptions {
-  header: any;
-}
-
-export const headerSection = (options: HeaderOptions): Content => {
-  const { header } = options
+  const logo = getLogoSection()
 
   const formattedTitle = {
     text: 'NOTA DE DÉBITO',
@@ -24,7 +20,7 @@ export const headerSection = (options: HeaderOptions): Content => {
   const fifthRowBorder = [false, false]
   const sixthRowBorder = [false, false, true, false]
 
-  const contentPdf: Content = {
+  const contentHeader: Content = {
     style: 'header',
     table: {
       widths: ['*', '*', 20, 20, '*', '*'],
@@ -51,7 +47,7 @@ export const headerSection = (options: HeaderOptions): Content => {
           },
           {
             text: [
-              { text: `${ header?.checkNumber ?? '' }\n`, style: 'tableHeader' },
+              { text: `${ checkNumber ?? '' }\n`, style: 'tableHeader' },
               { text: 'N° NOTA DE DÉBITO:', style: 'tableHeader' }
             ],
             margin: [0, 10, 10, 0],
@@ -66,7 +62,7 @@ export const headerSection = (options: HeaderOptions): Content => {
             border: fifthRowBorder
           },
           {
-            text: `${ header?.checkDate ?? '' }`,
+            text: `${ checkDate ?? '' }`,
             style: 'tableContent',
             border: sixthRowBorder
           }
@@ -78,7 +74,7 @@ export const headerSection = (options: HeaderOptions): Content => {
             border: fifthRowBorder
           },
           {
-            text: `${ header?.name ?? '' }`,
+            text: `${ name ?? '' }`,
             style: 'tableContent',
             border: sixthRowBorder
           }
@@ -92,7 +88,7 @@ export const headerSection = (options: HeaderOptions): Content => {
             margin: [0, 0, 0, 10]
           },
           {
-            text: `${ header?.accountNumber ?? '' }`,
+            text: `${ accountNumber ?? '' }`,
             style: 'tableContent',
             border: [false, false, true, true],
             margin: [0, 0, 0, 10]
@@ -102,5 +98,7 @@ export const headerSection = (options: HeaderOptions): Content => {
     }
   }
 
-  return contentPdf
+  return contentHeader
 }
+
+export default getHeaderSection;

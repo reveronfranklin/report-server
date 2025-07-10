@@ -1,6 +1,6 @@
 import { StyleDictionary } from 'pdfmake/interfaces';
 
-export const headerStyles: StyleDictionary = {
+const headerStyles: StyleDictionary = {
   header: {
     alignment: 'center',
     margin: [20, 25, 60, 5]
@@ -22,3 +22,5 @@ export const headerStyles: StyleDictionary = {
     alignment: 'center'
   }
 }
+
+export default headerStyles;

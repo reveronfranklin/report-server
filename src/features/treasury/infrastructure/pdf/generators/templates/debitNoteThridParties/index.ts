@@ -1,7 +1,5 @@
 /* Dependencies */
 import { Injectable, Logger } from '@nestjs/common';
-import { IPdfGenerator } from '@shared/modules/printer/interfaces/pdf-generator.interface';
-import { PrinterService } from '@shared/modules/printer/printer.service';
 
 import type {
   TDocumentDefinitions,
@@ -9,14 +7,14 @@ import type {
   Content
 } from 'pdfmake/interfaces';
 
-/* Dtos */
+import { IPdfGenerator } from '@shared/modules/printer/interfaces/pdf-generator.interface';
+import { PrinterService } from '@shared/modules/printer/printer.service';
 import { ReportSchemeDto } from '../../../../../application/dtos/debitNoteThirdParties/report-scheme.dto';
 
-/* Sections */
- import { headerSection } from './sections/header';
+import getHeaderSection from './sections/header';
+import getBodySection from './sections/body';
 
-/* Styles */
-import { headerStyles } from './styles/header';
+import headerStyles from './styles/header';
 
 const styles: StyleDictionary = {
   ...headerStyles,
@@ -35,13 +33,8 @@ export class DebitNoteThridPartiesPdf implements IPdfGenerator {
 
     const { header, body } = reportSchemeData
 
-    const headerContent: Content = headerSection({
-      header
-    })
-
-    /* const bodyContent: Content = bodySection({
-      body
-    }) */
+    const headerContent: Content  = getHeaderSection(header)
+    const bodyContent: Content    = getBodySection(body)
 
     return {
       pageSize: 'LETTER',
@@ -49,7 +42,7 @@ export class DebitNoteThridPartiesPdf implements IPdfGenerator {
       pageMargins: [20, 135, 60, 120],
       styles: styles,
       header: headerContent,
-      content: 'bodyContent',
+      content: bodyContent,
       footer: 'footer'/*  (currentPage, pageCount) => {
         const footerContent: Content = getFooter(currentPage, pageCount)
         return footerContent
