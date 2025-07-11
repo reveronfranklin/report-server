@@ -4,75 +4,108 @@ import { ReportBodyDto } from '../../../../../../application/dtos/debitNoteThird
 
 const getBodySection = (options: ReportBodyDto): Content => {
   const {
+    amount,
+    opIcpPucAmount,
+    opIcpPucDetail,
     payToTheOrderOf,
     reason,
-    amount,
-    opIcpPucDetail
+    taxWithholdingAmount
   } = options
 
   const contentBody: Content = {
     style: 'body',
     table: {
-      widths: ['75%', '25%'],
-      heights: [40, 100, 10, 10, 10, 10, 10, 10, 10, 40],
+      widths: ['72%', '12%', '16%'],
+      heights: [50, 120, 20, 200, 50],
       body: [
         [
           {
-            colSpan: 2,
+            colSpan: 3,
             text: [
-              { text: 'HEMOS RECIBIDO DEL CONCEJO MUNICIPAL DE CHACAO, POR CONCEPTO DE: \n', style: '' },
-              { text: `${ payToTheOrderOf ?? '' }` }
-            ]
+              { text: 'HEMOS RECIBIDO DEL CONCEJO MUNICIPAL DE CHACAO, POR CONCEPTO DE: \n', style: 'tableBodyTitle' },
+              { text: `${ payToTheOrderOf ?? '' }`, style: 'tableBodyContent' }
+            ],
+            style: 'tableBody'
+          },
+          {}, {}
+        ],
+        [
+          {
+            text: [
+              { text: 'Motivo: \n', style: 'tableBodyTitle' },
+              { text: `${ reason ?? '' }`, style: 'tableBodyContent' },
+            ],
+            colSpan: 3,
+            style: 'tableBody'
+          },
+          {}, {}
+        ],
+        [
+          {
+            text: 'Detalle Orden de Pago:',
+            style: 'tableBodyTitle',
+            margin: [5, 5],
+            border: [true, true, true, false]
+          },
+          {
+            text: [
+              {
+                text: 'Monto: \n',
+                style: 'tableBodyAmountTitle'
+              },
+              {
+                text: `${ opIcpPucAmount ? formatPrice(opIcpPucAmount ,'VES') : '' }`,
+                style: 'tableBodyAmountDescription'
+              }
+            ],
+            colSpan: 2,
+            style: 'tableBody',
+            border: [true, true, true, false]
           },
           {}
         ],
         [
           {
-            colSpan: 2,
-            text: [
-              { text: 'Motivo: \n\n', style: '' },
-              { text: `${ reason ?? '' }` }
-            ]
-          }, {}
-        ],
-        [
-          {
-            text: [
-              { text: 'Detalle Orden de Pago: \n\n', style: '' },
-              { text: `${ opIcpPucDetail ?? '' }` }
-            ]
+            text: `${ opIcpPucDetail ?? '' }`,
+            style: 'tableBodyContent',
+            margin: [5, 0],
+            border: [true, false, true, true]
           },
           {
             text: [
-              { text: 'Monto:\n', style: '' },
-              { text: `${ amount ? formatPrice(amount ,'VES') : '' }` }
-            ]
+              {
+                text: `Retenciones / Fondo a Tercero: \n\n`,
+                style: 'titleAmount',
+              },
+              {
+                text: `Beneficiario / Proveedor:`,
+                style: 'titleAmount'
+              }
+            ],
+            border: [true, false, false, true]
+          },
+          {
+            text: [
+              {
+                text: `${ taxWithholdingAmount ? formatPrice(taxWithholdingAmount ,'VES') : '' } \n`,
+                style: 'amount'
+              },
+              {
+                text: `${ amount ? formatPrice(amount ,'VES') : '' }`,
+                style: 'amount'
+              }
+            ],
+            style: 'tableBody',
+            border: [false, false, true, true]
           }
         ],
         [
-          {}, {}
-        ],
-        [
-          {}, {}
-        ],
-        [
-          {}, {}
-        ],
-        [
-          {}, {}
-        ],
-        [
-          {}, {}
-        ],
-        [
-          {}, {}
-        ],
-        [
           {
-            colSpan: 2,
+            colSpan: 3,
             text: null
-          }, {}
-        ],
+          },
+          {}, {}
+        ]
       ]
     }
   }

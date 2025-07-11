@@ -1,4 +1,3 @@
-/* Dependencies */
 import { Injectable, Logger } from '@nestjs/common';
 
 import type {
@@ -13,11 +12,16 @@ import { ReportSchemeDto } from '../../../../../application/dtos/debitNoteThirdP
 
 import getHeaderSection from './sections/header';
 import getBodySection from './sections/body';
+import getFooter from './sections/footer';
 
 import headerStyles from './styles/header';
+import bodyStyles from './styles/body';
+import footerStyles from './styles/footer'
 
 const styles: StyleDictionary = {
   ...headerStyles,
+  ...bodyStyles,
+  ...footerStyles
 };
 
 @Injectable()
@@ -39,14 +43,14 @@ export class DebitNoteThridPartiesPdf implements IPdfGenerator {
     return {
       pageSize: 'LETTER',
       pageOrientation: 'portrait',
-      pageMargins: [20, 135, 60, 120],
+      pageMargins: [20, 135, 60, 160],
       styles: styles,
       header: headerContent,
       content: bodyContent,
-      footer: 'footer'/*  (currentPage, pageCount) => {
+      footer: (currentPage, pageCount) => {
         const footerContent: Content = getFooter(currentPage, pageCount)
         return footerContent
-      } */
+      }
     }
   }
 

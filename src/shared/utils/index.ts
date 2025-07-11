@@ -103,6 +103,13 @@ const rpad = (str: string, length: number): string => {
   return result.substring(0, length)
 }
 
+const getCurrentDate = (): string => {
+    const targetTimezone = 'America/Caracas'
+    const formattedDate = moment.tz(targetTimezone).format('DD/MM/YYYY hh:mm:ss A')
+
+    return formattedDate
+}
+
 export {
   calculateTaxableIncome,
   formatDate,
@@ -110,6 +117,7 @@ export {
   formatPercentageRetention,
   formatPrice,
   formatRIF,
+  getCurrentDate,
   isValidDate,
   rpad,
   twoDigitFormatDate
