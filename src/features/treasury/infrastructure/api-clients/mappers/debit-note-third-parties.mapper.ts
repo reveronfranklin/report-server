@@ -8,7 +8,6 @@ import { twoDigitFormatDate } from '@shared/utils';
 
 export class DebitNoteThirdPartiesMapper {
   public static toDomain(paymentBatchs: PaymentBatchEntity[]): ReportSchemeDto {
-    console.log('paymentBatchs', paymentBatchs)
     const headers   = []
     const bodies    = []
 
