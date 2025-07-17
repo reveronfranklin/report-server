@@ -16,7 +16,7 @@ import getFooter from './sections/footer';
 
 import headerStyles from './styles/header';
 import bodyStyles from './styles/body';
-import footerStyles from './styles/footer'
+import footerStyles from './styles/footer';
 
 const styles: StyleDictionary = {
   ...headerStyles,
@@ -35,18 +35,28 @@ export class DebitNoteThridPartiesPdf implements IPdfGenerator {
   async createDocumentDefinitions(reportSchemeData: ReportSchemeDto): Promise<TDocumentDefinitions> {
     this.logger.log(`generating PDF ${reportSchemeData.name} ...`)
 
-    const { header, body } = reportSchemeData
+    const { header: headers, body: bodies } = reportSchemeData
 
-    const headerContent: Content  = getHeaderSection(header)
-    const bodyContent: Content    = getBodySection(body)
+    const allDocumentContent: Content[] = []
+
+    for (let i = 0; i < headers.length; i++) {
+      const currentHeaderData = headers[i]
+      const currentBodyData   = bodies[i]
+
+      allDocumentContent.push(getHeaderSection(currentHeaderData))
+      allDocumentContent.push(getBodySection(currentBodyData))
+
+      if (i < headers.length - 1) {
+        allDocumentContent.push({ text: '', pageBreak: 'after' })
+      }
+    }
 
     return {
       pageSize: 'LETTER',
       pageOrientation: 'portrait',
-      pageMargins: [20, 135, 60, 160],
+      pageMargins: [20, 30, 60, 160],
       styles: styles,
-      header: headerContent,
-      content: bodyContent,
+      content: allDocumentContent,
       footer: (currentPage, pageCount) => {
         const footerContent: Content = getFooter(currentPage, pageCount)
         return footerContent

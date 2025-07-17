@@ -44,7 +44,7 @@ export class DebitNoteThirdPartiesAdapter implements IDebitNoteThirdPartiesRepos
     }
   }
 
-  async getPaymentBatches(codigoLotePago: number): Promise<ReportSchemeDto | null> {
+  async getPaymentBatches(codigoLotePago: number): Promise<ReportSchemeDto | []> {
     try {
       const payload = {
         codigoLotePago,
@@ -54,7 +54,7 @@ export class DebitNoteThirdPartiesAdapter implements IDebitNoteThirdPartiesRepos
       const result = await this.fecthPaymentBatches(payload)
 
       if (result.length > 0) {
-        return DebitNoteThirdPartiesMapper.toDomain(result[0])
+        return DebitNoteThirdPartiesMapper.toDomain(result)
       } else {
         console.warn(`No payment batches found for batchCode: ${codigoLotePago}`, result)
       }
@@ -74,7 +74,7 @@ export class DebitNoteThirdPartiesAdapter implements IDebitNoteThirdPartiesRepos
       const result = await this.fecthPaymentBatches(payload)
 
       if (result.length > 0) {
-        return DebitNoteThirdPartiesMapper.toDomain(result[0])
+        return DebitNoteThirdPartiesMapper.toDomain(result)
       } else {
         console.warn(`No specific payment batch found for batchCode: ${codigoLotePago} and paymentCode ${codigoPago}`, result)
       }
