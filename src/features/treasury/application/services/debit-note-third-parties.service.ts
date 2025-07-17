@@ -23,7 +23,7 @@ export class DebitNoteThirdPartiesService {
 
     let debitNoteThirdPartiesData: ReportSchemeDto | null
 
-    if (!codigoPago) {
+    if (codigoPago === undefined || codigoPago === 0) {
       debitNoteThirdPartiesData = await this.debitNoteThirdPartiesRepository.getPaymentBatches(codigoLotePago)
     } else {
       debitNoteThirdPartiesData = await this.debitNoteThirdPartiesRepository.getPaymentBatchByPaymentCode(codigoLotePago, codigoPago)
