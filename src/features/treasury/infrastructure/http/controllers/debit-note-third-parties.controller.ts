@@ -19,12 +19,12 @@ export class DebitNoteThirdPartiesController {
   @Header('Content-Type', 'application/pdf')
   @Header('Content-Disposition', 'attachment; filename="report.pdf"')
 
-  async generateReport(@Body() generateReportDto: GenerateReportDto)/* : Promise<StreamableFile> */ {
+  async generateReport(@Body() generateReportDto: GenerateReportDto): Promise<StreamableFile> {
     try {
-     /*  const stream      = blobStream() */
+      const stream      = blobStream()
       const pdfDocument = await this.debitNoteThirdPartiesService.generateReport(generateReportDto)
 
-     /*  pdfDocument.pipe(stream)
+      pdfDocument.pipe(stream)
       pdfDocument.end()
 
       const blob = await new Promise<Blob>((resolve) => {
@@ -36,10 +36,10 @@ export class DebitNoteThirdPartiesController {
       const arrayBuffer = await blob.arrayBuffer()
       const buffer      = Buffer.from(arrayBuffer)
 
-      return new StreamableFile(buffer) */
+      return new StreamableFile(buffer)
     } catch (error) {
       console.error('Error generating report:', error)
-      throw new CustomException(`Error generating report DebitNoteThirdPartiesController: ${error.message}`)
+      throw new CustomException(`Error generating report DebitNoteThirdPartiesController -> ${error.message}`)
     }
   }
 }

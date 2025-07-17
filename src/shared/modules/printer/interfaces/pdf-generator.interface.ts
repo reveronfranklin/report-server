@@ -1,3 +1,5 @@
+import type { TDocumentDefinitions } from 'pdfmake/interfaces';
 export interface IPdfGenerator {
-  generatePdf(data: any): Promise<PDFKit.PDFDocument>;
+  createDocumentDefinitions(data: any): Promise<TDocumentDefinitions>;
+  generatePdf(data: TDocumentDefinitions): Promise<PDFKit.PDFDocument>;
 }
