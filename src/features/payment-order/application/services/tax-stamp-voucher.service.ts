@@ -16,19 +16,16 @@ export class TaxStampVoucherService {
   ) {}
 
   async generateReport(id: number): Promise<PDFKit.PDFDocument> {
-    /* Para que el tipo de retorno sea el correcto debemos pasar los Dtos al Domain */
-    const taxStampVoucherReport: ReportSchemeDto | null = await this.taxStampVoucherRepository.findById(id)
+    const taxStampVoucherData: ReportSchemeDto | null = await this.taxStampVoucherRepository.findById(id)
 
-    if (!taxStampVoucherReport) {
+    if (!taxStampVoucherData) {
       throw new CustomException('Tax Stamp Voucher Report not found')
     }
 
     try {
-      /* instancia el generador de PDF */
-      const pdfGenerator = this.pdfGeneratorFactory.getGenerator('taxStampVoucher')
-
-      /* Generar el documento PDF */
-      const pdfDocument = pdfGenerator.generatePdf(taxStampVoucherReport)
+      const pdfGenerator            = this.pdfGeneratorFactory.getGenerator('taxStampVoucher')
+      const pdfDocumentDefinitions	= await pdfGenerator.createDocumentDefinitions(taxStampVoucherData)
+      const pdfDocument 						= await pdfGenerator.generatePdf(pdfDocumentDefinitions)
 
       return pdfDocument
     } catch (error) {

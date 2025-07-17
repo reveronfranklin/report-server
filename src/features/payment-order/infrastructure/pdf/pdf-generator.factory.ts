@@ -4,10 +4,10 @@ import { IPdfGeneratorFactory } from '@shared/modules/printer/interfaces/pdf-gen
 import { IPdfGenerator } from '@shared/modules/printer/interfaces/pdf-generator.interface';
 
 /* Generators */
-import { PaymentOrderPdf } from './generators/payment-order';
-import { IncomeTaxWithholdingVoucherPdf } from './generators/income-tax-withholding-voucher';
-import { VatWithholdingVoucherPdf } from './generators/vat-withholding-voucher';
-import { TaxStampVoucherPdf } from './generators/tax-stamp-voucher';
+import { PaymentOrderPdf } from './generators/templates/paymentOrder';
+import { IncomeTaxWithholdingVoucherPdf } from './generators/templates/incomeTaxWithholdingVoucher';
+import { VatWithholdingVoucherPdf } from './generators/templates/vatWithholdingVoucher';
+import { TaxStampVoucherPdf } from './generators/templates/taxStampVoucher';
 
 @Injectable()
 export class PdfGeneratorFactory implements IPdfGeneratorFactory {

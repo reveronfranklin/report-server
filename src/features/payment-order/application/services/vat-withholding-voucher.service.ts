@@ -16,19 +16,16 @@ export class VatWithholdingVoucherService {
   ) {}
 
   async generateReport(id: number): Promise<PDFKit.PDFDocument> {
-    /* Para que el tipo de retorno sea el correcto debemos pasar los Dtos al Domain */
-    const vatWithholdingVoucherReport: ReportSchemeDto | null = await this.vatWithholdingVoucherRepository.findById(id)
+    const vatWithholdingVoucherData: ReportSchemeDto | null = await this.vatWithholdingVoucherRepository.findById(id)
 
-    if (!vatWithholdingVoucherReport) {
+    if (!vatWithholdingVoucherData) {
       throw new CustomException('Vat Withholding Voucher Report not found')
     }
 
     try {
-      /* instancia el generador de PDF */
-      const pdfGenerator = this.pdfGeneratorFactory.getGenerator('vatWithholdingVoucher')
-
-      /* Generar el documento PDF */
-      const pdfDocument = pdfGenerator.generatePdf(vatWithholdingVoucherReport)
+      const pdfGenerator            = this.pdfGeneratorFactory.getGenerator('vatWithholdingVoucher')
+      const pdfDocumentDefinitions	= await pdfGenerator.createDocumentDefinitions(vatWithholdingVoucherData)
+      const pdfDocument 						= await pdfGenerator.generatePdf(pdfDocumentDefinitions)
 
       return pdfDocument
     } catch (error) {

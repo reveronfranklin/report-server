@@ -4,6 +4,8 @@ import { ReportSchemeDto } from '../../../application/dtos/debitNoteThirdParties
 import { ReportHeaderDto } from '../../../application/dtos/debitNoteThirdParties/report-header.dto';
 import { ReportBodyDto } from '../../../application/dtos/debitNoteThirdParties/report-body.dto';
 
+import { twoDigitFormatDate } from '@shared/utils';
+
 export class DebitNoteThirdPartiesMapper {
   public static toDomain(paymentBatch: any): ReportSchemeDto {
     const reportScheme: ReportSchemeDto = {
@@ -18,9 +20,9 @@ export class DebitNoteThirdPartiesMapper {
   private static mapToReportHeader(paymentBatch: PaymentBatchEntity): ReportHeaderDto {
     return {
       accountNumber: paymentBatch.accountNumber,
-      checkDate: paymentBatch.checkDate,
+      checkDate: twoDigitFormatDate(paymentBatch.checkDate),
       checkNumber: paymentBatch.checkNumber,
-      name: paymentBatch.name
+      name: paymentBatch.name.trim()
     }
   }
 
@@ -28,9 +30,9 @@ export class DebitNoteThirdPartiesMapper {
     return {
       amount: paymentBatch.amount,
       opIcpPucAmount: paymentBatch.opIcpPucAmount,
-      opIcpPucDetail: paymentBatch.opIcpPucDetail,
-      payToTheOrderOf: paymentBatch.payToTheOrderOf,
-      reason: paymentBatch.reason,
+      opIcpPucDetail: paymentBatch.opIcpPucDetail.trim(),
+      payToTheOrderOf: paymentBatch.payToTheOrderOf.trim(),
+      reason: paymentBatch.reason.trim(),
       taxWithholdingAmount: paymentBatch.taxWithholdingAmount,
     }
   }

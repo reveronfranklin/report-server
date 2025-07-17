@@ -16,19 +16,16 @@ export class IncomeTaxWithholdingVoucherService {
   ) {}
 
   async generateReport(id: number): Promise<PDFKit.PDFDocument> {
-    /* Para que el tipo de retorno sea el correcto debemos pasar los Dtos al Domain */
-    const incomeTaxWithholdingVoucherReport: ReportSchemeDto | null = await this.incomeTaxWithholdingVoucherRepository.findById(id)
+    const incomeTaxWithholdingVoucherData: ReportSchemeDto | null = await this.incomeTaxWithholdingVoucherRepository.findById(id)
 
-    if (!incomeTaxWithholdingVoucherReport) {
+    if (!incomeTaxWithholdingVoucherData) {
       throw new CustomException('Income Tax Withholding Voucher Report not found')
     }
 
     try {
-      /* instancia el generador de PDF */
-      const pdfGenerator = this.pdfGeneratorFactory.getGenerator('incomeTaxWithholdingVoucher')
-
-      /* Generar el documento PDF */
-      const pdfDocument = pdfGenerator.generatePdf(incomeTaxWithholdingVoucherReport)
+      const pdfGenerator            = this.pdfGeneratorFactory.getGenerator('incomeTaxWithholdingVoucher')
+      const pdfDocumentDefinitions	= await pdfGenerator.createDocumentDefinitions(incomeTaxWithholdingVoucherData)
+      const pdfDocument 						= await pdfGenerator.generatePdf(pdfDocumentDefinitions)
 
       return pdfDocument
     } catch (error) {

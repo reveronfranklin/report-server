@@ -36,10 +36,10 @@ import { VatWithholdingVoucherController} from './infrastructure/http/controller
 import { TaxStampVoucherController} from './infrastructure/http/controllers/tax-stamp-voucher.controller';
 
 /* Generators */
-import { PaymentOrderPdf } from './infrastructure/pdf/generators/payment-order';
-import { IncomeTaxWithholdingVoucherPdf } from './infrastructure/pdf/generators/income-tax-withholding-voucher';
-import { VatWithholdingVoucherPdf } from './infrastructure/pdf/generators/vat-withholding-voucher';
-import { TaxStampVoucherPdf } from './infrastructure/pdf/generators/tax-stamp-voucher';
+import { PaymentOrderPdf } from './infrastructure/pdf/generators/templates/paymentOrder';
+import { IncomeTaxWithholdingVoucherPdf } from './infrastructure/pdf/generators/templates/incomeTaxWithholdingVoucher';
+import { VatWithholdingVoucherPdf } from './infrastructure/pdf/generators/templates/vatWithholdingVoucher';
+import { TaxStampVoucherPdf } from './infrastructure/pdf/generators/templates/taxStampVoucher';
 
 /* Repositories */
 import { PaymentOrderRepository } from './infrastructure/persistence/repositories/payment-order.repository';

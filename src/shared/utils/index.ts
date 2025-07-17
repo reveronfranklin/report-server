@@ -17,6 +17,11 @@ const formatDate = (date: any): any => {
   return formattedDate.tz('UTC').format('DD/MM/YYYY')
 }
 
+const twoDigitFormatDate = (date: any): any => {
+  const formattedDate = moment(date)
+  return formattedDate.tz('UTC').format('DD/MM/YY')
+}
+
 const formatFiscalPeriod = (date: any): any => {
   const formattedDate = moment(date)
   const year          = formattedDate.tz('UTC').format('YYYY')
@@ -98,6 +103,13 @@ const rpad = (str: string, length: number): string => {
   return result.substring(0, length)
 }
 
+const getCurrentDate = (): string => {
+    const targetTimezone = 'America/Caracas'
+    const formattedDate = moment.tz(targetTimezone).format('DD/MM/YYYY hh:mm:ss A')
+
+    return formattedDate
+}
+
 export {
   calculateTaxableIncome,
   formatDate,
@@ -105,6 +117,8 @@ export {
   formatPercentageRetention,
   formatPrice,
   formatRIF,
+  getCurrentDate,
   isValidDate,
-  rpad
+  rpad,
+  twoDigitFormatDate
 }
