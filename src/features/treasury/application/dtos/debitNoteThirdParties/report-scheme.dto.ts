@@ -10,9 +10,9 @@ export class ReportSchemeDto {
 
   @ValidateNested()
   @Type(() => ReportHeaderDto)
-  header: ReportHeaderDto;
+  header: ReportHeaderDto[];
 
   @ValidateNested()
   @Type(() => ReportBodyDto)
-  body: ReportBodyDto;
+  body: ReportBodyDto[];
 }
