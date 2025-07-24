@@ -11,76 +11,105 @@ import { PaymentBatchEntity } from '../../../domain/entities/payment-batches.ent
 import { ReportSchemeDto } from '../../../application/dtos/debitNoteThirdParties/report-scheme.dto';
 
 @Injectable()
-export class DebitNoteThirdPartiesAdapter implements IDebitNoteThirdPartiesRepository {
-  protected apiBaseUrl = this.configService.get<string>('api.ossmmasoft.baseUrl')
+export class DebitNoteThirdPartiesAdapter
+  implements IDebitNoteThirdPartiesRepository
+{
+  protected apiBaseUrl = this.configService.get<string>(
+    'api.ossmmasoft.baseUrl',
+  );
 
   constructor(
     private readonly httpService: HttpService,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
   ) {}
 
-  async fecthPaymentBatches(payload: object): Promise<PaymentBatchEntity[] | null> {
+  async fecthPaymentBatches(
+    payload: object,
+  ): Promise<PaymentBatchEntity[] | null> {
     try {
+      console.log('fecthPaymentBatches payload', payload);
+      console.log('fecthPaymentBatches this.apiBaseUrl', this.apiBaseUrl);
       const response = await firstValueFrom(
-        this.httpService.post<IResponse<any>>(`${this.apiBaseUrl}/AdmPagosNotasTerceros/GetByLotePago`, payload)
-      )
+        this.httpService.post<IResponse<any>>(
+          `${this.apiBaseUrl}/AdmPagosNotasTerceros/GetByLotePago`,
+          payload,
+        ),
+      );
 
-      const responseData = response.data
+      const responseData = response.data;
 
       if (!responseData?.data) {
-        console.warn('No data found in response:', response.data)
-        return []
+        console.warn('No data found in response:', response.data);
+        return [];
       }
 
       if (responseData?.isValid == false || responseData.data.length === 0) {
-        console.warn('No payment batches found for the given payload:', payload)
-        return []
+        console.warn(
+          'No payment batches found for the given payload:',
+          payload,
+        );
+        return [];
       }
 
-      return responseData.data.map((item: any) => new PaymentBatchEntity(item))
+      return responseData.data.map((item: any) => new PaymentBatchEntity(item));
     } catch (error) {
-      console.error('Error fecthPaymentBatches:', error)
-      throw new CustomException(`Error fecthPaymentBatches -> ${error.message}`)
+      console.error('Error fecthPaymentBatches:', error);
+      throw new CustomException(
+        `Error fecthPaymentBatches -> ${error.message}`,
+      );
     }
   }
 
-  async getPaymentBatches(codigoLotePago: number): Promise<ReportSchemeDto | []> {
+  async getPaymentBatches(
+    codigoLotePago: number,
+  ): Promise<ReportSchemeDto | []> {
     try {
       const payload = {
         codigoLotePago,
-        codigoPago: 0
-      }
+        codigoPago: 0,
+      };
 
-      const result = await this.fecthPaymentBatches(payload)
+      const result = await this.fecthPaymentBatches(payload);
 
       if (result.length > 0) {
-        return DebitNoteThirdPartiesMapper.toDomain(result)
+        return DebitNoteThirdPartiesMapper.toDomain(result);
       } else {
-        console.warn(`No payment batches found for batchCode: ${codigoLotePago}`, result)
+        console.warn(
+          `No payment batches found for batchCode: ${codigoLotePago}`,
+          result,
+        );
       }
     } catch (error) {
-      console.error('Error getPaymentBatches:', error)
-      throw new CustomException(`Error getPaymentBatches -> ${error.message}`)
+      console.error('Error getPaymentBatches:', error);
+      throw new CustomException(`Error getPaymentBatches -> ${error.message}`);
     }
   }
 
-  async getPaymentBatchByPaymentCode(codigoLotePago: number, codigoPago: number):  Promise<ReportSchemeDto | null> {
+  async getPaymentBatchByPaymentCode(
+    codigoLotePago: number,
+    codigoPago: number,
+  ): Promise<ReportSchemeDto | null> {
     try {
       const payload = {
         codigoLotePago,
-        codigoPago
-      }
+        codigoPago,
+      };
 
-      const result = await this.fecthPaymentBatches(payload)
+      const result = await this.fecthPaymentBatches(payload);
 
       if (result.length > 0) {
-        return DebitNoteThirdPartiesMapper.toDomain(result)
+        return DebitNoteThirdPartiesMapper.toDomain(result);
       } else {
-        console.warn(`No specific payment batch found for batchCode: ${codigoLotePago} and paymentCode ${codigoPago}`, result)
+        console.warn(
+          `No specific payment batch found for batchCode: ${codigoLotePago} and paymentCode ${codigoPago}`,
+          result,
+        );
       }
     } catch (error) {
       console.error('Error getPaymentBatchByPaymentCode:', error);
-      throw new CustomException(`Error getPaymentBatchByPaymentCode -> ${error.message}`)
+      throw new CustomException(
+        `Error getPaymentBatchByPaymentCode -> ${error.message}`,
+      );
     }
   }
 }
