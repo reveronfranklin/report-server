@@ -1,7 +1,7 @@
 import { IsNumber, IsPositive, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class GenerateReportDto {
+export class PaymentBatchReportQueryDto {
   @ApiProperty({
     description: 'Código del lote de pago',
     example: 12345

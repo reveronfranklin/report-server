@@ -15,18 +15,20 @@ import getFooter from '../../../generators/components/footer';
 import getBodySection from './sections/body';
 
 import headerStyles from '../../components/header/styles';
+import headerMarginVariantStyles from './styles/header-margin-variant';
 import footerStyles from '../../../generators/components/footer/styles';
 import bodyStyles from './styles/body';
 
 const styles: StyleDictionary = {
   ...headerStyles,
+  ...headerMarginVariantStyles,
   ...bodyStyles,
   ...footerStyles
 };
 
 @Injectable()
-export class DebitNoteThridPartiesPdf implements IPdfGenerator {
-  private readonly logger = new Logger(DebitNoteThridPartiesPdf.name)
+export class ReportBatchesPdf implements IPdfGenerator {
+  private readonly logger = new Logger(ReportBatchesPdf.name)
 
   constructor(
     private printerService: PrinterService
@@ -35,28 +37,18 @@ export class DebitNoteThridPartiesPdf implements IPdfGenerator {
   async createDocumentDefinitions(reportSchemeData: ReportSchemeDto): Promise<TDocumentDefinitions> {
     this.logger.log(`generating PDF ${reportSchemeData.name} ...`)
 
-    const { header: headers, body: bodies } = reportSchemeData
+    const { header, body } = reportSchemeData
 
-    const allDocumentContent: Content[] = []
-
-    for (let i = 0; i < headers.length; i++) {
-      const currentHeaderData = headers[i]
-      const currentBodyData   = bodies[i]
-
-      allDocumentContent.push(getHeaderSection(currentHeaderData))
-      allDocumentContent.push(getBodySection(currentBodyData))
-
-      if (i < headers.length - 1) {
-        allDocumentContent.push({ text: '', pageBreak: 'after' })
-      }
-    }
+    const headerContent: Content = getHeaderSection(header[0])
+    const bodyContent: Content = getBodySection(body[0])
 
     return {
       pageSize: 'LETTER',
       pageOrientation: 'portrait',
-      pageMargins: [20, 30, 60, 160],
+      pageMargins: [20, 140, 60, 160],
       styles: styles,
-      content: allDocumentContent,
+      header: headerContent,
+      content: bodyContent,
       footer: (currentPage, pageCount) => {
         const footerContent: Content = getFooter(currentPage, pageCount)
         return footerContent

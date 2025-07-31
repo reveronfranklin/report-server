@@ -1,4 +1,3 @@
-import { log } from 'console';
 import type { Content } from 'pdfmake/interfaces';
 
 const getLogoSection = (): Content => {
