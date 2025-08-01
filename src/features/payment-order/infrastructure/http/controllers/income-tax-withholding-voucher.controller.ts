@@ -4,7 +4,7 @@ import blobStream from 'blob-stream';
 
 import { IncomeTaxWithholdingVoucherService } from '../../../application/services/income-tax-withholding-voucher.service';
 import { GenerateReportDto } from '../../../application/dtos/generate-report.dto';
-import { CustomException } from '@exceptions/custom.exception';
+import { ExternalServiceException } from '@exceptions/external-service.exception';
 
 @ApiTags('income-tax-withholding-voucher')
 @Controller('income-tax-withholding-voucher')
@@ -37,7 +37,7 @@ export class IncomeTaxWithholdingVoucherController {
       return new StreamableFile(buffer)
     } catch (error) {
       console.error('Error generating report:', error)
-      throw new CustomException(`Error generating report incomeTaxWithholdingVoucherController -> ${error.message}`)
+      throw new ExternalServiceException(`Error generating report incomeTaxWithholdingVoucherController -> ${error.message}`)
     }
   }
 }

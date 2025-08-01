@@ -2,9 +2,9 @@ import { Controller, Post, Body, StreamableFile, Header } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import blobStream from 'blob-stream';
 
+import { ExternalServiceException } from '@exceptions/external-service.exception';
 import { ReportBatchesService } from '../../../application/services/report-batches.service';
 import { BatchReportQueryDto } from '../../../application/dtos/batch-report-query.dto';
-import { CustomException } from '@exceptions/custom.exception';
 
 @ApiTags('batches')
 @Controller('batches')
@@ -39,7 +39,7 @@ export class ReportBatchesController {
       return new StreamableFile(buffer)
     } catch (error) {
       console.error('Error generating report:', error)
-      throw new CustomException(`Error generating report ReportBatchesController -> ${error.message}`)
+      throw new ExternalServiceException(`Error generating report ReportBatchesController -> ${error.message}`)
     }
   }
 }

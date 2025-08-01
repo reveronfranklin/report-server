@@ -23,7 +23,7 @@
             "@config/*": ["./src/config/*"],
             "@modules/*": ["./src/modules/*"],
             "@interceptors/*": ["./src/interceptors/*"],
-            "@exceptions/*": ["./src/exceptions/*"],
+            "@exceptions/*": ["./src/exceptions/*"]
         }
     },
     "exclude": ["node_modules", "dist"]

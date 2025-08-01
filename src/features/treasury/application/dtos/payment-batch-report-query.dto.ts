@@ -3,19 +3,19 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class PaymentBatchReportQueryDto {
   @ApiProperty({
-    description: 'Código del lote de pago',
+    description: 'Código del lote de pago (codigoLotePago)',
     example: 12345
   })
   @IsNotEmpty()
   @IsNumber()
   @IsPositive()
-  codigoLotePago: number;
+  paymentBatchCode: number;
 
   @ApiProperty({
-    description: 'Código del pago',
+    description: 'Código del pago (codigoPago)',
     example: 12345
   })
   @IsNumber()
   @IsPositive()
-  codigoPago: number;
+  paymentCode: number;
 }

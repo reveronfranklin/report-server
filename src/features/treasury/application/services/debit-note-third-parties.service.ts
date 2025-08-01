@@ -1,7 +1,9 @@
 /* Dependencies */
 import { Injectable, Inject } from '@nestjs/common';
 
-import { CustomException } from '@exceptions/custom.exception';
+import { NotFoundException } from '@exceptions/not-found.exception';
+import { BadRequestException } from '@exceptions/bad-request.exception';
+import { ExternalServiceException } from '@exceptions/external-service.exception';
 import { IPdfGeneratorFactory } from '@shared/modules/printer/interfaces/pdf-generator-factory.interface';
 import { IDebitNoteThirdPartiesRepository } from '../../domain/ports/debit-note-third-parties.repository';
 import { PaymentBatchReportQueryDto } from '../dtos/payment-batch-report-query.dto';
@@ -16,21 +18,21 @@ export class DebitNoteThirdPartiesService {
     private pdfGeneratorFactory: IPdfGeneratorFactory
   ) {}
 
-  async generateReport({ codigoLotePago, codigoPago }: PaymentBatchReportQueryDto): Promise<PDFKit.PDFDocument> {
-    if (!codigoLotePago) {
-      throw new CustomException('Invalid parameters: codigoLotePago is required')
+  async generateReport({ paymentBatchCode, paymentCode }: PaymentBatchReportQueryDto): Promise<PDFKit.PDFDocument> {
+    if (!paymentBatchCode) {
+      throw new BadRequestException('Invalid parameters: paymentBatchCode is required')
     }
 
     let debitNoteThirdPartiesData: ReportSchemeDto | null
 
-    if (codigoPago === undefined || codigoPago === 0) {
-      debitNoteThirdPartiesData = await this.debitNoteThirdPartiesRepository.getPaymentBatches(codigoLotePago)
+    if (paymentCode === undefined || paymentCode === 0) {
+      debitNoteThirdPartiesData = await this.debitNoteThirdPartiesRepository.getPaymentBatches(paymentBatchCode)
     } else {
-      debitNoteThirdPartiesData = await this.debitNoteThirdPartiesRepository.getPaymentBatchByPaymentCode(codigoLotePago, codigoPago)
+      debitNoteThirdPartiesData = await this.debitNoteThirdPartiesRepository.getPaymentBatchByPaymentCode(paymentBatchCode, paymentCode)
     }
 
     if (!debitNoteThirdPartiesData) {
-      throw new CustomException('Debit Note Third Parties Report not found')
+      throw new NotFoundException('Debit Note Third Parties Report not found')
     }
 
     try {
@@ -41,7 +43,7 @@ export class DebitNoteThirdPartiesService {
       return pdfDocument
     } catch (error) {
       console.error('generateReport -> error', error)
-      throw new CustomException(`Error generating report DebitNoteThirdPartiesService: ${error.message}`)
+      throw new ExternalServiceException(`Error generating report DebitNoteThirdPartiesService: ${error.message}`)
     }
   }
 }

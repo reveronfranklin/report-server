@@ -1,7 +1,8 @@
 /* Dependencies */
 import { Injectable, Inject } from '@nestjs/common';
 
-import { CustomException } from '@exceptions/custom.exception';
+import { NotFoundException } from '@exceptions/not-found.exception';
+import { ExternalServiceException } from '@exceptions/external-service.exception';
 import { IPdfGeneratorFactory } from '@shared/modules/printer/interfaces/pdf-generator-factory.interface';
 import { IIncomeTaxWithholdingVoucherRepository } from '../../domain/repositories/income-tax-withholding-voucher.repository.interface';
 import { ReportSchemeDto } from '../dtos/incomeTaxWithholdingVoucher/report-scheme.dto';
@@ -19,18 +20,18 @@ export class IncomeTaxWithholdingVoucherService {
     const incomeTaxWithholdingVoucherData: ReportSchemeDto | null = await this.incomeTaxWithholdingVoucherRepository.findById(id)
 
     if (!incomeTaxWithholdingVoucherData) {
-      throw new CustomException('Income Tax Withholding Voucher Report not found')
+      throw new NotFoundException('Income Tax Withholding Voucher Report not found')
     }
 
     try {
       const pdfGenerator            = this.pdfGeneratorFactory.getGenerator('incomeTaxWithholdingVoucher')
       const pdfDocumentDefinitions	= await pdfGenerator.createDocumentDefinitions(incomeTaxWithholdingVoucherData)
-      const pdfDocument 						= await pdfGenerator.generatePdf(pdfDocumentDefinitions)
+      const pdfDocument 			= await pdfGenerator.generatePdf(pdfDocumentDefinitions)
 
       return pdfDocument
     } catch (error) {
       console.error('generateReport -> error', error)
-      throw new CustomException(`Error generating report incomeTaxWithholdingVoucherService: ${error.message}`)
+      throw new ExternalServiceException(`Error generating report incomeTaxWithholdingVoucherService: ${error.message}`)
     }
   }
 }

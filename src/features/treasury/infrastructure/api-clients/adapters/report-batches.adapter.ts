@@ -3,9 +3,10 @@ import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { firstValueFrom } from 'rxjs';
 
-import { CustomException } from '@exceptions/custom.exception';
+import { NotFoundException } from '@exceptions/not-found.exception';
+import { BadRequestException } from '@exceptions/bad-request.exception';
+import { ExternalServiceException } from '@exceptions/external-service.exception';
 import { IResponse } from '@interceptors/response.interface';
-
 import { ReportBatchesMapper } from '../mappers/batches/report-batches.mapper';
 import { BatchesOriginMapper } from '../mappers/batches/batches-origin.mapper';
 import { IBatchesOriginRaw } from '../mappers/interfaces/batches-origin-raw.interface';
@@ -15,9 +16,7 @@ import { ReportSchemeDto } from '../../../application/dtos/debitNoteThirdParties
 
 @Injectable()
 export class ReportBatchesAdapter implements IReportBatchesRepository {
-  protected apiBaseUrl = this.configService.get<string>(
-    'api.ossmmasoft.baseUrl'
-  )
+  protected apiBaseUrl = this.configService.get<string>('api.ossmmasoft.baseUrl')
 
   constructor(
     private readonly httpService: HttpService,
@@ -27,25 +26,17 @@ export class ReportBatchesAdapter implements IReportBatchesRepository {
   async fecthBatches(payload: object): Promise<PaymentBatchEntity[] | null> {
     try {
       const response = await firstValueFrom(
-        this.httpService.post<IResponse<any>>(
-          `${this.apiBaseUrl}/AdmNotaDebito/GetByLote`,
-          payload
-        )
+        this.httpService.post<IResponse<any>>(`${this.apiBaseUrl}/AdmNotaDebito/GetByLote`, payload)
       )
 
-      const responseData = response.data;
+      const responseData = response.data
 
       if (!responseData?.data) {
-        console.warn('No data found in response:', response.data)
-        return []
+        throw new NotFoundException('No data found in response')
       }
 
       if (responseData.isValid == false || responseData.data.length === 0) {
-        console.warn(
-          'No batches found for the given payload:',
-          payload
-        )
-        return []
+        throw new BadRequestException('No payment batches found for the given payload')
       }
 
       return responseData.data.map((item: IBatchesOriginRaw) =>
@@ -53,9 +44,7 @@ export class ReportBatchesAdapter implements IReportBatchesRepository {
       )
     } catch (error) {
       console.error('Error fecthBatches:', error)
-      throw new CustomException(
-        `Error fecthBatches -> ${error.message}`
-      )
+      throw new ExternalServiceException(`Error fecthBatches -> ${error.message}`)
     }
   }
 
@@ -70,14 +59,11 @@ export class ReportBatchesAdapter implements IReportBatchesRepository {
       if (result.length > 0) {
         return ReportBatchesMapper.toReportSchemeDto(result)
       } else {
-        console.warn(
-          `No payment batches found for batchCode: ${batchCode}`,
-          result
-        )
+        throw new NotFoundException(`No payment batches found for batchCode: ${batchCode}`)
       }
     } catch (error) {
       console.error('Error getBatch:', error)
-      throw new CustomException(`Error getBatch -> ${error.message}`)
+      throw new ExternalServiceException(`Error getBatch -> ${error.message}`)
     }
   }
 }

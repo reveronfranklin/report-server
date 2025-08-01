@@ -1,7 +1,9 @@
 /* Dependencies */
 import { Injectable, Inject } from '@nestjs/common';
 
-import { CustomException } from '@exceptions/custom.exception';
+import { NotFoundException } from '@exceptions/not-found.exception';
+import { BadRequestException } from '@exceptions/bad-request.exception';
+import { ExternalServiceException } from '@exceptions/external-service.exception';
 import { IPdfGeneratorFactory } from '@shared/modules/printer/interfaces/pdf-generator-factory.interface';
 import { IReportBatchesRepository } from '../../domain/ports/report-batches.repository';
 import { BatchReportQueryDto } from '../dtos/batch-report-query.dto';
@@ -18,13 +20,13 @@ export class ReportBatchesService {
 
   async generateReport({ batchCode }: BatchReportQueryDto): Promise<PDFKit.PDFDocument> {
     if (!batchCode) {
-      throw new CustomException('Invalid parameters: (batchCode) is required')
+      throw new BadRequestException('Invalid parameters: (batchCode) is required')
     }
 
     const reportBatches: ReportSchemeDto | null = await this.reportBatchesRepository.getBatch(batchCode)
 
     if (!reportBatches) {
-      throw new CustomException('Report Batches not found')
+      throw new NotFoundException('Report Batches not found')
     }
 
     try {
@@ -35,7 +37,7 @@ export class ReportBatchesService {
       return pdfDocument
     } catch (error) {
       console.error('generateReport -> error', error)
-      throw new CustomException(`Error generating report ReportBatches: ${error.message}`)
+      throw new ExternalServiceException(`Error generating report ReportBatches: ${error.message}`)
     }
   }
 }
