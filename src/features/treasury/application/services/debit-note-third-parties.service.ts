@@ -43,7 +43,7 @@ export class DebitNoteThirdPartiesService {
       return pdfDocument
     } catch (error) {
       console.error('generateReport -> error', error)
-      throw new ExternalServiceException(`Error generating report DebitNoteThirdPartiesService: ${error.message}`)
+      throw new ExternalServiceException(`Error generating report DebitNoteThirdPartiesService -> ${error.message}`)
     }
   }
 }

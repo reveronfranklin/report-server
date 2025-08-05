@@ -3,14 +3,14 @@ import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import blobStream from 'blob-stream';
 
 import { ExternalServiceException } from '@exceptions/external-service.exception';
-import { ReportBatchesService } from '../../../application/services/report-batches.service';
+import { ElectronicPaymentThirdPartiesService } from '../../../application/services/electronic-payment-third-parties.service';
 import { BatchReportQueryDto } from '../../../application/dtos/batch-report-query.dto';
 
-@ApiTags('batches')
-@Controller('batches')
+@ApiTags('electronic-payment-third-parties')
+@Controller('electronic-payment-third-parties')
 
-export class ReportBatchesController {
-  constructor(private reportBatchesService: ReportBatchesService) {}
+export class ElectronicPaymentThirdPartiesController {
+  constructor(private electronicPaymentThirdPartiesService: ElectronicPaymentThirdPartiesService) {}
 
   @Post('/pdf/report')
   @ApiOperation({ summary: 'Generate a PDF report for a batches' })
@@ -22,7 +22,7 @@ export class ReportBatchesController {
   async generateReport(@Body() batchReportQueryDto: BatchReportQueryDto): Promise<StreamableFile> {
     try {
       const stream      = blobStream()
-      const pdfDocument = await this.reportBatchesService.generateReport(batchReportQueryDto)
+      const pdfDocument = await this.electronicPaymentThirdPartiesService.generateReport(batchReportQueryDto)
 
       pdfDocument.pipe(stream)
       pdfDocument.end()
@@ -39,7 +39,7 @@ export class ReportBatchesController {
       return new StreamableFile(buffer)
     } catch (error) {
       console.error('Error generating report:', error)
-      throw new ExternalServiceException(`Error generating report ReportBatchesController -> ${error.message}`)
+      throw new ExternalServiceException(`Error generating report ElectronicPaymentThirdPartiesController -> ${error.message}`)
     }
   }
 }

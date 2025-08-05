@@ -10,7 +10,7 @@ import { BatchReportQueryDto } from '../dtos/batch-report-query.dto';
 import { ReportSchemeDto } from '../dtos/debitNoteThirdParties/report-scheme.dto';
 
 @Injectable()
-export class ReportBatchesService {
+export class ElectronicPaymentThirdPartiesService {
   constructor(
     @Inject('IReportBatchesRepository')
     private reportBatchesRepository: IReportBatchesRepository,
@@ -20,24 +20,24 @@ export class ReportBatchesService {
 
   async generateReport({ batchCode }: BatchReportQueryDto): Promise<PDFKit.PDFDocument> {
     if (!batchCode) {
-      throw new BadRequestException('Invalid parameters: (batchCode) is required')
+      throw new BadRequestException('Invalid parameters: (batchCode) is required and greater than 0')
     }
 
-    const reportBatches: ReportSchemeDto | null = await this.reportBatchesRepository.getBatch(batchCode)
+    const electronicPaymentThirdPartiesData: ReportSchemeDto | null = await this.reportBatchesRepository.getBatch(batchCode, true)
 
-    if (!reportBatches) {
-      throw new NotFoundException('Report Batches not found')
+    if (!electronicPaymentThirdPartiesData) {
+      throw new NotFoundException('Electronic Payment Third Parties not found')
     }
 
     try {
       const pdfGenerator            = this.pdfGeneratorFactory.getGenerator('reportBatches')
-      const pdfDocumentDefinitions	= await pdfGenerator.createDocumentDefinitions(reportBatches)
+      const pdfDocumentDefinitions	= await pdfGenerator.createDocumentDefinitions(electronicPaymentThirdPartiesData)
       const pdfDocument 			= await pdfGenerator.generatePdf(pdfDocumentDefinitions)
 
       return pdfDocument
     } catch (error) {
       console.error('generateReport -> error', error)
-      throw new ExternalServiceException(`Error generating report ReportBatches: ${error.message}`)
+      throw new ExternalServiceException(`Error generating report ElectronicPaymentThirdPartiesService -> ${error.message}`)
     }
   }
 }

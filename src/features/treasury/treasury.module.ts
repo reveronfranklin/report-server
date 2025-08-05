@@ -5,11 +5,13 @@ import { SharedModule } from '@shared/shared.module';
 
 /* Services */
 import { DebitNoteThirdPartiesService } from './application/services/debit-note-third-parties.service';
-import { ReportBatchesService } from './application/services/report-batches.service';
+import { ElectronicPaymentService } from './application/services/electronic-payment.service';
+import { ElectronicPaymentThirdPartiesService } from './application/services/electronic-payment-third-parties.service';
 
 /* Controllers */
 import { DebitNoteThirdPartiesController } from './infrastructure/http/controllers/debit-note-third-parties.controller';
-import { ReportBatchesController } from './infrastructure/http/controllers/report-batches.controller';
+import { ElectronicPaymentController } from './infrastructure/http/controllers/electronic-payment.controller';
+import { ElectronicPaymentThirdPartiesController } from './infrastructure/http/controllers/electronic-payment-third-parties.controller';
 
 /* Api-clients (adapters) */
 import { DebitNoteThirdPartiesAdapter } from './infrastructure/api-clients/adapters/debit-note-third-parties.adapter';
@@ -29,11 +31,13 @@ import { PdfGeneratorFactory } from './infrastructure/pdf/pdf-generator.factory'
   ],
   controllers: [
     DebitNoteThirdPartiesController,
-    ReportBatchesController
+    ElectronicPaymentController,
+    ElectronicPaymentThirdPartiesController
   ],
   providers: [
     DebitNoteThirdPartiesService,
-    ReportBatchesService,
+    ElectronicPaymentService,
+    ElectronicPaymentThirdPartiesService,
     DebitNoteThridPartiesPdf,
     ReportBatchesPdf,
     {

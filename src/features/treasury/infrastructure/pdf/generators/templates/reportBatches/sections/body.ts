@@ -2,7 +2,7 @@ import type { Content } from 'pdfmake/interfaces';
 import { formatPrice } from '@shared/utils';
 import { ReportBodyDto } from '../../../../../../application/dtos/debitNoteThirdParties/report-body.dto';
 
-const getBodySection = (options: ReportBodyDto): Content => {
+const getBodySection = (options: ReportBodyDto, isThirdParties: boolean): Content => {
   const {
     amount,
     opIcpPucAmount,
@@ -11,6 +11,15 @@ const getBodySection = (options: ReportBodyDto): Content => {
     reason,
     taxWithholdingAmount
   } = options
+
+  const descriptionOfTaxesAndDeductions = (
+    !isThirdParties ?
+      {
+        text: `FIANZA DE FIEL CUMPLIMIENTO 1.984.070,00 / IMPUESTO AL VALOR AGREGADO (I.V.A.) 2.380.884,00 / LEY DE TIMBRE FISCAL 19.840,70 `,
+        style: 'tableBodyContent'
+      }
+    : {}
+  )
 
   const contentBody: Content = {
     style: 'body',
@@ -88,15 +97,12 @@ const getBodySection = (options: ReportBodyDto): Content => {
           {
             text: [
               { text: 'Impuestos y Deducciones: \n', style: 'tableBodySubtitle' },
-              {
-                text: `FIANZA DE FIEL CUMPLIMIENTO 1.984.070,00 / IMPUESTO AL VALOR AGREGADO (I.V.A.) 2.380.884,00 / LEY DE TIMBRE FISCAL 19.840,70 `,
-                style: 'tableBodyContent'
-              }
+              descriptionOfTaxesAndDeductions
             ],
             border: [true, false]
           },
           {
-            text: `${ taxWithholdingAmount ? formatPrice(taxWithholdingAmount ,'VES') : '' } \n`,
+            text: `${ (taxWithholdingAmount && !isThirdParties) ? formatPrice(taxWithholdingAmount ,'VES') : '' } \n`,
             style: 'amount',
             colSpan: 2,
             border: [true, false, true, false]

@@ -1,3 +1,3 @@
 export interface IReportBatchesRepository {
-  getBatch(batchCode: number): Promise<any | null>
+  getBatch(batchCode: number, isThirdParties: boolean): Promise<any | null>
 }

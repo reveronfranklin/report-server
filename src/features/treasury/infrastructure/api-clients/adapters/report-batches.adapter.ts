@@ -48,7 +48,7 @@ export class ReportBatchesAdapter implements IReportBatchesRepository {
     }
   }
 
-  async getBatch(batchCode: number): Promise<ReportSchemeDto | []> {
+  async getBatch(batchCode: number, isThirdParties: boolean): Promise<ReportSchemeDto | []> {
     try {
       const payload = {
         codigoLote: batchCode
@@ -57,7 +57,7 @@ export class ReportBatchesAdapter implements IReportBatchesRepository {
       const result = await this.fecthBatches(payload)
 
       if (result.length > 0) {
-        return ReportBatchesMapper.toReportSchemeDto(result)
+        return ReportBatchesMapper.toReportSchemeDto(result, isThirdParties)
       } else {
         throw new NotFoundException(`No payment batches found for batchCode: ${batchCode}`)
       }
