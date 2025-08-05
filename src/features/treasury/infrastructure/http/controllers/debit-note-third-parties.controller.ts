@@ -4,7 +4,8 @@ import blobStream from 'blob-stream';
 
 import { ExternalServiceException } from '@exceptions/external-service.exception';
 import { DebitNoteThirdPartiesService } from '../../../application/services/debit-note-third-parties.service';
-import { PaymentBatchReportQueryDto } from '../../../application/dtos/payment-batch-report-query.dto';
+import { ReportQueryApiDto  } from '../../api-clients/dtos/report-query-api.dto';
+import { ReportQueryMapper  } from '../../api-clients/mappers/report-query.mapper';
 
 @ApiTags('debit-note-third-parties')
 @Controller('debit-note-third-parties')
@@ -19,10 +20,11 @@ export class DebitNoteThirdPartiesController {
   @Header('Content-Type', 'application/pdf')
   @Header('Content-Disposition', 'attachment; filename="report.pdf"')
 
-  async generateReport(@Body() paymentBatchReportQueryDto: PaymentBatchReportQueryDto): Promise<StreamableFile> {
+  async generateReport(@Body() reportQueryApiDto: ReportQueryApiDto): Promise<StreamableFile> {
     try {
-      const stream      = blobStream()
-      const pdfDocument = await this.debitNoteThirdPartiesService.generateReport(paymentBatchReportQueryDto)
+      const reportQueryDto  = ReportQueryMapper.toApplicationDto(reportQueryApiDto)
+      const stream          = blobStream()
+      const pdfDocument     = await this.debitNoteThirdPartiesService.generateReport(reportQueryDto)
 
       pdfDocument.pipe(stream)
       pdfDocument.end()

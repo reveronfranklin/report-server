@@ -6,7 +6,7 @@ import { BadRequestException } from '@exceptions/bad-request.exception';
 import { ExternalServiceException } from '@exceptions/external-service.exception';
 import { IPdfGeneratorFactory } from '@shared/modules/printer/interfaces/pdf-generator-factory.interface';
 import { IReportBatchesRepository } from '../../domain/ports/report-batches.repository';
-import { BatchReportQueryDto } from '../dtos/batch-report-query.dto';
+import { ReportQueryDto } from '../dtos/report-query.dto';
 import { ReportSchemeDto } from '../dtos/debitNoteThirdParties/report-scheme.dto';
 
 @Injectable()
@@ -18,12 +18,12 @@ export class ElectronicPaymentService {
     private pdfGeneratorFactory: IPdfGeneratorFactory
   ) {}
 
-  async generateReport({ batchCode }: BatchReportQueryDto): Promise<PDFKit.PDFDocument> {
-    if (!batchCode) {
-      throw new BadRequestException('Invalid parameters: (batchCode) is required and greater than 0')
+  async generateReport({ paymentBatchCode }: ReportQueryDto): Promise<PDFKit.PDFDocument> {
+    if (!paymentBatchCode) {
+      throw new BadRequestException('Invalid parameters: (paymentBatchCode) is required and greater than 0')
     }
 
-    const electronicPaymentData: ReportSchemeDto | null = await this.reportBatchesRepository.getBatch(batchCode, false);
+    const electronicPaymentData: ReportSchemeDto | null = await this.reportBatchesRepository.getBatch(paymentBatchCode, false);
 
     if (!electronicPaymentData) {
       throw new NotFoundException('Electronic Payment not found')

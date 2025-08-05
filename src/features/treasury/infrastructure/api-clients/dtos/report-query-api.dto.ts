@@ -1,21 +1,22 @@
-import { IsNumber, IsPositive, IsNotEmpty } from 'class-validator';
+import { IsNumber, IsPositive, IsNotEmpty, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class PaymentBatchReportQueryDto {
+export class ReportQueryApiDto {
   @ApiProperty({
     description: 'Código del lote de pago (codigoLotePago)',
-    example: 12345
+    example: 170
   })
   @IsNotEmpty()
   @IsNumber()
   @IsPositive()
-  paymentBatchCode: number;
+  codigoLotePago: number;
 
   @ApiProperty({
     description: 'Código del pago (codigoPago)',
-    example: 12345
+    example: 0
   })
   @IsNumber()
   @IsPositive()
-  paymentCode: number;
+  @IsOptional()
+  codigoPago?: number;
 }

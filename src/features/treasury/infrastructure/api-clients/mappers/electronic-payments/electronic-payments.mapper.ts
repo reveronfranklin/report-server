@@ -6,7 +6,7 @@ import { ReportBodyDto } from '../../../../application/dtos/debitNoteThirdPartie
 
 import { twoDigitFormatDate } from '@shared/utils';
 
-export class ReportBatchesMapper {
+export class ElectronicPaymentsMapper {
   public static toReportSchemeDto(batches: PaymentBatchEntity[], isThirdParties: boolean): ReportSchemeDto {
     const headers   = []
     const bodies    = []

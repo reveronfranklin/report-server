@@ -6,7 +6,7 @@ import { BadRequestException } from '@exceptions/bad-request.exception';
 import { ExternalServiceException } from '@exceptions/external-service.exception';
 import { IPdfGeneratorFactory } from '@shared/modules/printer/interfaces/pdf-generator-factory.interface';
 import { IDebitNoteThirdPartiesRepository } from '../../domain/ports/debit-note-third-parties.repository';
-import { PaymentBatchReportQueryDto } from '../dtos/payment-batch-report-query.dto';
+import { ReportQueryDto } from '../dtos/report-query.dto';
 import { ReportSchemeDto } from '../dtos/debitNoteThirdParties/report-scheme.dto';
 
 @Injectable()
@@ -18,7 +18,7 @@ export class DebitNoteThirdPartiesService {
     private pdfGeneratorFactory: IPdfGeneratorFactory
   ) {}
 
-  async generateReport({ paymentBatchCode, paymentCode }: PaymentBatchReportQueryDto): Promise<PDFKit.PDFDocument> {
+  async generateReport({ paymentBatchCode, paymentCode }: ReportQueryDto): Promise<PDFKit.PDFDocument> {
     if (!paymentBatchCode) {
       throw new BadRequestException('Invalid parameters: paymentBatchCode is required')
     }

@@ -7,8 +7,8 @@ import { NotFoundException } from '@exceptions/not-found.exception';
 import { BadRequestException } from '@exceptions/bad-request.exception';
 import { ExternalServiceException } from '@exceptions/external-service.exception';
 import { IResponse } from '@interceptors/response.interface';
-import { ReportBatchesMapper } from '../mappers/batches/report-batches.mapper';
-import { BatchesOriginMapper } from '../mappers/batches/batches-origin.mapper';
+import { ElectronicPaymentsMapper } from '../mappers/electronic-payments/electronic-payments.mapper';
+import { BatchesOriginMapper } from '../mappers/electronic-payments/batches-origin.mapper';
 import { IBatchesOriginRaw } from '../mappers/interfaces/batches-origin-raw.interface';
 import { IReportBatchesRepository } from '../../../domain/ports/report-batches.repository';
 import { PaymentBatchEntity } from '../../../domain/entities/payment-batches.entity';
@@ -57,7 +57,7 @@ export class ReportBatchesAdapter implements IReportBatchesRepository {
       const result = await this.fecthBatches(payload)
 
       if (result.length > 0) {
-        return ReportBatchesMapper.toReportSchemeDto(result, isThirdParties)
+        return ElectronicPaymentsMapper.toReportSchemeDto(result, isThirdParties)
       } else {
         throw new NotFoundException(`No payment batches found for batchCode: ${batchCode}`)
       }

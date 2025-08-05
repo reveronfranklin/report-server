@@ -6,7 +6,7 @@ import { BadRequestException } from '@exceptions/bad-request.exception';
 import { ExternalServiceException } from '@exceptions/external-service.exception';
 import { IPdfGeneratorFactory } from '@shared/modules/printer/interfaces/pdf-generator-factory.interface';
 import { IReportBatchesRepository } from '../../domain/ports/report-batches.repository';
-import { BatchReportQueryDto } from '../dtos/batch-report-query.dto';
+import { ReportQueryDto } from '../dtos/report-query.dto';
 import { ReportSchemeDto } from '../dtos/debitNoteThirdParties/report-scheme.dto';
 
 @Injectable()
@@ -18,12 +18,12 @@ export class ElectronicPaymentThirdPartiesService {
     private pdfGeneratorFactory: IPdfGeneratorFactory
   ) {}
 
-  async generateReport({ batchCode }: BatchReportQueryDto): Promise<PDFKit.PDFDocument> {
-    if (!batchCode) {
-      throw new BadRequestException('Invalid parameters: (batchCode) is required and greater than 0')
+  async generateReport({ paymentBatchCode }: ReportQueryDto): Promise<PDFKit.PDFDocument> {
+    if (!paymentBatchCode) {
+      throw new BadRequestException('Invalid parameters: (paymentBatchCode) is required and greater than 0')
     }
 
-    const electronicPaymentThirdPartiesData: ReportSchemeDto | null = await this.reportBatchesRepository.getBatch(batchCode, true)
+    const electronicPaymentThirdPartiesData: ReportSchemeDto | null = await this.reportBatchesRepository.getBatch(paymentBatchCode, true)
 
     if (!electronicPaymentThirdPartiesData) {
       throw new NotFoundException('Electronic Payment Third Parties not found')
