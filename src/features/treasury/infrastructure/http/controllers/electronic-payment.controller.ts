@@ -4,7 +4,8 @@ import blobStream from 'blob-stream';
 
 import { ExternalServiceException } from '@exceptions/external-service.exception';
 import { ElectronicPaymentService } from '../../../application/services/electronic-payment.service';
-import { BatchReportQueryDto } from '../../../application/dtos/batch-report-query.dto';
+import { ReportQueryApiDto  } from '../../api-clients/dtos/report-query-api.dto';
+import { ReportQueryMapper  } from '../../api-clients/mappers/report-query.mapper';
 
 @ApiTags('electronic-payment')
 @Controller('electronic-payment')
@@ -19,10 +20,11 @@ export class ElectronicPaymentController {
   @Header('Content-Type', 'application/pdf')
   @Header('Content-Disposition', 'attachment; filename="report.pdf"')
 
-  async generateReport(@Body() batchReportQueryDto: BatchReportQueryDto): Promise<StreamableFile> {
+  async generateReport(@Body() reportQueryApiDto: ReportQueryApiDto): Promise<StreamableFile> {
     try {
-      const stream      = blobStream()
-      const pdfDocument = await this.electronicPaymentService.generateReport(batchReportQueryDto)
+      const reportQueryDto  = ReportQueryMapper.toApplicationDto(reportQueryApiDto)
+      const stream          = blobStream()
+      const pdfDocument     = await this.electronicPaymentService.generateReport(reportQueryDto)
 
       pdfDocument.pipe(stream)
       pdfDocument.end()
