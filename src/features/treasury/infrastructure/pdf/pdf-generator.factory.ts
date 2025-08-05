@@ -4,17 +4,20 @@ import { IPdfGeneratorFactory } from '@shared/modules/printer/interfaces/pdf-gen
 import { IPdfGenerator } from '@shared/modules/printer/interfaces/pdf-generator.interface';
 
 /* Generators */
-import { DebitNoteThridPartiesPdf } from './generators/templates/DebitNoteThridParties';
+import { DebitNoteThridPartiesPdf } from './generators/templates/debitNoteThridParties';
+import { ReportBatchesPdf } from './generators/templates/reportBatches';
 
 @Injectable()
 export class PdfGeneratorFactory implements IPdfGeneratorFactory {
   private generators: Map<string, any>;
 
   constructor(
-    private debitNoteThridPartiesPdf: DebitNoteThridPartiesPdf
+    private debitNoteThridPartiesPdf: DebitNoteThridPartiesPdf,
+    private reportBatchesPdf: ReportBatchesPdf
   ) {
     this.generators = new Map()
     this.generators.set('debitNoteThridParties', debitNoteThridPartiesPdf)
+    this.generators.set('reportBatches', reportBatchesPdf)
   }
 
   getGenerator(type: string): IPdfGenerator {

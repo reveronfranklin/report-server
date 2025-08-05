@@ -25,8 +25,8 @@ const styles: StyleDictionary = {
 };
 
 @Injectable()
-export class DebitNoteThridPartiesPdf implements IPdfGenerator {
-  private readonly logger = new Logger(DebitNoteThridPartiesPdf.name)
+export class ReportBatchesPdf implements IPdfGenerator {
+  private readonly logger = new Logger(ReportBatchesPdf.name)
 
   constructor(
     private printerService: PrinterService
@@ -38,19 +38,19 @@ export class DebitNoteThridPartiesPdf implements IPdfGenerator {
     const { header: headers, body: bodies } = reportSchemeData
 
     const allDocumentContent: Content[] = []
+    const isThirdParties = (reportSchemeData.name === 'electronic-payment-third-parties')
 
     for (let i = 0; i < headers.length; i++) {
       const currentHeaderData = headers[i]
       const currentBodyData   = bodies[i]
 
       allDocumentContent.push(getHeaderSection(currentHeaderData))
-      allDocumentContent.push(getBodySection(currentBodyData))
+      allDocumentContent.push(getBodySection(currentBodyData, isThirdParties))
 
       if (i < headers.length - 1) {
         allDocumentContent.push({ text: '', pageBreak: 'after' })
       }
     }
-
     return {
       pageSize: 'LETTER',
       pageOrientation: 'portrait',

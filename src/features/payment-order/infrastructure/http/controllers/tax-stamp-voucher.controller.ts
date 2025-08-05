@@ -4,7 +4,7 @@ import blobStream from 'blob-stream';
 
 import { TaxStampVoucherService } from '../../../application/services/tax-stamp-voucher.service';
 import { GenerateReportDto } from '../../../application/dtos/generate-report.dto';
-import { CustomException } from '@exceptions/custom.exception';
+import { ExternalServiceException } from '@exceptions/external-service.exception';
 
 @ApiTags('tax-stamp-voucher')
 @Controller('tax-stamp-voucher')
@@ -37,7 +37,7 @@ export class TaxStampVoucherController {
       return new StreamableFile(buffer)
     } catch (error) {
       console.error('Error generating report:', error)
-      throw new CustomException(`Error generating report taxStampVoucherController -> ${error.message}`)
+      throw new ExternalServiceException(`Error generating report taxStampVoucherController -> ${error.message}`)
     }
   }
 }

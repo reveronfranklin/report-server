@@ -1,6 +1,6 @@
 import { INestApplication, Logger } from '@nestjs/common';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
-import { CustomException } from '../exceptions/custom.exception';
+import { BadRequestException } from '@exceptions/bad-request.exception';
 
 /**
  * Configura las opciones CORS para la aplicación
@@ -25,7 +25,7 @@ const configureCors = (app: INestApplication, allowedOrigins: string[], environm
         }
 
         logger.error('Solicitud recibida sin origen definido')
-        return callback(new CustomException('No se permiten solicitudes sin origen'), false)
+        return callback(new BadRequestException('No se permiten solicitudes sin origen'), false)
       }
 
       // Verificar si el origen está en la lista de permitidos
@@ -36,7 +36,7 @@ const configureCors = (app: INestApplication, allowedOrigins: string[], environm
 
       // Rechazar orígenes no permitidos
       logger.error(`Solicitud CORS rechazada desde origen: ${origin}`)
-      return callback(new CustomException('No permitido por CORS, origen no permitido'), false)
+      return callback(new BadRequestException('No permitido por CORS, origen no permitido'), false)
     },
     methods: ['POST'],
     credentials: true,

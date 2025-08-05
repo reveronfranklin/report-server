@@ -2,9 +2,9 @@ import { Controller, Post, Body, StreamableFile, Header } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import blobStream from 'blob-stream';
 
+import { ExternalServiceException } from '@exceptions/external-service.exception';
 import { DebitNoteThirdPartiesService } from '../../../application/services/debit-note-third-parties.service';
-import { GenerateReportDto } from '../../../application/dtos/generate-report.dto';
-import { CustomException } from '@exceptions/custom.exception';
+import { PaymentBatchReportQueryDto } from '../../../application/dtos/payment-batch-report-query.dto';
 
 @ApiTags('debit-note-third-parties')
 @Controller('debit-note-third-parties')
@@ -19,10 +19,10 @@ export class DebitNoteThirdPartiesController {
   @Header('Content-Type', 'application/pdf')
   @Header('Content-Disposition', 'attachment; filename="report.pdf"')
 
-  async generateReport(@Body() generateReportDto: GenerateReportDto): Promise<StreamableFile> {
+  async generateReport(@Body() paymentBatchReportQueryDto: PaymentBatchReportQueryDto): Promise<StreamableFile> {
     try {
       const stream      = blobStream()
-      const pdfDocument = await this.debitNoteThirdPartiesService.generateReport(generateReportDto)
+      const pdfDocument = await this.debitNoteThirdPartiesService.generateReport(paymentBatchReportQueryDto)
 
       pdfDocument.pipe(stream)
       pdfDocument.end()
@@ -39,7 +39,7 @@ export class DebitNoteThirdPartiesController {
       return new StreamableFile(buffer)
     } catch (error) {
       console.error('Error generating report:', error)
-      throw new CustomException(`Error generating report DebitNoteThirdPartiesController -> ${error.message}`)
+      throw new ExternalServiceException(`Error generating report DebitNoteThirdPartiesController -> ${error.message}`)
     }
   }
 }

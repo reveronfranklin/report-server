@@ -4,7 +4,7 @@ import blobStream from 'blob-stream';
 
 import { VatWithholdingVoucherService } from '../../../application/services/vat-withholding-voucher.service';
 import { GenerateReportDto } from '../../../application/dtos/generate-report.dto';
-import { CustomException } from '@exceptions/custom.exception';
+import { ExternalServiceException } from '@exceptions/external-service.exception';
 
 @ApiTags('vat-withholding-voucher')
 @Controller('vat-withholding-voucher')
@@ -37,7 +37,7 @@ export class VatWithholdingVoucherController {
       return new StreamableFile(buffer)
     } catch (error) {
       console.error('Error generating report:', error)
-      throw new CustomException(`Error generating report vatWithholdingVoucherController -> ${error.message}`)
+      throw new ExternalServiceException(`Error generating report vatWithholdingVoucherController -> ${error.message}`)
     }
   }
 }

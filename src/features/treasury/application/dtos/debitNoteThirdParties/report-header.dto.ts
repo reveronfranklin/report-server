@@ -16,4 +16,8 @@ export class ReportHeaderDto {
   @IsNotEmpty()
   @IsString()
   name: string;
+
+  @IsNotEmpty()
+  @IsString()
+  reportTitle: string | null;
 }

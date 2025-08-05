@@ -4,7 +4,7 @@ import blobStream from 'blob-stream';
 
 import { PaymentOrderService } from '../../../application/services/payment-order.service';
 import { GenerateReportDto } from '../../../application/dtos/generate-report.dto';
-import { CustomException } from '@exceptions/custom.exception';
+import { ExternalServiceException } from '@exceptions/external-service.exception';
 
 @ApiTags('payment-orders')
 @Controller('payment-orders')
@@ -37,7 +37,7 @@ export class PaymentOrderController {
       return new StreamableFile(buffer)
     } catch (error) {
       console.error('Error generating report:', error)
-      throw new CustomException(`Error generating report paymentOrderController -> ${error.message}`)
+      throw new ExternalServiceException(`Error generating report paymentOrderController -> ${error.message}`)
     }
   }
 }
