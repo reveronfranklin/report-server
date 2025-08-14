@@ -8,7 +8,7 @@ interface HeaderOptions {
 }
 
 const numberOfRowForTableFunds: number = 10;
-const numberOfRowForTableWithholdings: number = 7;
+const numberOfRowForTableWithholdings: number = 5;
 
 const getTableWithholdings = (body: HeaderOptions['body']): TableCell[][] => {
   const tableBody: TableCell[][] = []
@@ -62,46 +62,48 @@ const getTableFunds = (funds: HeaderOptions['body']): TableCell[][] => {
 
   for (let i = 0; i < countRow; i++) {
     const row = funds[i] || {}
+    const drawBottomBorder: boolean = ((i + 1) % 20 === 0);
+    const borderMargins = [true, false, true, drawBottomBorder]
 
     const data: TableCell[] = [
       {
         text: row.year?.toString() || '',
         style: 'tableBody',
-        border: [true, false]
+        border: borderMargins
       },
       {
         colSpan: 3,
         text: row.financedDescription || '',
         style: 'tableBodyDescription',
-         border: [true, false]
+        border: borderMargins
       },
       {}, {},
       {
         colSpan: 2,
         text: row.icpCodeConcat || '',
         style: 'tableBody',
-         border: [true, false]
+        border: borderMargins
       },
       {},
       {
         colSpan: 2,
         text: row.pucCodeConcat || '',
         style: 'tableBody',
-        border: [true, false]
+        border: borderMargins
       },
       {},
       {
         colSpan: 2,
         text: row.periodic ? formatPrice(row.periodic, 'VES') : '',
         style: 'tableBodyAmount',
-        border: [true, false]
+        border: borderMargins
       },
       {},
       {
         colSpan: 2,
         text: row.amount ? formatPrice(row.amount, 'VES') : '',
         style: 'tableBodyAmount',
-        border: [true, false, true, false]
+        border: [...borderMargins, true, false]
       },
       {}
     ]
@@ -134,6 +136,7 @@ export const bodySection = (options: HeaderOptions): Content => {
   const contentPdf: Content = {
     style: 'body',
     table: {
+      headerRows: 2,
       widths: ['*', '*', '*', '*', 30, 30, 30, 30, '*', '*', '*', '*'],
       heights: [10, 10, ...heightFunds, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
       body: [
