@@ -135,7 +135,7 @@ export const bodySection = (options: HeaderOptions): Content => {
     style: 'body',
     table: {
       widths: ['*', '*', '*', '*', 30, 30, 30, 30, '*', '*', '*', '*'],
-      heights: [10, 10, ...heightFunds, 10, 10, 100, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+      heights: [10, 10, ...heightFunds, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
       body: [
         /* header table */
         [
