@@ -10,5 +10,6 @@ export interface IPaymentBatches {
   paymentBatchCode:     number;
   payToTheOrderOf:      string;
   reason:               string;
+  reportTitle:          string | null;
   taxWithholdingAmount: number;
 }

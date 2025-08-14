@@ -11,6 +11,17 @@ const headerStyles: StyleDictionary = {
     alignment: 'right',
     margin: [0, -25, 10, 0]
   },
+  orderTitleVariant: {
+    fontSize: 12,
+    bold: true,
+    alignment: 'right',
+    margin: [0, -25, 5, 0]
+  },
+  tableHeaderVariant: {
+    fontSize: 9,
+    bold: true,
+    alignment: 'right'
+  },
   tableHeader: {
     fontSize: 10,
     bold: true,

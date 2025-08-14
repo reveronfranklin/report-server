@@ -1,7 +1,8 @@
 /* Dependencies */
 import { Injectable, Inject } from '@nestjs/common';
 
-import { CustomException } from '@exceptions/custom.exception';
+import { NotFoundException } from '@exceptions/not-found.exception';
+import { ExternalServiceException } from '@exceptions/external-service.exception';
 import { IPdfGeneratorFactory } from '@shared/modules/printer/interfaces/pdf-generator-factory.interface';
 import { ITaxStampVoucherRepository } from '../../domain/repositories/tax-stamp-voucher.repository.interface';
 import { ReportSchemeDto } from '../dtos/taxStampVoucher/report-scheme.dto';
@@ -19,7 +20,7 @@ export class TaxStampVoucherService {
     const taxStampVoucherData: ReportSchemeDto | null = await this.taxStampVoucherRepository.findById(id)
 
     if (!taxStampVoucherData) {
-      throw new CustomException('Tax Stamp Voucher Report not found')
+      throw new NotFoundException('Tax Stamp Voucher Report not found')
     }
 
     try {
@@ -30,7 +31,7 @@ export class TaxStampVoucherService {
       return pdfDocument
     } catch (error) {
       console.error('generateReport -> error', error)
-      throw new CustomException(`Error generating report TaxStampVoucherService: ${error.message}`)
+      throw new ExternalServiceException(`Error generating report TaxStampVoucherService: ${error.message}`)
     }
   }
 }

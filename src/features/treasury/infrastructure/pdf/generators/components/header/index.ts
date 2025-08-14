@@ -1,20 +1,23 @@
 import type { Content } from 'pdfmake/interfaces';
-import { ReportHeaderDto } from '../../../../../../application/dtos/debitNoteThirdParties/report-header.dto';
-import getLogoSection from '../../../components/logo';
+import { ReportHeaderDto } from '../../../../../application/dtos/debitNoteThirdParties/report-header.dto';
+import getLogoSection from '../logo';
 
 const getHeaderSection = (options: ReportHeaderDto): Content => {
   const {
     checkNumber,
     checkDate,
     name,
-    accountNumber
+    accountNumber,
+    reportTitle
   } = options
 
   const logo = getLogoSection()
 
+  const isElectronicPayment = (reportTitle !== null && reportTitle.trim().toUpperCase().includes('ELECTRÓNICO'))
+
   const formattedTitle = {
-    text: 'NOTA DE DÉBITO',
-    style: 'orderTitle'
+    text: reportTitle ? reportTitle.trim().toUpperCase() : 'NOTA DE DÉBITO',
+    style: isElectronicPayment ? 'orderTitleVariant' : 'orderTitle'
   }
 
   const fifthRowBorder = [false, false]
@@ -48,7 +51,10 @@ const getHeaderSection = (options: ReportHeaderDto): Content => {
           {
             text: [
               { text: `${ checkNumber ?? '' }\n`, style: 'tableHeader' },
-              { text: 'N° NOTA DE DÉBITO:', style: 'tableHeader' }
+              {
+                text: `N°${ isElectronicPayment ? 'PAGO ELECTRÓNICO' : 'NOTA DE DÉBITO'}:`,
+                style: (isElectronicPayment ? 'tableHeaderVariant' : 'tableHeader')
+              }
             ],
             margin: [0, 10, 10, 0],
             border: [false, true, true, false]

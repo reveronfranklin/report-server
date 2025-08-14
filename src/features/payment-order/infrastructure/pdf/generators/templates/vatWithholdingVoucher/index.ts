@@ -61,10 +61,10 @@ export class VatWithholdingVoucherPdf implements IPdfGenerator {
 
     const watermark = getWatermark(status)
 
-    return {
+    const docDefinition: TDocumentDefinitions = {
       pageSize: 'LETTER',
       pageOrientation: 'landscape',
-      pageMargins: [20, 280, 20, 100],
+      pageMargins: [10, 280, 10, 100],
       styles: styles,
       watermark: watermark,
       header: {
@@ -78,11 +78,13 @@ export class VatWithholdingVoucherPdf implements IPdfGenerator {
         ]
       },
       content: bodyContent,
-      footer: (currentPage, pageCount) => {
+      footer: (currentPage: number, pageCount: number) => {
         const footerContent: Content = getFooter(currentPage, pageCount)
         return footerContent
       }
     }
+
+    return docDefinition
   }
 
   async generatePdf(documentDefinitions: TDocumentDefinitions): Promise<PDFKit.PDFDocument> {

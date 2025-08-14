@@ -1,13 +1,13 @@
 
-import { PaymentBatchEntity } from '../../../domain/entities/payment-batches.entity';
-import { ReportSchemeDto } from '../../../application/dtos/debitNoteThirdParties/report-scheme.dto';
-import { ReportHeaderDto } from '../../../application/dtos/debitNoteThirdParties/report-header.dto';
-import { ReportBodyDto } from '../../../application/dtos/debitNoteThirdParties/report-body.dto';
+import { PaymentBatchEntity } from '../../../../domain/entities/payment-batches.entity';
+import { ReportSchemeDto } from '../../../../application/dtos/debitNoteThirdParties/report-scheme.dto';
+import { ReportHeaderDto } from '../../../../application/dtos/debitNoteThirdParties/report-header.dto';
+import { ReportBodyDto } from '../../../../application/dtos/debitNoteThirdParties/report-body.dto';
 
 import { twoDigitFormatDate } from '@shared/utils';
 
 export class DebitNoteThirdPartiesMapper {
-  public static toDomain(paymentBatchs: PaymentBatchEntity[]): ReportSchemeDto {
+  public static toReportSchemeDto(paymentBatchs: PaymentBatchEntity[]): ReportSchemeDto {
     const headers   = []
     const bodies    = []
 
@@ -33,7 +33,8 @@ export class DebitNoteThirdPartiesMapper {
       accountNumber: paymentBatch.accountNumber,
       checkDate: twoDigitFormatDate(paymentBatch.checkDate),
       checkNumber: paymentBatch.checkNumber,
-      name: paymentBatch.name.trim()
+      name: paymentBatch.name.trim(),
+      reportTitle: null
     }
   }
 
@@ -44,7 +45,7 @@ export class DebitNoteThirdPartiesMapper {
       opIcpPucDetail: paymentBatch.opIcpPucDetail.trim(),
       payToTheOrderOf: paymentBatch.payToTheOrderOf.trim(),
       reason: paymentBatch.reason.trim(),
-      taxWithholdingAmount: paymentBatch.taxWithholdingAmount,
+      taxWithholdingAmount: paymentBatch.taxWithholdingAmount
     }
   }
 }

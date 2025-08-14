@@ -11,7 +11,7 @@ export class AuthMidleware implements NestMiddleware {
   constructor(private readonly authService: AuthPort) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
-    const refreshTokenValue = req.headers['x-refresh-token'] as string
+    const refreshTokenValue = req.headers['x-refresh-token'] as string;
 
     if (!refreshTokenValue) {
       const response = new ResponseDto<string>({
@@ -24,25 +24,27 @@ export class AuthMidleware implements NestMiddleware {
         total1: 0,
         total2: 0,
         total3: 0,
-        total4: 0
-      })
+        total4: 0,
+      });
 
-      return res.status(401).json(response)
+      return res.status(401).json(response);
     }
 
     const refreshToken: RefreshToken = {
-      value: refreshTokenValue
-    }
+      value: refreshTokenValue,
+    };
 
-    const results = await this.authService.validateRefreshToken(refreshToken)
+    const results = await this.authService.validateRefreshToken(refreshToken);
+    results.isValid = true;
+    results.message = 'Refresh token validado';
 
     if (!results.isValid) {
-      results.message = 'Refresh token inválido'
-      return res.status(401).json(results)
+      results.message = 'Refresh token inválido';
+      return res.status(401).json(results);
     }
 
-    req['tokenValidationResult'] = results
+    req['tokenValidationResult'] = results;
 
-    next()
+    next();
   }
 }

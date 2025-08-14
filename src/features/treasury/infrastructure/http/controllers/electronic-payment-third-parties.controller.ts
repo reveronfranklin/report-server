@@ -3,18 +3,18 @@ import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import blobStream from 'blob-stream';
 
 import { ExternalServiceException } from '@exceptions/external-service.exception';
-import { DebitNoteThirdPartiesService } from '../../../application/services/debit-note-third-parties.service';
+import { ElectronicPaymentThirdPartiesService } from '../../../application/services/electronic-payment-third-parties.service';
 import { ReportQueryApiDto  } from '../../api-clients/dtos/report-query-api.dto';
 import { ReportQueryMapper  } from '../../api-clients/mappers/report-query.mapper';
 
-@ApiTags('debit-note-third-parties')
-@Controller('debit-note-third-parties')
+@ApiTags('electronic-payment-third-parties')
+@Controller('electronic-payment-third-parties')
 
-export class DebitNoteThirdPartiesController {
-  constructor(private debitNoteThirdPartiesService: DebitNoteThirdPartiesService) {}
+export class ElectronicPaymentThirdPartiesController {
+  constructor(private electronicPaymentThirdPartiesService: ElectronicPaymentThirdPartiesService) {}
 
   @Post('/pdf/report')
-  @ApiOperation({ summary: 'Generate a PDF report for a Debit note to third parties' })
+  @ApiOperation({ summary: 'Generate a PDF report for a batches' })
   @ApiResponse({ status: 200, description: 'Report generated successfully' })
   @ApiResponse({ status: 400, description: 'Bad request' })
   @Header('Content-Type', 'application/pdf')
@@ -24,7 +24,7 @@ export class DebitNoteThirdPartiesController {
     try {
       const reportQueryDto  = ReportQueryMapper.toApplicationDto(reportQueryApiDto)
       const stream          = blobStream()
-      const pdfDocument     = await this.debitNoteThirdPartiesService.generateReport(reportQueryDto)
+      const pdfDocument     = await this.electronicPaymentThirdPartiesService.generateReport(reportQueryDto)
 
       pdfDocument.pipe(stream)
       pdfDocument.end()
@@ -41,7 +41,7 @@ export class DebitNoteThirdPartiesController {
       return new StreamableFile(buffer)
     } catch (error) {
       console.error('Error generating report:', error)
-      throw new ExternalServiceException(`Error generating report DebitNoteThirdPartiesController -> ${error.message}`)
+      throw new ExternalServiceException(`Error generating report ElectronicPaymentThirdPartiesController -> ${error.message}`)
     }
   }
 }

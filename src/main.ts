@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { Logger } from '@nestjs/common';
 import { ApiResponseInterceptor } from './interceptors/response.interceptor';
+import { GlobalExceptionFilter } from './exceptions/global-exception.filter';
 import { AppModule } from './app.module';
 import configureCors from './config/cors';
 import getServerIp from './config/server';
@@ -25,6 +26,9 @@ async function bootstrap() {
 
     /* Interceptores */
     app.useGlobalInterceptors(new ApiResponseInterceptor())
+
+    /* Filtros de excepciones */
+    app.useGlobalFilters(new GlobalExceptionFilter())
 
     /* Configurar CORS */
     configureCors(app, allowedOrigins, environment)
