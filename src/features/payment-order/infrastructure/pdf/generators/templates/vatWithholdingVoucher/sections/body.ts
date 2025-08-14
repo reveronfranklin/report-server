@@ -15,7 +15,7 @@ const getTableWithholding = (withHolding: any): TableCell[][] => {
 
     const data: TableCell[] = [
       {
-        text: `${row.operationNumber ?? ''}`,
+        text: `${row?.operationNumber ?? ''}`,
         style: 'descriptionBodyText'
       },
       {
@@ -23,7 +23,7 @@ const getTableWithholding = (withHolding: any): TableCell[][] => {
         style: 'descriptionBodyText'
       },
       {
-        text: `${row?.invoiceNumber ?? ''}`,
+        text: `${row?.invoiceNumber ? row.invoiceNumber.trim() : ''}`,
         style: 'descriptionBodyText'
       },
       {
@@ -31,19 +31,19 @@ const getTableWithholding = (withHolding: any): TableCell[][] => {
         style: 'descriptionBodyText'
       },
       {
-        text: `${row?.debitNoteNumber ?? ''}`,
+        text: `${row?.debitNoteNumber ? row.debitNoteNumber.trim() : ''}`,
         style: 'descriptionBodyText'
       },
       {
-        text: `${row?.creditNoteNumber ?? ''}`,
+        text: `${row?.creditNoteNumber ? row.creditNoteNumber.trim() : ''}`,
         style: 'descriptionBodyText'
       },
       {
-        text: `${row?.transactionType ?? ''}`,
+        text: `${row?.transactionType ? row.transactionType.trim() : ''}`,
         style: 'descriptionBodyText'
       },
       {
-        text: `${row?.affectedInvoiceNumber ?? ''}`,
+        text: `${row?.affectedInvoiceNumber ? row.affectedInvoiceNumber.trim() : ''}`,
         style: 'descriptionBodyText'
       },
       {
@@ -87,8 +87,8 @@ export const bodySection = (options: HeaderOptions): Content => {
     style: 'body',
     table: {
       headerRows: 1,
-      widths: [20, '*', '*', '*', '*', '*', '*', '*',  '*', '*', '*', 30, '*', '*'],
-      heights: [25],
+      widths: [20, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48],
+      heights: [30],
       body: [
         [
           {

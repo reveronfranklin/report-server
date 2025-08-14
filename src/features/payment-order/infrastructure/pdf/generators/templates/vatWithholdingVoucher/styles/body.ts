@@ -4,10 +4,9 @@ export const bodyStyles: StyleDictionary = {
   body: {
     alignment: 'center',
     margin: [0, 0, 0, 0],
-    fontSize: 7
+    fontSize: 6.5
   },
   titleBody: {
-    fontSize: 8,
     bold: true,
     margin: [0, 10]
   },
