@@ -64,7 +64,7 @@ export class IncomeTaxWithholdingVoucherPdf implements IPdfGenerator {
     return {
       pageSize: 'LETTER',
       pageOrientation: 'landscape',
-      pageMargins: [20, 280, 60, 100],
+      pageMargins: [15, 280, 40, 100],
       styles: styles,
       watermark: watermark,
       header: {
