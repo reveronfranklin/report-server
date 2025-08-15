@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { SequelizeModuleOptions } from '@nestjs/sequelize';
+import { Dialect } from 'sequelize';
 
 @Injectable()
 export class DatabaseSequelizeConfigService {
@@ -11,7 +12,7 @@ export class DatabaseSequelizeConfigService {
     const logging = (config.logging == 'true')
 
     const sequelizeOptions: SequelizeModuleOptions = {
-      dialect: config.connection,
+      dialect: config.connection as Dialect,
       host: config.host,
       port: config.port,
       username: config.username,
