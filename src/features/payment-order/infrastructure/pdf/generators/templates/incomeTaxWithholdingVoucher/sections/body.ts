@@ -63,7 +63,7 @@ export const bodySection = (options: HeaderOptions): Content => {
     style: 'body',
     table: {
       headerRows: 1,
-      widths: [60, 55, '*', 60, 60, 40, 60, 50],
+      widths: [60, 50, '*', 62, 62, 62, 62, 52],
       heights: [25, 25, 25],
       body: [
         [
