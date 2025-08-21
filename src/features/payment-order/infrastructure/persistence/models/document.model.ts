@@ -45,6 +45,12 @@ export class DocumentModel extends Model<DocumentModel> implements IDocument {
 
   /* Foreing Keys */
 
+  @Column({
+    field: 'NUMERO_COMPROBANTE',
+    type: DataType.INTEGER,
+    allowNull: true
+  })
+  voucherNumber!: number | null;
 
   @Column({
     field: 'NUMERO_DOCUMENTO_AFECTADO'

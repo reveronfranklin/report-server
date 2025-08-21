@@ -19,6 +19,7 @@ export class DocumentEntity implements IDocument {
     public taxTypeId: string,
     public transactionTypeId: string,
     public withheldAmount: number,
+    public voucherNumber: number | null,
 
     /* Relations */
     public taxDocument?: TaxDocumentEntity,

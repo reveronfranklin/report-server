@@ -14,4 +14,5 @@ export interface IDocument {
   taxTypeId: string;
   transactionTypeId: string;
   withheldAmount: number;
+  voucherNumber: number | null;
 }
