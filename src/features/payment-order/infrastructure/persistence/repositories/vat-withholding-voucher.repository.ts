@@ -60,7 +60,8 @@ export class VatWithholdingVoucherRepository implements IVatWithholdingVoucherRe
             'exemptTaxAmount',
             'taxableBase',
             'taxAmount',
-            'withheldAmount'
+            'withheldAmount',
+            'voucherNumber'
           ],
           required: false,
           include: [
