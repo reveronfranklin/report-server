@@ -1,6 +1,6 @@
 import type { Content } from 'pdfmake/interfaces';
 
-const getFooter = (currentPage: number, pageCount: number): Content => {
+const getFooter = (currentPage: number, pageCount: number, type: string = null): Content => {
   const contentPdf: Content = {
     style: 'footer',
     table: {
@@ -10,7 +10,7 @@ const getFooter = (currentPage: number, pageCount: number): Content => {
       body: [
         [
           {
-            text: 'PRESIDENTE (A)',
+            text: `${ !type ? 'PRESIDENTE (A)' : type }`,
             style: 'footerSignature',
             border: [false, true, false, false]
           },
