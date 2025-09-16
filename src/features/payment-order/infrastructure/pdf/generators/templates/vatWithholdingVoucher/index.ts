@@ -79,7 +79,7 @@ export class VatWithholdingVoucherPdf implements IPdfGenerator {
       },
       content: bodyContent,
       footer: (currentPage: number, pageCount: number) => {
-        const footerContent: Content = getFooter(currentPage, pageCount)
+        const footerContent: Content = getFooter(currentPage, pageCount, 'BENEFICIARIO (A)')
         return footerContent
       }
     }
