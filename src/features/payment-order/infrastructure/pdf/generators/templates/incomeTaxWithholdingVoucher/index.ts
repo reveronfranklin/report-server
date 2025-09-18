@@ -79,7 +79,7 @@ export class IncomeTaxWithholdingVoucherPdf implements IPdfGenerator {
       },
       content: bodyContent,
       footer: (currentPage, pageCount) => {
-        const footerContent: Content = getFooter(currentPage, pageCount)
+        const footerContent: Content = getFooter(currentPage, pageCount, 'BENEFICIARIO (A)')
         return footerContent
       }
     }
