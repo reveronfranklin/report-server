@@ -36,12 +36,12 @@ export class VatWithholdingVoucherMapper {
   }
 
   private static mapToReportSubHeader(order: PaymentOrderEntity): ReportSubHeaderDto {
-    const supplier  = order?.supplier ?? null
-    const document  = order?.documents[0] ?? null
+    const supplier      = order?.supplier ?? null
+    const voucherNumber = order?.receiptNumber ?? null
 
     return {
       date: formatDate(order.insertionDate),
-      voucherNumber: document.voucherNumber,
+      voucherNumber: voucherNumber,
       nameWithholdingAgent:  order.withholdingAgentName,
       withholdingAgentRif: formatRIF(order.withholdingAgentRIF),
       withholdingAgentAddress: order.withholdingAgentAddress,
