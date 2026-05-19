@@ -1,6 +1,6 @@
 export interface IDetail {
-  payrollPeriodDate: Date;
-  payrollIssueDate: Date;
+  payrollPeriodDate: string | null;
+  payrollIssueDate:  string | null;
   periodCode: number;
   payrollTypeCode: number;
   officeCode: string;
@@ -22,7 +22,7 @@ export interface IDetail {
   status: string;
   statusDescription: string;
   personCode: number;
-  hireDate: Date;
+  hireDate: string | null;
   jobCode: string;
   bank: string;
   conceptCode: number;

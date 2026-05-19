@@ -2,8 +2,8 @@ import { IDetail } from '../interfaces/detail.interface';
 
 export class DetailEntity implements IDetail {
   constructor(
-    public payrollPeriodDate: Date,
-    public payrollIssueDate: Date,
+    public payrollPeriodDate: string | null,
+    public payrollIssueDate: string | null,
     public periodCode: number,
     public payrollTypeCode: number,
     public officeCode: string,
@@ -25,7 +25,7 @@ export class DetailEntity implements IDetail {
     public status: string,
     public statusDescription: string,
     public personCode: number,
-    public hireDate: Date,
+    public hireDate: string | null,
     public jobCode: string,
     public bank: string,
     public conceptCode: number,
