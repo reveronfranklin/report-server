@@ -1,6 +1,5 @@
 /* Dependencies */
 import { Module } from '@nestjs/common';
-import { HttpModule } from '@nestjs/axios';
 import { SharedModule } from '@shared/shared.module';
 
 /* Services */
@@ -26,8 +25,7 @@ import { PdfGeneratorFactory } from './infrastructure/pdf/pdf-generator.factory'
 
 @Module({
   imports: [
-    SharedModule,
-    HttpModule
+    SharedModule
   ],
   controllers: [
     DebitNoteThirdPartiesController,

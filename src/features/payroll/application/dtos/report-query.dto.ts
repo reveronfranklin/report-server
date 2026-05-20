@@ -1,7 +1,9 @@
 import { IsNumber, IsPositive, IsString, IsNotEmpty, IsOptional, IsDateString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
+import { IPayrollFilter } from '../../domain/interfaces/payroll-filter.interface';
 
-export class ReportQueryDto {
+export class ReportQueryDto implements IPayrollFilter {
   @ApiProperty({
     description: 'Código del tipo de nómina (ej. Quincenal, Mensual)',
     example: 21,
@@ -47,7 +49,8 @@ export class ReportQueryDto {
     example: 'V12345678',
     required: false,
   })
+  @Transform(({ value }) => value ?? null)
   @IsString()
   @IsOptional()
-  idCard?: string;
+  idCard?: string | null;
 }

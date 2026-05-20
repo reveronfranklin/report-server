@@ -1,12 +1,11 @@
 /* Dependencies */
 import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { HttpModule } from '@nestjs/axios';
 
 /* Middlewares */
 import { AuthPort } from './middleware/ports/auth.port';
 import { AuthAdapter } from './middleware/adapters/auth.adapter';
-import { AuthMidleware } from './middleware/auth-middleware';
+import { AuthMiddleware } from './middleware/auth-middleware';
 
 /* Config */
 import { configLoader } from '@config/config-loader';
@@ -28,7 +27,6 @@ import { PayrollModule } from './features/payroll/payroll.module';
       validationSchema: envSchema
     }),
     SharedModule,
-    HttpModule,
     PaymentOrderModule,
     TreasuryModule,
     PayrollModule
@@ -43,7 +41,7 @@ import { PayrollModule } from './features/payroll/payroll.module';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(AuthMidleware)
+      .apply(AuthMiddleware)
       .forRoutes({ path: '*', method: RequestMethod.POST });
   }
 }

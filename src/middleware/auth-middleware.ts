@@ -7,7 +7,7 @@ import { RefreshToken } from './interfaces';
 
 @Injectable()
 @UseInterceptors(ApiResponseInterceptor)
-export class AuthMidleware implements NestMiddleware {
+export class AuthMiddleware implements NestMiddleware {
   constructor(private readonly authService: AuthPort) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
