@@ -15,6 +15,8 @@ import { PayrollReportEntity } from '../../../domain/entities/payroll-report.ent
 import { ReportQueryDto } from '../dtos/report-query-api.dto';
 import { IExternalPayrollData } from '../interfaces/payroll-external-response.interface';
 import { OriginGeneralPayrollDataMapper } from '../mappers/origin-general-payroll-data.mapper';
+import { GeneralPayrollReportMapper } from '../mappers/general-payroll-report.mapper';
+import { ReportSchemeDto } from '../../../application/dtos/generalPayrollReport/report-scheme.dto';
 
 @Injectable()
 export class PayrollReportAdapter implements IPayrollReportRepository {
@@ -52,19 +54,18 @@ export class PayrollReportAdapter implements IPayrollReportRepository {
     }
   }
 
-  async getPayrollReport(filter: IPayrollFilter): Promise<PayrollReportEntity | null> {
+  async getPayrollReport(filter: IPayrollFilter): Promise<ReportSchemeDto | null> {
     try {
       const dtoInstance = plainToInstance(ReportQueryDto, filter)
       const payload     = instanceToPlain(dtoInstance)
 
       const result = await this.fetchPayrollData(payload)
 
-      if (!result) {
+      if (result) {
+        return GeneralPayrollReportMapper.toReportSchemeDto(result)
+      } else {
         throw new NotFoundException(`No payroll report found for the given filters`)
       }
-
-      return result
-
     } catch (error: any) {
       console.error('Error getPayrollReport:', error)
 

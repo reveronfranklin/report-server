@@ -27,22 +27,15 @@ export class GeneralPayrollReportService {
       )
     }
 
-    const payrollReportData = await this.payrollReportRepository.getPayrollReport(filter)
+    const payrollReportData: ReportSchemeDto | null = await this.payrollReportRepository.getPayrollReport(filter)
 
     if (!payrollReportData) {
       throw new NotFoundException('General Payroll Report not found with the provided filters')
     }
 
     try {
-      const reportScheme: ReportSchemeDto = {
-        name: 'General Payroll Report',
-        header: payrollReportData.general,
-        body: payrollReportData.details,
-        footer: payrollReportData.signatures
-      }
-
       const pdfGenerator           = this.pdfGeneratorFactory.getGenerator('payrollReports')
-      const pdfDocumentDefinitions = await pdfGenerator.createDocumentDefinitions(reportScheme)
+      const pdfDocumentDefinitions = await pdfGenerator.createDocumentDefinitions(payrollReportData)
       const pdfDocument            = await pdfGenerator.generatePdf(pdfDocumentDefinitions)
 
       return pdfDocument;
