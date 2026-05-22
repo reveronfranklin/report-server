@@ -54,8 +54,8 @@ async function bootstrap() {
     /* Logs */
     logger.log(`Servidor ejecutándose en el puerto ${port}`)
     logger.log(`Aplicación disponible en: ${serverUrl}`)
-  } catch (error) {
-    logger.error(`Error al iniciar la aplicación: ${error.message}`, error.stack)
+  } catch (error: any) {
+    logger.error(`Error al iniciar la aplicación: ${error?.message}`, error?.stack)
     process.exit(1)
   }
 }

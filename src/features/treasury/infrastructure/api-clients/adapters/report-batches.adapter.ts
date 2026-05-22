@@ -42,9 +42,9 @@ export class ReportBatchesAdapter implements IReportBatchesRepository {
       return responseData.data.map((item: IBatchesOriginRaw) =>
         BatchesOriginMapper.toDomainEntity(item)
       )
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fecthBatches:', error)
-      throw new ExternalServiceException(`Error fecthBatches -> ${error.message}`)
+      throw new ExternalServiceException(`Error fecthBatches -> ${error?.message}`)
     }
   }
 
@@ -61,9 +61,9 @@ export class ReportBatchesAdapter implements IReportBatchesRepository {
       } else {
         throw new NotFoundException(`No payment batches found for batchCode: ${batchCode}`)
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error getBatch:', error)
-      throw new ExternalServiceException(`Error getBatch -> ${error.message}`)
+      throw new ExternalServiceException(`Error getBatch -> ${error?.message}`)
     }
   }
 }

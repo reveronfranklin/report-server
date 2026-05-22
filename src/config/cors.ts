@@ -11,8 +11,8 @@ const configureCors = (app: INestApplication, allowedOrigins: string[], environm
   const logger = new Logger('CORS')
   logger.log(`Configurando CORS para el entorno: ${environment}`)
 
-  try {} catch (error) {
-    logger.error(`Error configureCors: ${error.message}`)
+  try {} catch (error: any) {
+    logger.error(`Error configureCors: ${error?.message}`)
   }
 
   const corsOptions: CorsOptions = {

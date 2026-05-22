@@ -5,8 +5,8 @@ import { DatabaseSequelizeConfigService } from './database.service';
 @Module({
   imports: [
     SequelizeModule.forRootAsync({
-      useClass: DatabaseSequelizeConfigService // Usa la clase de configuración
+      useClass: DatabaseSequelizeConfigService
     })
-  ],
+  ]
 })
 export class DatabaseModule {}

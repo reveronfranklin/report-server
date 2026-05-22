@@ -42,9 +42,9 @@ export class DebitNoteThirdPartiesAdapter implements IDebitNoteThirdPartiesRepos
       return responseData.data.map((item: IPaymentBatchOriginRaw) =>
         PaymentBatchOriginMapper.toDomainEntity(item)
       )
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fecthPaymentBatches:', error)
-      throw new ExternalServiceException(`Error fecthPaymentBatches -> ${error.message}`)
+      throw new ExternalServiceException(`Error fecthPaymentBatches -> ${error?.message}`)
     }
   }
 
@@ -62,9 +62,9 @@ export class DebitNoteThirdPartiesAdapter implements IDebitNoteThirdPartiesRepos
       } else {
         throw new NotFoundException(`No payment batches found for batchCode: ${codigoLotePago}`)
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error getPaymentBatches:', error)
-      throw new ExternalServiceException(`Error getPaymentBatches -> ${error.message}`)
+      throw new ExternalServiceException(`Error getPaymentBatches -> ${error?.message}`)
     }
   }
 
@@ -82,9 +82,9 @@ export class DebitNoteThirdPartiesAdapter implements IDebitNoteThirdPartiesRepos
       } else {
         throw new NotFoundException(`No specific payment batch found for batchCode: ${codigoLotePago} and paymentCode ${codigoPago}`)
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error getPaymentBatchByPaymentCode:', error)
-      throw new ExternalServiceException(`Error getPaymentBatchByPaymentCode -> ${error.message}`)
+      throw new ExternalServiceException(`Error getPaymentBatchByPaymentCode -> ${error?.message}`)
     }
   }
 }
