@@ -1,18 +1,16 @@
 import { IGeneral } from '../interfaces/general.interface';
 
 export class GeneralEntity implements IGeneral {
-  constructor(
-    public conceptType: string,
-    public conceptNumber: string,
-    public conceptDenomination: string,
-    public assignment: number,
-    public deduction: number,
-    public visibleAmount: number,
-    public amount: number,
-    public deductible: number,
+  public conceptType: string         = null;
+  public conceptNumber: string       = null;
+  public conceptDenomination: string = null;
+  public assignment: number          = null;
+  public deduction: number           = null;
+  public visibleAmount: number       = null;
+  public amount: number              = null;
+  public deductible: number          = null;
 
-    /* Relations */
-    // Añade aquí tus relaciones si las tiene en un futuro, ej:
-    // public detail?: DetailEntity
-  ) {}
+  constructor(data: IGeneral) {
+    Object.assign(this, data);
+  }
 }

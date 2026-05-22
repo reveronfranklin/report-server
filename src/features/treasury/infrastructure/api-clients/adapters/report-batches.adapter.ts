@@ -9,7 +9,7 @@ import { ExternalServiceException } from '@exceptions/external-service.exception
 import { IResponse } from '@interceptors/response.interface';
 import { ElectronicPaymentsMapper } from '../mappers/electronic-payments/electronic-payments.mapper';
 import { BatchesOriginMapper } from '../mappers/electronic-payments/batches-origin.mapper';
-import { IBatchesOriginRaw } from '../mappers/interfaces/batches-origin-raw.interface';
+import { IBatchesOriginRaw } from '../interfaces/batches-origin-raw.interface';
 import { IReportBatchesRepository } from '../../../domain/ports/report-batches.repository';
 import { PaymentBatchEntity } from '../../../domain/entities/payment-batches.entity';
 import { ReportSchemeDto } from '../../../application/dtos/debitNoteThirdParties/report-scheme.dto';

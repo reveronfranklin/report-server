@@ -2,7 +2,7 @@ import { IsString, IsNotEmpty, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ReportHeaderDto } from './report-header.dto';
 import { ReportBodyDto } from './report-body.dto';
-import { ReportFooterDto } from './report-footer.dto'; // <-- Importamos el nuevo footer
+import { ReportFooterDto } from './report-footer.dto';
 
 export class ReportSchemeDto {
   @IsString()
@@ -11,13 +11,13 @@ export class ReportSchemeDto {
 
   @ValidateNested()
   @Type(() => ReportHeaderDto)
-  header: ReportHeaderDto[]; // Representa tu IGeneral
+  header: ReportHeaderDto[];
 
   @ValidateNested()
   @Type(() => ReportBodyDto)
-  body: ReportBodyDto[];     // Representa tu IDetail
+  body: ReportBodyDto[];
 
   @ValidateNested()
   @Type(() => ReportFooterDto)
-  footer: ReportFooterDto[]; // Representa tu ISignature (dinámico)
+  footer: ReportFooterDto[];
 }

@@ -4,7 +4,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class ReportQueryDto {
   @ApiProperty({ example: 21 })
-  @Expose({ name: 'p_tipo_nomina' }) // 🔥 Mapea la propiedad de salida
+  @Expose({ name: 'p_tipo_nomina' })
   @IsNumber()
   @IsPositive()
   payrollType: number;
@@ -35,7 +35,6 @@ export class ReportQueryDto {
 
   @ApiProperty({ example: 'V12345678', required: false })
   @Expose({ name: 'p_cedula' })
-  // 🔥 Si el valor viene vacío o undefined, lo forzamos a ser null
   @Transform(({ value }) => value ?? null)
   @IsString()
   @IsOptional()

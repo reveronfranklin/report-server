@@ -1,5 +1,5 @@
 import { PaymentBatchEntity } from '../../../../domain/entities/payment-batches.entity';
-import { IPaymentBatchOriginRaw } from '../interfaces/payment-batch-origin-raw.interface';
+import { IPaymentBatchOriginRaw } from '../../interfaces/payment-batch-origin-raw.interface';
 
 export class PaymentBatchOriginMapper {
   public static toDomainEntity(raw: IPaymentBatchOriginRaw): PaymentBatchEntity {

@@ -8,7 +8,7 @@ import { IPdfGeneratorFactory } from '@shared/modules/printer/interfaces/pdf-gen
 
 import { IPayrollReportRepository } from '../../domain/ports/report-payroll.repository';
 import { ReportQueryDto } from '../dtos/report-query.dto';
-import { ReportSchemeDto } from '../dtos/generalPayrollReport/report.scheme.dto';
+import { ReportSchemeDto } from '../dtos/generalPayrollReport/report-scheme.dto';
 
 @Injectable()
 export class GeneralPayrollReportService {

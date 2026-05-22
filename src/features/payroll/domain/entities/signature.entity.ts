@@ -1,15 +1,15 @@
 import { ISignature } from '../interfaces/signature.interface';
 
 export class SignatureEntity implements ISignature {
-  constructor(
-    public office: string,
-    public order: string,
-    public personCode: number,
-    public name: string,
-    public lastName: string,
-    public idCard: string,
-    public jobDescription: string,
+  public office: string         = null;
+  public order: string          = null;
+  public personCode: number     = null;
+  public name: string           = null;
+  public lastName: string       = null;
+  public idCard: string         = null;
+  public jobDescription: string = null;
 
-    /* Relations */
-  ) {}
+  constructor(data: ISignature) {
+    Object.assign(this, data);
+  }
 }
