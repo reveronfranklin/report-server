@@ -12,7 +12,7 @@ import { IResponse } from '@interceptors/response.interface';
 import { IPayrollReportRepository } from '../../../domain/ports/report-payroll.repository';
 import { IPayrollFilter } from '../../../domain/interfaces/payroll-filter.interface';
 import { PayrollReportEntity } from '../../../domain/entities/payroll-report.entity';
-import { ReportQueryDto } from '../dtos/report-query-api.dto';
+import { ReportQueryApiDto } from '../dtos/report-query-api.dto';
 import { IExternalPayrollData } from '../interfaces/payroll-external-response.interface';
 import { OriginGeneralPayrollDataMapper } from '../mappers/origin-general-payroll-data.mapper';
 import { GeneralPayrollReportMapper } from '../mappers/general-payroll-report.mapper';
@@ -31,7 +31,7 @@ export class PayrollReportAdapter implements IPayrollReportRepository {
     try {
       const response = await firstValueFrom(
         this.httpService.post<IResponse<IExternalPayrollData>>(
-          `${this.apiBaseUrl}/ReporteGeneralNominaCompletoGetAll/GetAlll`,
+          `${this.apiBaseUrl}/ReporteGeneralNominaCompletoGetAll/GetAll`,
           payload
         )
       )
@@ -56,7 +56,7 @@ export class PayrollReportAdapter implements IPayrollReportRepository {
 
   async getPayrollReport(filter: IPayrollFilter): Promise<ReportSchemeDto | null> {
     try {
-      const dtoInstance = plainToInstance(ReportQueryDto, filter)
+      const dtoInstance = plainToInstance(ReportQueryApiDto, filter)
       const payload     = instanceToPlain(dtoInstance)
 
       const result = await this.fetchPayrollData(payload)

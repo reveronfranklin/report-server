@@ -34,7 +34,7 @@ export class GeneralPayrollReportService {
     }
 
     try {
-      const pdfGenerator           = this.pdfGeneratorFactory.getGenerator('payrollReports')
+      const pdfGenerator           = this.pdfGeneratorFactory.getGenerator('generalPayrollReports')
       const pdfDocumentDefinitions = await pdfGenerator.createDocumentDefinitions(payrollReportData)
       const pdfDocument            = await pdfGenerator.generatePdf(pdfDocumentDefinitions)
 

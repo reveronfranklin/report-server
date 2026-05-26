@@ -16,8 +16,8 @@ export class PdfGeneratorFactory implements IPdfGeneratorFactory {
     private reportBatchesPdf: ReportBatchesPdf
   ) {
     this.generators = new Map()
-    this.generators.set('debitNoteThridParties', debitNoteThridPartiesPdf)
-    this.generators.set('reportBatches', reportBatchesPdf)
+    this.generators.set('debitNoteThridParties', this.debitNoteThridPartiesPdf)
+    this.generators.set('reportBatches', this.reportBatchesPdf)
   }
 
   getGenerator(type: string): IPdfGenerator {
