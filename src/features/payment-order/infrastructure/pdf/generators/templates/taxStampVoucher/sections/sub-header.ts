@@ -7,7 +7,7 @@ interface HeaderOptions {
 export const subHeaderSection = (options: HeaderOptions): Content => {
   const { subHeader } = options
 
-  const contentPdf: Content = {
+  const contentPdf = {
     style: 'subHeader',
     table: {
       widths: ['*'],
@@ -111,5 +111,5 @@ export const subHeaderSection = (options: HeaderOptions): Content => {
     }
   }
 
-  return contentPdf
+  return contentPdf as unknown as Content
 }

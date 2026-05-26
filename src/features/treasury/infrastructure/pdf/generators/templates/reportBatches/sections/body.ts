@@ -21,7 +21,7 @@ const getBodySection = (options: ReportBodyDto, isThirdParties: boolean): Conten
     : {}
   )
 
-  const contentBody: Content = {
+  const contentBody = {
     style: 'body',
     table: {
       widths: ['72%', '12%', '16%'],
@@ -137,7 +137,7 @@ const getBodySection = (options: ReportBodyDto, isThirdParties: boolean): Conten
     }
   }
 
-  return contentBody
+  return contentBody as unknown as Content
 }
 
 export default getBodySection;

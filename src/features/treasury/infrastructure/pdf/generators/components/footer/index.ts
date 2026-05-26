@@ -8,7 +8,7 @@ const getFooter = (currentPage: number, pageCount: number): Content => {
   const thrirdRowBorder = [false, false]
   const fourthRowBorder = [false, false]
 
-  const contentFooter: Content = {
+  const contentFooter = {
     style: 'footer',
     table: {
       headerRows: 1,
@@ -83,7 +83,7 @@ const getFooter = (currentPage: number, pageCount: number): Content => {
     }
   }
 
-  return contentFooter
+  return contentFooter as unknown as Content
 }
 
 export default getFooter

@@ -1,7 +1,7 @@
 import type { Content } from 'pdfmake/interfaces';
 
 export const footerSection = (currentPage: number, pageCount: number): Content => {
-  const contentPdf: Content = {
+  const contentPdf = {
     style: 'footer',
     table: {
       headerRows: 1,
@@ -96,5 +96,5 @@ export const footerSection = (currentPage: number, pageCount: number): Content =
     }
   }
 
-  return contentPdf
+  return contentPdf as unknown as Content
 }

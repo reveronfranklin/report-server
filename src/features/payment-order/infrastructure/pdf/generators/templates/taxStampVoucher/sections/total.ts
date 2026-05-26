@@ -12,7 +12,7 @@ export const bodyTotalSection = (options: HeaderOptions): Content => {
   const { totalGrossAmount, totalAmountVat, totalNetTaxableIncome, withholdingPercentage } = options.body
   const { countWithHolding } = options;
 
-  const contentPdf: Content = {
+  const contentPdf = {
     style: 'total',
     table: {
       headerRows: (countWithHolding > 7 ? 1 : 0),
@@ -168,5 +168,5 @@ export const bodyTotalSection = (options: HeaderOptions): Content => {
     }
   }
 
-  return contentPdf
+  return contentPdf as unknown as Content
 }

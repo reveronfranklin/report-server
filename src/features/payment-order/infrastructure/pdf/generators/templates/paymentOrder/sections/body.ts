@@ -57,15 +57,15 @@ const getTableWithholdings = (body: HeaderOptions['body']): TableCell[][] => {
 }
 
 const getTableFunds = (funds: HeaderOptions['body']): TableCell[][] => {
-  const tableBody: TableCell[][] = []
+  const tableBody: any[][] = []
   const countRow: number = (funds.length < numberOfRowForTableFunds) ? numberOfRowForTableFunds : funds.length
 
   for (let i = 0; i < countRow; i++) {
     const row = funds[i] || {}
     const drawBottomBorder: boolean = ((i + 1) % 20 === 0);
-    const borderMargins = [true, false, true, drawBottomBorder]
+    const borderMargins = [true, false, true, drawBottomBorder] as [boolean, boolean, boolean, boolean]
 
-    const data: TableCell[] = [
+    const data: any[] = [
       {
         text: row.year?.toString() || '',
         style: 'tableBody',
@@ -103,7 +103,7 @@ const getTableFunds = (funds: HeaderOptions['body']): TableCell[][] => {
         colSpan: 2,
         text: row.amount ? formatPrice(row.amount, 'VES') : '',
         style: 'tableBodyAmount',
-        border: [...borderMargins, true, false]
+        border: borderMargins
       },
       {}
     ]
@@ -111,7 +111,7 @@ const getTableFunds = (funds: HeaderOptions['body']): TableCell[][] => {
     tableBody.push(data)
   }
 
-  return tableBody
+  return tableBody as TableCell[][]
 }
 
 const generateHeightTable = (quantity: number): number[] => {
@@ -133,7 +133,7 @@ export const bodySection = (options: HeaderOptions): Content => {
   const tableWithholdings = getTableWithholdings(body)
   const heightFunds       = generateHeightTable(tableFunds.length)
 
-  const contentPdf: Content = {
+  const contentPdf = {
     style: 'body',
     table: {
       headerRows: 2,
@@ -291,5 +291,5 @@ export const bodySection = (options: HeaderOptions): Content => {
     }
   }
 
-  return contentPdf
+  return contentPdf as unknown as Content
 }

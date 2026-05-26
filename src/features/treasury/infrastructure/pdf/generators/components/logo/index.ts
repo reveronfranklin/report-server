@@ -1,7 +1,7 @@
 import type { Content } from 'pdfmake/interfaces';
 
 const getLogoSection = (): Content => {
-  const logo: Content = {
+  const logo = {
     image: 'src/assets/logoLeft.jpeg',
     width: 120,
     height: 60,
@@ -10,7 +10,7 @@ const getLogoSection = (): Content => {
     margin: [4, 4, 10, 0]
   }
 
-  return logo
+  return logo as unknown as Content
 }
 
 export default getLogoSection
