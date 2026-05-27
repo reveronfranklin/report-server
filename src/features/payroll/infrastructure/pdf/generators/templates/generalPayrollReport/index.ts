@@ -40,9 +40,23 @@ export class GeneralPayrollReportPdf implements IPdfGenerator {
 
     const { header: headers, body: bodies, footer: footers } = reportSchemeData
 
-    const allDocumentContent: Content[] = [];
+    console.log('headers', bodies)
 
-    allDocumentContent.push(getDynamicHeaderSection(headers));
+    const allDocumentContent: Content[] = []
+
+    const staticHeaderContent: Content  = getDynamicHeaderSection(headers)
+    const payrollBodyContent: Content   = getBodySection(bodies)
+
+    allDocumentContent.push(staticHeaderContent)
+    allDocumentContent.push(payrollBodyContent)
+
+    // =========================================================================
+    // ✍️ 3. PÁGINA FINAL: SECCIÓN DE FIRMAS Y REVISIÓN
+    // Se añade inmediatamente después del cierre de totales de la última oficina.
+    // Si necesitas que las firmas nazcan obligatoriamente en una página limpia,
+    // puedes meterle un pageBreak al contenedor de las firmas.
+    // =========================================================================
+/*     allDocumentContent.push(getFooterSignatures(footers)); */
 
     return {
       pageSize: 'LETTER',

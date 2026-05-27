@@ -2,6 +2,8 @@
 import moment from 'moment-timezone';
 
 /* Functions */
+const castRowSpans = (count: number) => Array(count).fill({})
+
 const calculateTaxableIncome = (taxBase: number, totalGrossAmount: number, totalTaxExempt: number, totalAmountVat: number): number => {
   if (taxBase !== 0) {
     return taxBase
@@ -120,5 +122,6 @@ export {
   getCurrentDate,
   isValidDate,
   rpad,
-  twoDigitFormatDate
+  twoDigitFormatDate,
+  castRowSpans
 }

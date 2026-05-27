@@ -1,8 +1,9 @@
 import type { Content, TableCell } from 'pdfmake/interfaces';
 import { ReportHeaderDto } from '../../../../../../application/dtos/generalPayrollReport/report-header.dto';
+import { getCleanTableLayout } from '../../../components/layout/clean-table.layout';
 
 /* Utils */
-import { formatPrice } from '@shared/utils';
+import { formatPrice, castRowSpans } from '@shared/utils';
 
 const noHorizontalBorders = [false, false, false, false];
 
@@ -10,15 +11,15 @@ const buildConceptRows = (concepts: ReportHeaderDto[]): TableCell[][] => {
   return concepts.map((item): TableCell[] => [
     { text: item.conceptNumber ?? '', colSpan: 1, style: 'firstColumn', border: noHorizontalBorders },
     { text: item.conceptDenomination ?? '', colSpan: 3, style: 'description', border: noHorizontalBorders },
-    {}, {} as TableCell,
+    ...castRowSpans(2),
     { text: '', colSpan: 2, border: noHorizontalBorders },
-    {} as TableCell,
+    ...castRowSpans(1),
     { text: formatPrice(item.assignment), colSpan: 2, style: 'descriptionVariant', border: noHorizontalBorders },
-    {} as TableCell,
+    ...castRowSpans(1),
     { text: formatPrice(item.deduction), colSpan: 2, style: 'descriptionVariant', border: noHorizontalBorders },
-    {} as TableCell,
+    ...castRowSpans(1),
     { text: formatPrice(item.visibleAmount), colSpan: 2, style: 'descriptionVariant', border: noHorizontalBorders },
-    {} as TableCell
+    ...castRowSpans(1)
   ])
 }
 
@@ -36,15 +37,15 @@ const buildTotalRows = (
     [
       { text: '', colSpan: 1 },
       { text: '', colSpan: 3 },
-      {}, {},
+      ...castRowSpans(2),
       { text: '', colSpan: 2 },
-      {},
+      ...castRowSpans(1),
       { text: formatPrice(totalAssignments), colSpan: 2, style: 'descriptionVariant' },
-      {},
+      ...castRowSpans(1),
       { text: formatPrice(totalDeductions), colSpan: 2, style: 'descriptionVariant' },
-      {},
+      ...castRowSpans(1),
       { text: formatPrice(totalGeneral), colSpan: 2, style: 'descriptionVariant' },
-      {}
+      ...castRowSpans(1)
     ],
 
     // ------------------------------------------------------------------
@@ -53,13 +54,13 @@ const buildTotalRows = (
     [
       { text: '', colSpan: 1 },
       { text: 'Deducible', colSpan: 5, style: 'subTitle' },
-      {}, {}, {}, {},
+      ...castRowSpans(4),
       { text: formatPrice(deductibleAmount), colSpan: 2, style: 'descriptionVariant' },
-      {},
+      ...castRowSpans(1),
       { text: '0,00', colSpan: 2, style: 'descriptionVariant' },
-      {},
+      ...castRowSpans(1),
       { text: '', colSpan: 2 },
-      {}
+      ...castRowSpans(1)
     ],
 
     // ------------------------------------------------------------------
@@ -68,13 +69,13 @@ const buildTotalRows = (
     [
       { text: '', colSpan: 1 },
       { text: 'Total Asignaciones', colSpan: 5, style: 'subTitle' },
-      {}, {}, {}, {},
+      ...castRowSpans(4),
       { text: formatPrice(netPayable), colSpan: 2, style: 'descriptionVariant' },
-      {},
+      ...castRowSpans(1),
       { text: formatPrice(totalDeductions), colSpan: 2, style: 'descriptionVariant' },
-      {},
+      ...castRowSpans(1),
       { text: '', colSpan: 2 },
-      {}
+      ...castRowSpans(1)
     ]
   ]
 }
@@ -83,15 +84,15 @@ const getDynamicHeaderSection = (options: ReportHeaderDto[]): Content => {
   const headerRow: TableCell[] = [
     { text: 'Nº', colSpan: 1, style: 'titleFirstColumn' },
     { text: 'CONCEPTO', colSpan: 3, style: 'title' },
-    {}, {},
+    ...castRowSpans(2),
     { text: null, colSpan: 2, style: 'title' },
-    {},
+    ...castRowSpans(1),
     { text: 'ASIGNACIONES', colSpan: 2, style: 'titleVariant' },
-    {},
+    ...castRowSpans(1),
     { text: 'DEDUCCIONES', colSpan: 2, style: 'titleVariant' },
-    {},
+    ...castRowSpans(1),
     { text: 'GENERAL', colSpan: 2, style: 'titleVariant' },
-    {}
+    ...castRowSpans(1)
   ]
 
   let totalAssignments = 0
@@ -131,18 +132,10 @@ const getDynamicHeaderSection = (options: ReportHeaderDto[]): Content => {
 
   const contentHeader: Content = {
     style: 'header',
-    layout: {
-      hLineWidth: (i, node) => (i === 0 || i === node.table.headerRows) ? 1 : 0.5,
-      hLineColor: () => '#d3d3d3',
-      vLineWidth: () => 0,
-      paddingTop: (i) => i === 0 ? 1.5 : 4,
-      paddingBottom: (i) => i === 0 ? 1.5 : 4,
-      paddingLeft: () => 5,
-      paddingRight: () => 5,
-    },
+    layout: getCleanTableLayout(),
     table: {
       headerRows: 1,
-      widths: ['*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*'],
+      widths: [...Array(12).fill('*')],
       heights: 'auto',
       body: [
         headerRow,

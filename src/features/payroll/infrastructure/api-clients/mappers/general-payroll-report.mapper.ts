@@ -8,6 +8,8 @@ import { ReportHeaderDto } from '../../../application/dtos/generalPayrollReport/
 import { ReportBodyDto } from '../../../application/dtos/generalPayrollReport/report-body.dto';
 import { ReportFooterDto } from '../../../application/dtos/generalPayrollReport/report-footer.dto';
 
+import groupPayrollByOfficeAndEmployee from './detail-payroll-report.mapper';
+
 export class GeneralPayrollReportMapper {
   public static toReportSchemeDto(reportEntity: PayrollReportEntity): ReportSchemeDto {
     const headers    = [];
@@ -18,8 +20,12 @@ export class GeneralPayrollReportMapper {
       headers.push(this.mapToReportHeader(general))
     }
 
-    for (const detail of reportEntity.details) {
-      bodies.push(this.mapToReportBody(detail))
+    const officeGroups = groupPayrollByOfficeAndEmployee(
+      reportEntity.details.map((detail) => this.mapToReportBody(detail))
+    )
+
+    for (const officeGroup of officeGroups) {
+      bodies.push(officeGroup)
     }
 
     for (const signature of reportEntity.signatures) {

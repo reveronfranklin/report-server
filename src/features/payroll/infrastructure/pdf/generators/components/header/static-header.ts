@@ -1,4 +1,5 @@
 import type { Content } from 'pdfmake/interfaces';
+import { castRowSpans } from '@shared/utils';
 import getLogoSection from '../logo';
 
 const getStaticHeaderSection = (currentPage: number, pageCount: number): Content => {
@@ -17,8 +18,7 @@ const getStaticHeaderSection = (currentPage: number, pageCount: number): Content
               logo
             ]
           },
-          { text: null },
-          { text: null },
+          ...castRowSpans(2),
           {
             text: `Página ${currentPage.toString()} de ${pageCount}`,
             style: 'headerCurrentPage'
@@ -29,9 +29,7 @@ const getStaticHeaderSection = (currentPage: number, pageCount: number): Content
             text: 'REPORTE GENERAL DE NÓMINA',
             style: 'headerText'
           },
-          { text: null },
-          { text: null },
-          { text: null }
+          ...castRowSpans(3)
         ],
         [
           {
@@ -43,8 +41,7 @@ const getStaticHeaderSection = (currentPage: number, pageCount: number): Content
             colSpan: 2,
             style: 'headerTitle'
           },
-          { text: null },
-          { text: null }
+          ...castRowSpans(2)
         ]
       ]
     }
