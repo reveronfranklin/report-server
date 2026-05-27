@@ -36,15 +36,13 @@ const buildTotalRows = (
     // ------------------------------------------------------------------
     [
       { text: '', colSpan: 1 },
-      { text: '', colSpan: 3 },
-      ...castRowSpans(2),
-      { text: '', colSpan: 2 },
+      { text: 'TOTALES:', colSpan: 5, style: 'subTitle' },
+      ...castRowSpans(4),
+      { text: formatPrice(totalAssignments), colSpan: 2, style: 'titleVariant' },
       ...castRowSpans(1),
-      { text: formatPrice(totalAssignments), colSpan: 2, style: 'descriptionVariant' },
+      { text: formatPrice(totalDeductions), colSpan: 2, style: 'titleVariant' },
       ...castRowSpans(1),
-      { text: formatPrice(totalDeductions), colSpan: 2, style: 'descriptionVariant' },
-      ...castRowSpans(1),
-      { text: formatPrice(totalGeneral), colSpan: 2, style: 'descriptionVariant' },
+      { text: formatPrice(totalGeneral), colSpan: 2, style: 'titleVariant' },
       ...castRowSpans(1)
     ],
 
@@ -53,11 +51,11 @@ const buildTotalRows = (
     // ------------------------------------------------------------------
     [
       { text: '', colSpan: 1 },
-      { text: 'Deducible', colSpan: 5, style: 'subTitle' },
+      { text: 'DEDUCIBLE:', colSpan: 5, style: 'subTitle' },
       ...castRowSpans(4),
-      { text: formatPrice(deductibleAmount), colSpan: 2, style: 'descriptionVariant' },
+      { text: formatPrice(deductibleAmount), colSpan: 2, style: 'titleVariant' },
       ...castRowSpans(1),
-      { text: '0,00', colSpan: 2, style: 'descriptionVariant' },
+      { text: '0,00', colSpan: 2, style: 'titleVariant' },
       ...castRowSpans(1),
       { text: '', colSpan: 2 },
       ...castRowSpans(1)
@@ -68,11 +66,11 @@ const buildTotalRows = (
     // ------------------------------------------------------------------
     [
       { text: '', colSpan: 1 },
-      { text: 'Total Asignaciones', colSpan: 5, style: 'subTitle' },
+      { text: 'TOTAL ASIGNACIONES:', colSpan: 5, style: 'subTitle' },
       ...castRowSpans(4),
-      { text: formatPrice(netPayable), colSpan: 2, style: 'descriptionVariant' },
+      { text: formatPrice(netPayable), colSpan: 2, style: 'titleVariant' },
       ...castRowSpans(1),
-      { text: formatPrice(totalDeductions), colSpan: 2, style: 'descriptionVariant' },
+      { text: formatPrice(totalDeductions), colSpan: 2, style: 'titleVariant' },
       ...castRowSpans(1),
       { text: '', colSpan: 2 },
       ...castRowSpans(1)

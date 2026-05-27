@@ -17,6 +17,17 @@ const bodyStyles: StyleDictionary = {
     alignment: 'left',
     fillColor: '#EAEAEA'
   },
+  titleBodyAmount: {
+    fontSize: 12,
+    bold: true,
+    alignment: 'right',
+    fillColor: '#EAEAEA'
+  },
+  titleBodyWithoutFill: {
+    fontSize: 12,
+    bold: true,
+    alignment: 'right',
+  },
   descriptionBody: {
     fontSize: 10,
     bold: false,

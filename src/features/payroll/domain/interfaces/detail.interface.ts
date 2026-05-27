@@ -28,4 +28,5 @@ export interface IDetail {
   conceptCode: number;
   module: string;
   identifierCode: string;
+  salary: number | null;
 }

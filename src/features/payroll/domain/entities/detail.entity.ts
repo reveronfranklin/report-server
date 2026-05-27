@@ -30,6 +30,7 @@ export class DetailEntity implements IDetail {
   public conceptCode: number                   = null;
   public module: string | null                 = null;
   public identifierCode: string | null         = null;
+  public salary: number | null                 = null;
 
   constructor(data: IDetail) {
     Object.assign(this, data);

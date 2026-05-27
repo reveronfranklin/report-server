@@ -1,8 +1,25 @@
-import { OfficeGroup } from '../interfaces/detail-payroll-report.interface';
+import {
+  OfficeGroup,
+  PayrollReportData,
+  PayrollGeneralTotals
+} from '../interfaces/detail-payroll-report.interface';
 import { ReportBodyDto } from '../../../application/dtos/generalPayrollReport/report-body.dto';
 
-const groupPayrollByOfficeAndEmployee = (details: ReportBodyDto[]): OfficeGroup[] => {
-  const officeMap = new Map<string, OfficeGroup>()
+const groupPayrollByOfficeAndEmployee = (
+  details: ReportBodyDto[],
+  payrollName: string = 'NÓMINA GENERAL',
+  payrollPeriod: string = ''
+): PayrollReportData => {
+  const officeMap = new Map<string, OfficeGroup>();
+
+  const generalTotals: PayrollGeneralTotals = {
+    totalGeneralAssignment: 0,
+    totalGeneralDeduction: 0,
+    activeGeneralCount: 0,
+    permissionGeneralCount: 0,
+    sickLeaveGeneralCount: 0,
+    vacationGeneralCount: 0,
+  };
 
   details.forEach((item) => {
     if (!officeMap.has(item.officeCode)) {
@@ -11,12 +28,16 @@ const groupPayrollByOfficeAndEmployee = (details: ReportBodyDto[]): OfficeGroup[
         officeDenomination: item.denomination,
         employees: [],
         totalOfficeAssignment: 0,
-        totalOfficeDeduction: 0
-      })
+        totalOfficeDeduction: 0,
+        activeEmployeesCount: 0,
+        permissionEmployeesCount: 0,
+        sickLeaveEmployeesCount: 0,
+        vacationEmployeesCount: 0,
+      });
     }
 
-    const office = officeMap.get(item.officeCode)!
-    let employee = office.employees.find(e => e.idCard === item.idCard)
+    const office = officeMap.get(item.officeCode)!;
+    let employee = office.employees.find(e => e.idCard === item.idCard);
 
     if (!employee) {
       employee = {
@@ -27,13 +48,32 @@ const groupPayrollByOfficeAndEmployee = (details: ReportBodyDto[]): OfficeGroup[
         hireDate: item.hireDate,
         personCode: item.personCode,
         accountNo: item.accountNo,
-        salary: null,
+        salary: item.salary || null,
+        status: item.status,
+        statusDescription: item.statusDescription,
         concepts: [],
         totalEmployeeAssignment: 0,
         totalEmployeeDeduction: 0
       };
 
-      office.employees.push(employee)
+      office.employees.push(employee);
+
+      const empStatus = item.status?.toUpperCase() || '';
+      const empDesc = item.statusDescription?.toUpperCase() || '';
+
+      if (empStatus === 'A' || empDesc.includes('ACTIVO')) {
+        office.activeEmployeesCount++;
+        generalTotals.activeGeneralCount++;
+      } else if (empStatus === 'P' || empDesc.includes('PERMISO')) {
+        office.permissionEmployeesCount++;
+        generalTotals.permissionGeneralCount++;
+      } else if (empStatus === 'R' || empDesc.includes('REPOSO')) {
+        office.sickLeaveEmployeesCount++;
+        generalTotals.sickLeaveGeneralCount++;
+      } else if (empStatus === 'V' || empDesc.includes('VACACIO')) {
+        office.vacationEmployeesCount++;
+        generalTotals.vacationGeneralCount++;
+      }
     }
 
     employee.concepts.push({
@@ -45,16 +85,27 @@ const groupPayrollByOfficeAndEmployee = (details: ReportBodyDto[]): OfficeGroup[
       assignment: item.assignment || 0,
       deduction: item.deduction || 0,
       generalAmount: null
-    })
+    });
 
-    employee.totalEmployeeAssignment += item.assignment || 0
-    employee.totalEmployeeDeduction  += item.deduction || 0
+    const assignmentAmount = item.assignment || 0;
+    const deductionAmount = item.deduction || 0;
 
-    office.totalOfficeAssignment     += item.assignment || 0
-    office.totalOfficeDeduction      += item.deduction || 0
+    employee.totalEmployeeAssignment += assignmentAmount;
+    employee.totalEmployeeDeduction  += deductionAmount;
+
+    office.totalOfficeAssignment     += assignmentAmount;
+    office.totalOfficeDeduction      += deductionAmount;
+
+    generalTotals.totalGeneralAssignment += assignmentAmount;
+    generalTotals.totalGeneralDeduction  += deductionAmount;
   });
 
-  return Array.from(officeMap.values())
+  return {
+    payrollName,
+    payrollPeriod,
+    officeGroups: Array.from(officeMap.values()),
+    generalTotals
+  }
 }
 
 export default groupPayrollByOfficeAndEmployee;

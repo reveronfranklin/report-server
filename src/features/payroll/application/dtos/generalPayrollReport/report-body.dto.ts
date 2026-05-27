@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString, IsDateString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, IsDateString, IsOptional } from 'class-validator';
 
 export class ReportBodyDto {
   @IsNotEmpty()
@@ -116,4 +116,8 @@ export class ReportBodyDto {
   @IsNotEmpty()
   @IsString()
   identifierCode: string;
+
+  @IsOptional()
+  @IsNumber()
+  salary: number | null;
 }

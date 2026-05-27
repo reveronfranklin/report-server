@@ -2,6 +2,13 @@
 import moment from 'moment-timezone';
 
 /* Functions */
+const moventTypeOptions: { [key: string]: string } = {
+  'E': 'ESPECIAL',
+  /* 'F': 'Fijo', */ // Por definir
+  'A': 'FIJO',
+  'V': 'VARIABLE'
+}
+
 const castRowSpans = (count: number) => Array(count).fill({})
 
 const calculateTaxableIncome = (taxBase: number, totalGrossAmount: number, totalTaxExempt: number, totalAmountVat: number): number => {
@@ -123,5 +130,6 @@ export {
   isValidDate,
   rpad,
   twoDigitFormatDate,
-  castRowSpans
+  castRowSpans,
+  moventTypeOptions
 }

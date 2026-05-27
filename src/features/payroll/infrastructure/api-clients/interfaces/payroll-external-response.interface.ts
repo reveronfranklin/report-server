@@ -60,6 +60,7 @@ export interface IExternalPayrollDetail {
   codigoConcepto: number;
   modulo: string;
   codigoIdentificador: string;
+  salario: number | null;
 }
 
 export interface IExternalSignature {

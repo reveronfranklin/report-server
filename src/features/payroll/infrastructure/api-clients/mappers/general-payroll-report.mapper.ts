@@ -20,7 +20,8 @@ export class GeneralPayrollReportMapper {
       headers.push(this.mapToReportHeader(general))
     }
 
-    const officeGroups = groupPayrollByOfficeAndEmployee(
+    // CORRECCIÓN AQUÍ: Desestructuramos para obtener directamente el array interno
+    const { officeGroups } = groupPayrollByOfficeAndEmployee(
       reportEntity.details.map((detail) => this.mapToReportBody(detail))
     )
 
@@ -85,7 +86,8 @@ export class GeneralPayrollReportMapper {
       bank: detail.bank.trim(),
       conceptCode: detail.conceptCode,
       module: detail.module,
-      identifierCode: detail.identifierCode
+      identifierCode: detail.identifierCode,
+      salary: detail.salary
     }
   }
 

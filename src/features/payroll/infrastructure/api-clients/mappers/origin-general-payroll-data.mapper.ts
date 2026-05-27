@@ -56,7 +56,8 @@ export class OriginGeneralPayrollDataMapper {
       bank: raw.banco,
       conceptCode: raw.codigoConcepto,
       module: raw.modulo || null,
-      identifierCode: raw.codigoIdentificador || null
+      identifierCode: raw.codigoIdentificador || null,
+      salary: raw.salario || null
     })
   }
 

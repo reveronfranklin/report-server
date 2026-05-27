@@ -18,6 +18,8 @@ export interface EmployeeWithConcepts {
   personCode: number;
   accountNo: string;
   salary: number | null;
+  status: string;
+  statusDescription: string;
   concepts: GroupedConcept[];
   totalEmployeeAssignment: number;
   totalEmployeeDeduction: number;
@@ -29,4 +31,24 @@ export interface OfficeGroup {
   employees: EmployeeWithConcepts[];
   totalOfficeAssignment: number;
   totalOfficeDeduction: number;
+  activeEmployeesCount: number;
+  permissionEmployeesCount: number;
+  sickLeaveEmployeesCount: number;
+  vacationEmployeesCount: number;
+}
+
+export interface PayrollGeneralTotals {
+  totalGeneralAssignment: number;
+  totalGeneralDeduction: number;
+  activeGeneralCount: number;
+  permissionGeneralCount: number;
+  sickLeaveGeneralCount: number;
+  vacationGeneralCount: number;
+}
+
+export interface PayrollReportData {
+  payrollName: string;
+  payrollPeriod: string;
+  officeGroups: OfficeGroup[];
+  generalTotals: PayrollGeneralTotals;
 }
