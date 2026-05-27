@@ -4,8 +4,8 @@ const getLogoSection = (): Content => {
   const logo: Content = {
     image: 'src/assets/logoLeft.jpeg',
     alignment: 'left',
-    fit: [130, 70],
-    margin: [4, 4, 10, 0]
+    fit: [60, 40],
+    margin: [0, 0]
   }
 
   return logo

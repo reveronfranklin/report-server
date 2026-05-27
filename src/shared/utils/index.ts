@@ -55,7 +55,7 @@ const formatPercentageRetention = (percentage: number | string): any => {
   return formattedNumber.trim()
 }
 
-const formatPrice = (price: number, currency: string) => {
+const formatPrice = (price: number, currency: string = 'VES') => {
   const formattedPrice = new Intl.NumberFormat('es-ES', {
     style: 'currency',
     currency: currency,
