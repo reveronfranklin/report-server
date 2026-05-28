@@ -40,8 +40,6 @@ export class GeneralPayrollReportPdf implements IPdfGenerator {
 
     const { header: headers, body: bodies, footer: footers } = reportSchemeData
 
-    this.logger.debug(`Processing ${footers?.length || 0} footer signature groups`)
-
     const allDocumentContent: Content[] = []
 
     const dynamicHeaderContent: Content = getDynamicHeaderSection(headers)
