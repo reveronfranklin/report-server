@@ -3,7 +3,11 @@ import { ReportHeaderDto } from '../../../../../../application/dtos/generalPayro
 import { getCleanTableLayout } from '../../../components/layout/clean-table.layout';
 
 /* Utils */
-import { formatPrice, castRowSpans } from '@shared/utils';
+import {
+    formatPrice,
+    castRowSpans,
+    getSmartTableWidths
+} from '@shared/utils';
 
 const noHorizontalBorders = [false, false, false, false];
 
@@ -133,7 +137,11 @@ const getDynamicHeaderSection = (options: ReportHeaderDto[]): Content => {
     layout: getCleanTableLayout(),
     table: {
       headerRows: 1,
-      widths: [...Array(12).fill('*')],
+      widths: getSmartTableWidths({
+        totalColumns: 12,
+        strategy: 'flexible',
+        starColumns: [1]
+      }),
       heights: 'auto',
       body: [
         headerRow,

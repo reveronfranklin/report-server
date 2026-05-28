@@ -3,7 +3,7 @@ import { StyleDictionary } from 'pdfmake/interfaces';
 const headerStyles: StyleDictionary = {
   header: {
     alignment: 'center',
-    margin: [0, 10, 0, 10],
+    margin: [0, 10, 0, 10]
   },
   title: {
     fontSize: 12,

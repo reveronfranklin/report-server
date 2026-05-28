@@ -5,7 +5,8 @@ import { getCleanTableLayout } from '../../../components/layout/clean-table.layo
 import {
   formatPrice,
   castRowSpans,
-  moventTypeOptions
+  moventTypeOptions,
+  getSmartTableWidths
 } from '@shared/utils';
 
 const noHorizontalBorders       = [false, false, false, false];
@@ -186,23 +187,22 @@ const buildOfficeTotalRows = (office: any): TableCell[][] => {
   ]
 }
 
-/* NUEVA FUNCIÓN COMPLEMENTARIA: Mantiene exacta simetría de diseño con buildOfficeTotalRows */
 const buildGeneralTotalRows = (officeGroups: any[]): TableCell[][] => {
-  let totalGeneralAssignment = 0;
-  let totalGeneralDeduction = 0;
-  let activeGeneralCount = 0;
-  let permissionGeneralCount = 0;
-  let sickLeaveGeneralCount = 0;
-  let vacationGeneralCount = 0;
+  let totalGeneralAssignment  = 0
+  let totalGeneralDeduction   = 0
+  let activeGeneralCount      = 0
+  let permissionGeneralCount  = 0
+  let sickLeaveGeneralCount   = 0
+  let vacationGeneralCount    = 0
 
   officeGroups.forEach((office) => {
-    totalGeneralAssignment += office.totalOfficeAssignment || 0;
-    totalGeneralDeduction  += office.totalOfficeDeduction || 0;
-    activeGeneralCount     += office.activeEmployeesCount || 0;
-    permissionGeneralCount += office.permissionEmployeesCount || 0;
-    sickLeaveGeneralCount  += office.sickLeaveEmployeesCount || 0;
-    vacationGeneralCount   += office.vacationEmployeesCount || 0;
-  });
+    totalGeneralAssignment += office.totalOfficeAssignment || 0
+    totalGeneralDeduction  += office.totalOfficeDeduction || 0
+    activeGeneralCount     += office.activeEmployeesCount || 0
+    permissionGeneralCount += office.permissionEmployeesCount || 0
+    sickLeaveGeneralCount  += office.sickLeaveEmployeesCount || 0
+    vacationGeneralCount   += office.vacationEmployeesCount || 0
+  })
 
   const totalGeneralNet = totalGeneralAssignment - totalGeneralDeduction;
 
@@ -313,7 +313,11 @@ const getBodySection = (officeGroups: any[]): Content[] => {
       table: {
         headerRows: 2,
         dontBreakRows: true,
-        widths: [...Array(12).fill('auto')],
+        widths: getSmartTableWidths({
+          totalColumns: 12,
+          strategy: 'flexible',
+          starColumns: [0, 5, 11]
+        }),
         heights: tableOffice.map(row => (row[0] as any)?.text === null ? 10 : 'auto'),
         body: tableOffice
       },
@@ -348,7 +352,11 @@ const getBodySection = (officeGroups: any[]): Content[] => {
       table: {
         headerRows: 1,
         dontBreakRows: true,
-        widths: [...Array(12).fill('*')],
+        widths: getSmartTableWidths({
+          totalColumns: 12,
+          strategy: 'flexible',
+          starColumns: [0, 5, 11]
+        }),
         heights: tableGeneral.map(row => (row[0] as any)?.text === null ? 10 : 'auto'),
         body: tableGeneral
       },

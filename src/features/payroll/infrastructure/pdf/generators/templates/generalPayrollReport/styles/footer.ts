@@ -3,24 +3,28 @@ import { StyleDictionary } from 'pdfmake/interfaces';
 const footerStyles: StyleDictionary = {
   footer: {
     alignment: 'center',
-    margin: [40, 40, 80, 0],
-    fontSize: 8
+    margin: [0, 0, 0, 0]
   },
-  footerSignature: {
+  footerTitle: {
+    fontSize: 12,
     bold: true,
-    alignment: 'center'
+    alignment: 'center',
+    fillColor: '#EAEAEA'
+  },
+  footerTitleVariant: {
+    fontSize: 12,
+    bold: true,
+    alignment: 'left',
   },
   footerText: {
-    color: '#444444',
+    fontSize: 10,
     bold: false,
-    alignment: 'center',
-    margin: [0, 14, 0, 0]
+    alignment: 'left'
   },
-  footerCurrentPage: {
-    color: '#444444',
-    bold: false,
-    alignment: 'right',
-    margin: [0, 10, 0, 0]
+  footerSignature: {
+    fontSize: 10,
+    bold: true,
+    alignment: 'center'
   }
 }
 

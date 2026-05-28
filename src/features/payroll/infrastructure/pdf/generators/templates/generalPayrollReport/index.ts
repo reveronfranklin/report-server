@@ -36,27 +36,21 @@ export class GeneralPayrollReportPdf implements IPdfGenerator {
   ) {}
 
   async createDocumentDefinitions(reportSchemeData: ReportSchemeDto): Promise<TDocumentDefinitions> {
-    this.logger.log(`generating PDF ${reportSchemeData.name} ...`)
+    this.logger.log(`Generating PDF ${reportSchemeData.name} ...`)
 
     const { header: headers, body: bodies, footer: footers } = reportSchemeData
 
-    console.log('headers', bodies)
+    this.logger.debug(`Processing ${footers?.length || 0} footer signature groups`)
 
     const allDocumentContent: Content[] = []
 
-    const staticHeaderContent: Content  = getDynamicHeaderSection(headers)
+    const dynamicHeaderContent: Content = getDynamicHeaderSection(headers)
     const payrollBodyContent: Content   = getBodySection(bodies)
+    const payrollFooterContent: Content = getFooterSignatures(footers)
 
-    allDocumentContent.push(staticHeaderContent)
+    allDocumentContent.push(dynamicHeaderContent)
     allDocumentContent.push(payrollBodyContent)
-
-    // =========================================================================
-    // ✍️ 3. PÁGINA FINAL: SECCIÓN DE FIRMAS Y REVISIÓN
-    // Se añade inmediatamente después del cierre de totales de la última oficina.
-    // Si necesitas que las firmas nazcan obligatoriamente en una página limpia,
-    // puedes meterle un pageBreak al contenedor de las firmas.
-    // =========================================================================
-/*     allDocumentContent.push(getFooterSignatures(footers)); */
+    allDocumentContent.push(payrollFooterContent)
 
     return {
       pageSize: 'LETTER',
