@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { firstValueFrom } from 'rxjs';
@@ -44,9 +44,38 @@ export class PersonnelListAdapter implements IPersonnelListRepository {
       }
 
       return PersonnelListMapper.toReportSchemeDto(responseData.data)
-    } catch (error: any) {
-      console.error('Error getPersonnelList:', error)
-      throw new ExternalServiceException(`Error getPersonnelList -> ${error.message}`)
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error
+      }
+
+      const errorMessage = this.getRequestErrorMessage(error)
+
+      console.error(`Error getPersonnelList: ${errorMessage}`)
+      throw new ExternalServiceException(`Error getPersonnelList -> ${errorMessage}`)
     }
+  }
+
+  private getRequestErrorMessage(error: unknown): string {
+    if (error instanceof Error) {
+      const requestError = error as Error & {
+        code?: string
+        config?: { url?: string }
+        response?: { status?: number; statusText?: string }
+      }
+
+      if (requestError.response?.status) {
+        return `External API responded with status ${requestError.response.status} ${requestError.response.statusText || ''}`.trim()
+      }
+
+      if (requestError.code) {
+        const url = requestError.config?.url ? ` (${requestError.config.url})` : ''
+        return `${requestError.code}: ${requestError.message}${url}`
+      }
+
+      return requestError.message
+    }
+
+    return 'Unknown external service error'
   }
 }

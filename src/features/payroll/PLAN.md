@@ -102,7 +102,7 @@ Estado actual: ya existe `API_BASE_URL_VERTICAL` en:
 Uso esperado:
 
 ```ts
-this.configService.get<string>('api.ossmmasoft.verticalBaseUrl')
+this.configService.get<string>('api.ossmmasoft.verticalBaseUrl');
 ```
 
 Antes de implementar, confirmar que el ambiente donde se despliegue tenga esta variable.
@@ -118,15 +118,15 @@ getPersonnelList(query: ReportQueryDto): Promise<ReportSchemeDto | null>
 Crear interfaces para el item raw de API:
 
 ```ts
-cedula: string | null
-nombre: string
-fechaIngreso: string | null
-departamento: string
-codigo: string
-cargo: string
-sueldo: number
-descripcionStatus: string | null
-tipoNomina: string
+cedula: string | null;
+nombre: string;
+fechaIngreso: string | null;
+departamento: string;
+codigo: string;
+cargo: string;
+sueldo: number;
+descripcionStatus: string | null;
+tipoNomina: string;
 ```
 
 ## Paso 3: Crear DTOs de aplicacion
@@ -178,7 +178,7 @@ Crear `PersonnelListAdapter` usando `HttpService` y `ConfigService`.
 Endpoint:
 
 ```ts
-POST `${verticalBaseUrl}/ReportePersonal/GetAll`
+POST`${verticalBaseUrl}/ReportePersonal/GetAll`;
 ```
 
 Payload enviado:
@@ -240,13 +240,13 @@ Crear `src/features/payroll/infrastructure/pdf/pdf-generator.factory.ts`.
 Registrar:
 
 ```ts
-this.generators.set('personnelList', personnelListPdf)
+this.generators.set('personnelList', personnelListPdf);
 ```
 
 Mantener el mismo contrato compartido:
 
 ```ts
-IPdfGeneratorFactory
+IPdfGeneratorFactory;
 ```
 
 ## Paso 10: Crear generador PDF
@@ -256,9 +256,9 @@ Crear `PersonnelListPdf` que implemente `IPdfGenerator`.
 Configuracion base:
 
 ```ts
-pageOrientation: 'landscape'
-pageSize: 'LETTER'
-pageMargins: [20, 24, 20, 24]
+pageOrientation: 'landscape';
+pageSize: 'LETTER';
+pageMargins: [20, 24, 20, 24];
 ```
 
 Usar `PrinterService` para generar el PDF.
@@ -268,6 +268,7 @@ Usar `PrinterService` para generar el PDF.
 Elementos:
 
 1. Encabezado institucional:
+
    - texto: `Republica Bolivariana de Venezuela`.
    - logo izquierdo: `src/assets/logoLeft.jpeg`.
    - logo derecho si aplica: `src/assets/logoRight.jpg`.
@@ -276,10 +277,12 @@ Elementos:
    - paginacion: `Pagina X de Y`.
 
 2. Encabezado de departamento:
+
    - primera fila: `UNIDAD EJECUTORA`.
    - segunda fila: codigo + denominacion del departamento.
 
 3. Tabla:
+
    - `CEDULA`
    - `APELLIDOS Y NOMBRES`
    - `CODIGO CARGO`
@@ -288,6 +291,7 @@ Elementos:
    - `SUELDO`
 
 4. Totales por departamento:
+
    - cantidad de registros.
    - total sueldo.
 
@@ -383,3 +387,10 @@ Revisar visualmente:
 - El build actual puede fallar si `dist` pertenece a `root`.
 - Hay errores TypeScript preexistentes en templates PDF actuales por tipos de `pdfmake`; evitar copiarlos en el nuevo template.
 
+curl -X POST http://216.244.81.116:4000/api-v1.0/personnel-list/pdf/report \
+ -H "Content-Type: application/json" \
+ -H "x-refresh-token: <REFRESH_TOKEN>" \
+ -d '{"codigoTipoNomina":20,"status":"A"}' \
+ --output reporte-personal.pdf
+
+http://216.244.81.116:4000/api-v1.0/payment-orders/pdf/report
