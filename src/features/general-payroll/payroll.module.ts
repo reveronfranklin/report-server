@@ -37,4 +37,4 @@ import { PdfGeneratorFactory } from '../general-payroll/infrastructure/pdf/pdf-g
     }
   ]
 })
-export class PayrollModule {}
+export class GeneralPayrollModule {}

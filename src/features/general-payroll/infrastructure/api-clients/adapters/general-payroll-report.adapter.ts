@@ -20,7 +20,7 @@ import { ReportSchemeDto } from '../../../application/dtos/generalPayrollReport/
 
 @Injectable()
 export class PayrollReportAdapter implements IPayrollReportRepository {
-  protected apiBaseUrl = this.configService.get<string>('api.ossmmasoft.baseUrlVertical');
+  protected apiBaseUrl = this.configService.get<string>('api.ossmmasoft.verticalBaseUrl');
 
   constructor(
     private readonly httpService: HttpService,
