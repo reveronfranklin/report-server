@@ -17,7 +17,7 @@ import { SharedModule } from '@shared/shared.module';
 /* Features */
 import { PaymentOrderModule } from './features/payment-order/payment-order.module';
 import { TreasuryModule } from './features/treasury/treasury.module';
-import { PayrollModule } from './features/payroll/payroll.module';
+import { PayrollModule } from './features/general-payroll/payroll.module';
 
 @Module({
   imports: [
