@@ -12,7 +12,7 @@ const getBodySection = (options: ReportBodyDto): Content => {
     taxWithholdingAmount
   } = options
 
-  const contentBody: Content = {
+  const contentBody = {
     style: 'body',
     table: {
       widths: ['72%', '12%', '16%'],
@@ -110,7 +110,7 @@ const getBodySection = (options: ReportBodyDto): Content => {
     }
   }
 
-  return contentBody
+  return contentBody as unknown as Content
 }
 
 export default getBodySection;

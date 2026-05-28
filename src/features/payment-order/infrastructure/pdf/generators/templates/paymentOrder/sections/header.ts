@@ -1,6 +1,6 @@
 import type { Content } from 'pdfmake/interfaces';
 
-const logo: Content = {
+const logo = {
   image: 'src/assets/logoLeft.jpeg',
   alignment: 'left',
   fit: [130, 70], // Ajusta el tamaño de la imagen
@@ -33,7 +33,7 @@ export const headerSection = (options: HeaderOptions): Content => {
     formattedTitle = { text: header.title, style: titleStyle };
   }
 
-  const contentPdf: Content = {
+  const contentPdf = {
     style: 'header',
     table: {
       widths: ['*', '*', '*', '*', '*', '*'],
@@ -94,5 +94,5 @@ export const headerSection = (options: HeaderOptions): Content => {
     }
   }
 
-  return contentPdf
+  return contentPdf as unknown as Content
 }

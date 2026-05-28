@@ -38,7 +38,7 @@ export const bodySection = (options: HeaderOptions): Content => {
 
   const tableWithholding = getTableWithholding(withHolding)
 
-  const contentPdf: Content = {
+  const contentPdf = {
     style: 'body',
     table: {
       headerRows: 1,
@@ -64,5 +64,5 @@ export const bodySection = (options: HeaderOptions): Content => {
     }
   }
 
-  return contentPdf
+  return contentPdf as unknown as Content
 }

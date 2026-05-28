@@ -23,7 +23,7 @@ const getHeaderSection = (options: ReportHeaderDto): Content => {
   const fifthRowBorder = [false, false]
   const sixthRowBorder = [false, false, true, false]
 
-  const contentHeader: Content = {
+  const contentHeader = {
     style: 'header',
     table: {
       widths: ['*', '*', 20, 20, '*', '*'],
@@ -104,7 +104,7 @@ const getHeaderSection = (options: ReportHeaderDto): Content => {
     }
   }
 
-  return contentHeader
+  return contentHeader as unknown as Content
 }
 
 export default getHeaderSection;

@@ -24,7 +24,7 @@ export const configLoader = () => ({
     ossmmasoft: {
       authUrl: process.env.API_AUTH_URL,
       baseUrl: process.env.API_BASE_URL,
-      baseUrlVertical: process.env.API_BASE_URL_VERTICAL
+      verticalBaseUrl: process.env.API_BASE_URL_VERTICAL
     }
   }
 })
