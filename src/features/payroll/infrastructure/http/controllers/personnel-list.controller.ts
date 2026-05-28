@@ -37,7 +37,7 @@ export class PersonnelListController {
       const buffer = Buffer.from(arrayBuffer)
 
       return new StreamableFile(buffer)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error generating report:', error)
       throw new ExternalServiceException(`Error generating report PersonnelListController -> ${error.message}`)
     }

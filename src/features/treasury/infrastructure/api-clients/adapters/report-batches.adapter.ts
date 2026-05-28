@@ -9,7 +9,7 @@ import { ExternalServiceException } from '@exceptions/external-service.exception
 import { IResponse } from '@interceptors/response.interface';
 import { ElectronicPaymentsMapper } from '../mappers/electronic-payments/electronic-payments.mapper';
 import { BatchesOriginMapper } from '../mappers/electronic-payments/batches-origin.mapper';
-import { IBatchesOriginRaw } from '../mappers/interfaces/batches-origin-raw.interface';
+import { IBatchesOriginRaw } from '../interfaces/batches-origin-raw.interface';
 import { IReportBatchesRepository } from '../../../domain/ports/report-batches.repository';
 import { PaymentBatchEntity } from '../../../domain/entities/payment-batches.entity';
 import { ReportSchemeDto } from '../../../application/dtos/debitNoteThirdParties/report-scheme.dto';
@@ -42,9 +42,9 @@ export class ReportBatchesAdapter implements IReportBatchesRepository {
       return responseData.data.map((item: IBatchesOriginRaw) =>
         BatchesOriginMapper.toDomainEntity(item)
       )
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fecthBatches:', error)
-      throw new ExternalServiceException(`Error fecthBatches -> ${error.message}`)
+      throw new ExternalServiceException(`Error fecthBatches -> ${error?.message}`)
     }
   }
 
@@ -61,9 +61,9 @@ export class ReportBatchesAdapter implements IReportBatchesRepository {
       } else {
         throw new NotFoundException(`No payment batches found for batchCode: ${batchCode}`)
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error getBatch:', error)
-      throw new ExternalServiceException(`Error getBatch -> ${error.message}`)
+      throw new ExternalServiceException(`Error getBatch -> ${error?.message}`)
     }
   }
 }

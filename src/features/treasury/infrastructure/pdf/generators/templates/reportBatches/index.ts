@@ -51,6 +51,7 @@ export class ReportBatchesPdf implements IPdfGenerator {
         allDocumentContent.push({ text: '', pageBreak: 'after' })
       }
     }
+
     return {
       pageSize: 'LETTER',
       pageOrientation: 'portrait',

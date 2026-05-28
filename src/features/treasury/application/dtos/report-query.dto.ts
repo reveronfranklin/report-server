@@ -1,4 +1,4 @@
-import { IsNumber, IsPositive, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsNumber, IsPositive, IsNotEmpty, IsOptional, Min } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class ReportQueryDto {
@@ -16,7 +16,7 @@ export class ReportQueryDto {
     example: 12345
   })
   @IsNumber()
-  @IsPositive()
+  @Min(0)
   @IsOptional()
   paymentCode?: number;
 }

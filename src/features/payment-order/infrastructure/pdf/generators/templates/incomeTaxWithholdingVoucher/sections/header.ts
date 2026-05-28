@@ -2,8 +2,6 @@ import type { Content } from 'pdfmake/interfaces';
 
 const logo = {
   image: 'src/assets/logoLeft.jpeg',
-  width: 60, // Aumenta el tamaño del logo
-  height: 50,
   alignment: 'left',
   fit: [60, 50], // Ajusta el tamaño de la imagen
   margin: [30, 0, 0, 40]
