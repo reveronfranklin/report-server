@@ -29,9 +29,9 @@ export class IncomeTaxWithholdingVoucherService {
       const pdfDocument 			= await pdfGenerator.generatePdf(pdfDocumentDefinitions)
 
       return pdfDocument
-    } catch (error) {
+    } catch (error: any) {
       console.error('generateReport -> error', error)
-      throw new ExternalServiceException(`Error generating report incomeTaxWithholdingVoucherService: ${error.message}`)
+      throw new ExternalServiceException(`Error generating report incomeTaxWithholdingVoucherService: ${error?.message}`)
     }
   }
 }

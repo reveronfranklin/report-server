@@ -20,10 +20,10 @@ export class PdfGeneratorFactory implements IPdfGeneratorFactory {
     private taxStampVoucherPdf: TaxStampVoucherPdf
   ) {
     this.generators = new Map()
-    this.generators.set('paymentOrder', paymentOrderPdf)
-    this.generators.set('incomeTaxWithholdingVoucher', incomeTaxWithholdingVoucherPdf)
-    this.generators.set('vatWithholdingVoucher', vatWithholdingVoucherPdf)
-    this.generators.set('taxStampVoucher', taxStampVoucherPdf)
+    this.generators.set('paymentOrder', this.paymentOrderPdf)
+    this.generators.set('incomeTaxWithholdingVoucher', this.incomeTaxWithholdingVoucherPdf)
+    this.generators.set('vatWithholdingVoucher', this.vatWithholdingVoucherPdf)
+    this.generators.set('taxStampVoucher', this.taxStampVoucherPdf)
   }
 
   getGenerator(type: string): IPdfGenerator {

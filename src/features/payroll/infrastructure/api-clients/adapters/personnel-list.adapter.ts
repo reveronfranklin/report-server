@@ -44,7 +44,7 @@ export class PersonnelListAdapter implements IPersonnelListRepository {
       }
 
       return PersonnelListMapper.toReportSchemeDto(responseData.data)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error getPersonnelList:', error)
       throw new ExternalServiceException(`Error getPersonnelList -> ${error.message}`)
     }

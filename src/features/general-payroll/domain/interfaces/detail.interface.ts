@@ -1,0 +1,32 @@
+export interface IDetail {
+  payrollPeriodDate: string | null;
+  payrollIssueDate:  string | null;
+  periodCode: number;
+  payrollTypeCode: number;
+  officeCode: string;
+  icpCode: number;
+  denomination: string;
+  jobTitleDenomination: string;
+  idCard: string;
+  name: string;
+  accountNo: string;
+  conceptNumber: string;
+  conceptTransactionType: string;
+  conceptDenomination: string;
+  conceptComplement: string;
+  percentage: number;
+  conceptType: string;
+  amount: number;
+  assignment: number;
+  deduction: number;
+  status: string;
+  statusDescription: string;
+  personCode: number;
+  hireDate: string | null;
+  jobCode: string;
+  bank: string;
+  conceptCode: number;
+  module: string;
+  identifierCode: string;
+  salary: number | null;
+}

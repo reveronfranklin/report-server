@@ -11,15 +11,15 @@ const configureCors = (app: INestApplication, allowedOrigins: string[], environm
   const logger = new Logger('CORS')
   logger.log(`Configurando CORS para el entorno: ${environment}`)
 
-  try {} catch (error) {
-    logger.error(`Error configureCors: ${error.message}`)
+  try {} catch (error: any) {
+    logger.error(`Error configureCors: ${error?.message}`)
   }
 
   const corsOptions: CorsOptions = {
     origin: (origin, callback) => {
       // Manejar solicitudes sin origen (como las de Postman o curl)
       if (!origin) {
-          if (environment === 'development') {
+        if (environment === 'development') {
           logger.warn('Solicitud recibida sin origen definido')
           return callback(null, true)
         }

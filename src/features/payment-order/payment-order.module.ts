@@ -1,7 +1,6 @@
 /* Dependencies */
 import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { HttpModule } from '@nestjs/axios';
 import { SharedModule } from '@shared/shared.module';
 
 /* Services */
@@ -53,7 +52,6 @@ import { PdfGeneratorFactory } from './infrastructure/pdf/pdf-generator.factory'
 @Module({
   imports: [
     SharedModule,
-    HttpModule,
     SequelizeModule.forFeature([
       PaymentOrderModel,
       DescriptiveModel,

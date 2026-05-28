@@ -41,9 +41,9 @@ export class DebitNoteThirdPartiesService {
       const pdfDocument 			= await pdfGenerator.generatePdf(pdfDocumentDefinitions)
 
       return pdfDocument
-    } catch (error) {
+    } catch (error: any) {
       console.error('generateReport -> error', error)
-      throw new ExternalServiceException(`Error generating report DebitNoteThirdPartiesService -> ${error.message}`)
+      throw new ExternalServiceException(`Error generating report DebitNoteThirdPartiesService -> ${error?.message}`)
     }
   }
 }

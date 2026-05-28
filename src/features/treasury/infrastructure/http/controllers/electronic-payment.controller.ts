@@ -39,9 +39,9 @@ export class ElectronicPaymentController {
       const buffer      = Buffer.from(arrayBuffer)
 
       return new StreamableFile(buffer)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error generating report:', error)
-      throw new ExternalServiceException(`Error generating report ElectronicPaymentController -> ${error.message}`)
+      throw new ExternalServiceException(`Error generating report ElectronicPaymentController -> ${error?.message}`)
     }
   }
 }

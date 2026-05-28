@@ -1,7 +1,57 @@
 /* Dependencies */
 import moment from 'moment-timezone';
+import type { Size } from 'pdfmake/interfaces';
+
+/* Constants */
+const moventTypeOptions: { [key: string]: string } = {
+  'E': 'ESPECIAL',
+  /* 'F': 'Fijo', */ // Por definir
+  'A': 'FIJO',
+  'V': 'VARIABLE'
+}
+
+export interface TableWidthOptions {
+  totalColumns: number;
+  /**
+   * 'grid': Ocupa el 100% dividiendo todo equitativamente (Esencial para sistemas de 12 columnas con colSpan).
+   * 'auto': Ajuste estricto al contenido (se puede encoger).
+   * 'flexible': Ocupa el 100% pero permite que ciertas columnas clave se adapten al contenido sin desbordar.
+   */
+  strategy: 'grid' | 'auto' | 'flexible';
+  /**
+   * Índices de las columnas (empezando en 0) que absorberán el espacio restante ('*')
+   * para forzar el 100% de ancho en modo 'flexible'. Las demás serán 'auto'.
+   */
+  starColumns?: number[];
+}
 
 /* Functions */
+
+/**
+ * Determina de manera inteligente la distribución de anchos para tablas en pdfmake.
+ */
+const getSmartTableWidths = (options: TableWidthOptions): Size[] => {
+  const { totalColumns, strategy, starColumns = [] } = options
+
+  if (strategy === 'grid') {
+    return Array(totalColumns).fill('*')
+  }
+
+  if (strategy === 'auto') {
+    return Array(totalColumns).fill('auto')
+  }
+
+  // Estrategia Flexible (Híbrida): Forzar 100% de ancho estirando solo columnas clave
+  return Array.from({ length: totalColumns }, (_, index) => {
+    if (starColumns.includes(index)) {
+      return '*'; // Se expande para llenar la hoja
+    }
+    return 'auto'; // Se ajusta al contenido
+  })
+}
+
+const castRowSpans = (count: number) => Array(count).fill({})
+
 const calculateTaxableIncome = (taxBase: number, totalGrossAmount: number, totalTaxExempt: number, totalAmountVat: number): number => {
   if (taxBase !== 0) {
     return taxBase
@@ -55,7 +105,7 @@ const formatPercentageRetention = (percentage: number | string): any => {
   return formattedNumber.trim()
 }
 
-const formatPrice = (price: number, currency: string) => {
+const formatPrice = (price: number, currency: string = 'VES') => {
   const formattedPrice = new Intl.NumberFormat('es-ES', {
     style: 'currency',
     currency: currency,
@@ -120,5 +170,8 @@ export {
   getCurrentDate,
   isValidDate,
   rpad,
-  twoDigitFormatDate
+  twoDigitFormatDate,
+  castRowSpans,
+  getSmartTableWidths,
+  moventTypeOptions
 }

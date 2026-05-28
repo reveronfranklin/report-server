@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { ApiResponseInterceptor } from './interceptors/response.interceptor';
 import { GlobalExceptionFilter } from './exceptions/global-exception.filter';
 import { AppModule } from './app.module';
@@ -24,6 +24,15 @@ async function bootstrap() {
     /* Configurar prefijo global */
     app.setGlobalPrefix(prefix)
 
+    /* 🔥 Pipes Globales (Validación y Transformación Automática) */
+    app.useGlobalPipes(
+      new ValidationPipe({
+        whitelist: true,             // Remueve propiedades que no estén en el DTO
+        forbidNonWhitelisted: true,  // Lanza error si mandan datos extra no reconocidos
+        transform: true              // 🧙‍♂️ El truco maestro: activa auto-casting y class-transformer
+      })
+    )
+
     /* Interceptores */
     app.useGlobalInterceptors(new ApiResponseInterceptor())
 
@@ -45,8 +54,8 @@ async function bootstrap() {
     /* Logs */
     logger.log(`Servidor ejecutándose en el puerto ${port}`)
     logger.log(`Aplicación disponible en: ${serverUrl}`)
-  } catch (error) {
-    logger.error(`Error al iniciar la aplicación: ${error.message}`, error.stack)
+  } catch (error: any) {
+    logger.error(`Error al iniciar la aplicación: ${error?.message}`, error?.stack)
     process.exit(1)
   }
 }

@@ -39,9 +39,9 @@ export class DebitNoteThirdPartiesController {
       const buffer      = Buffer.from(arrayBuffer)
 
       return new StreamableFile(buffer)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error generating report:', error)
-      throw new ExternalServiceException(`Error generating report DebitNoteThirdPartiesController -> ${error.message}`)
+      throw new ExternalServiceException(`Error generating report DebitNoteThirdPartiesController -> ${error?.message}`)
     }
   }
 }
