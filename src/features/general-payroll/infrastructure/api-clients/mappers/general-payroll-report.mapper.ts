@@ -110,6 +110,7 @@ export class GeneralPayrollReportMapper {
   private static mapToReportFooter(signature: SignatureEntity): ReportFooterDto {
     return {
       office: signature.office,
+      officeDescription: signature.officeDescription.trim(),
       order: signature.order,
       personCode: signature.personCode,
       name: signature.name.trim(),

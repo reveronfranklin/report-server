@@ -1,6 +1,7 @@
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IGeneral } from '../../../domain/interfaces/general.interface';
 
-export class ReportHeaderDto {
+export class ReportHeaderDto implements IGeneral {
   @IsNotEmpty()
   @IsString()
   conceptType: string;

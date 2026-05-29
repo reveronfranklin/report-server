@@ -78,6 +78,7 @@ export interface IExternalPayrollDetail {
 
 export interface IExternalSignature {
   oficina: string;
+  descripcionOficina: string;
   orden: string;
   codigoPersona: number;
   nombre: string;

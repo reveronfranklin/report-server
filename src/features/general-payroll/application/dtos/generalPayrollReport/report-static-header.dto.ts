@@ -1,6 +1,7 @@
 import { IsNumber, IsString, IsDateString } from 'class-validator';
+import { IPeriod } from '../../../domain/interfaces/period.interface';
 
-export class ReportStaticHeaderDto {
+export class ReportStaticHeaderDto implements IPeriod{
   @IsNumber()
   public periodCode!: number;
 

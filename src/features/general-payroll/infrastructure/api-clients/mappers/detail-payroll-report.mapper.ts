@@ -78,6 +78,7 @@ const groupPayrollByOfficeAndEmployee = (
 
     employee.concepts.push({
       conceptType: item.conceptType,
+      conceptTransactionType: item.conceptTransactionType,
       conceptNumber: item.conceptNumber,
       percentage: item.percentage || null,
       conceptDenomination: item.conceptDenomination,

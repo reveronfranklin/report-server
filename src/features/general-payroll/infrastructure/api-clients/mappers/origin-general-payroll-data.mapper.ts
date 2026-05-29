@@ -86,6 +86,7 @@ export class OriginGeneralPayrollDataMapper {
   private static toSignatureEntity(raw: IExternalSignature): SignatureEntity {
     return new SignatureEntity({
       office: raw.oficina,
+      officeDescription: raw.descripcionOficina,
       order: raw.orden,
       personCode: raw.codigoPersona,
       name: raw.nombre,

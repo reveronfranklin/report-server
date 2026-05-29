@@ -2,13 +2,6 @@
 import moment from 'moment-timezone';
 import type { Size } from 'pdfmake/interfaces';
 
-/* Constants */
-const moventTypeOptions: { [key: string]: string } = {
-  'E': 'ESPECIAL',
-  'F': 'FIJO',
-  'V': 'VARIABLE'
-}
-
 export interface TableWidthOptions {
   totalColumns: number;
   /**
@@ -191,6 +184,5 @@ export {
   twoDigitFormatDate,
   castRowSpans,
   getSmartTableWidths,
-  formatPayrollDate,
-  moventTypeOptions
+  formatPayrollDate
 }
