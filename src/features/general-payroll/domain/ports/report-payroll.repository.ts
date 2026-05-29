@@ -1,6 +1,6 @@
 import { IPayrollFilter } from '../interfaces/payroll-filter.interface';
-/* import { IPayrollReport } from '../interfaces/payroll-report.interface'; */
+import { IReportScheme } from '../interfaces/report-scheme.interface';
 
 export interface IPayrollReportRepository {
-  getPayrollReport(filter: IPayrollFilter): Promise<any | null>;
+  getPayrollReport(filter: IPayrollFilter): Promise<IReportScheme | null>;
 }
