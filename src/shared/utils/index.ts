@@ -5,8 +5,7 @@ import type { Size } from 'pdfmake/interfaces';
 /* Constants */
 const moventTypeOptions: { [key: string]: string } = {
   'E': 'ESPECIAL',
-  /* 'F': 'Fijo', */ // Por definir
-  'A': 'FIJO',
+  'F': 'FIJO',
   'V': 'VARIABLE'
 }
 
@@ -51,6 +50,25 @@ const getSmartTableWidths = (options: TableWidthOptions): Size[] => {
 }
 
 const castRowSpans = (count: number) => Array(count).fill({})
+
+const formatPayrollDate = (dateString: string): string => {
+  if (!dateString) return '';
+
+  const parts = dateString.split('-');
+  if (parts.length < 2) return '';
+
+  const year = parts[0];
+  const monthIndex = parseInt(parts[1], 10) - 1
+
+  const months = [
+    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+  ];
+
+  const monthName = months[monthIndex] || ''
+
+  return `de ${monthName} de ${year}`
+}
 
 const calculateTaxableIncome = (taxBase: number, totalGrossAmount: number, totalTaxExempt: number, totalAmountVat: number): number => {
   if (taxBase !== 0) {
@@ -173,5 +191,6 @@ export {
   twoDigitFormatDate,
   castRowSpans,
   getSmartTableWidths,
+  formatPayrollDate,
   moventTypeOptions
 }

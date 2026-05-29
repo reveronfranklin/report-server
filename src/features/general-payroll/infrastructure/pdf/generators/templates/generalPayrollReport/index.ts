@@ -38,7 +38,7 @@ export class GeneralPayrollReportPdf implements IPdfGenerator {
   async createDocumentDefinitions(reportSchemeData: ReportSchemeDto): Promise<TDocumentDefinitions> {
     this.logger.log(`Generating PDF ${reportSchemeData.name} ...`)
 
-    const { header: headers, body: bodies, footer: footers } = reportSchemeData
+    const { staticHeader: staticHeader, header: headers, body: bodies, footer: footers } = reportSchemeData
 
     const allDocumentContent: Content[] = []
 
@@ -56,7 +56,7 @@ export class GeneralPayrollReportPdf implements IPdfGenerator {
       pageMargins: [20, 80, 20, 80],
       styles: styles,
       header: (currentPage, pageCount) => {
-        const headerContent: Content = getStaticHeaderSection(currentPage, pageCount)
+        const headerContent: Content = getStaticHeaderSection(currentPage, pageCount, staticHeader)
         return headerContent
       },
       content: allDocumentContent

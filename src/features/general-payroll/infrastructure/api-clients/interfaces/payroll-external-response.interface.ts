@@ -14,9 +14,22 @@ export interface IExternalPayrollResponse {
 }
 
 export interface IExternalPayrollData {
+  periodo: IExternalPeriod;
   general: IExternalGeneralConcept[];
   detalle: IExternalPayrollDetail[];
   firma: IExternalSignature[];
+}
+
+export interface IExternalPeriod {
+  codigoPeriodo: number;
+  descripcion: string;
+  codigoTipoNomina: number;
+  descripcionTipoNomina: string;
+  fechaNomina: string;
+  periodo: number;
+  descripcionPeriodo: string;
+  tipoNomina: string;
+  tipoNominaDescripcion: string;
 }
 
 export interface IExternalGeneralConcept {
