@@ -2,15 +2,37 @@ import { PayrollReportEntity } from '../../../domain/entities/payroll-report.ent
 import { GeneralEntity } from '../../../domain/entities/general.entity';
 import { DetailEntity } from '../../../domain/entities/detail.entity';
 import { SignatureEntity } from '../../../domain/entities/signature.entity';
-import { IExternalPayrollData, IExternalGeneralConcept, IExternalPayrollDetail, IExternalSignature } from '../interfaces/payroll-external-response.interface';
+import { PeriodEntity } from '../../../domain/entities/period.entity'; // 👈 Importado
+import {
+  IExternalPayrollData,
+  IExternalGeneralConcept,
+  IExternalPayrollDetail,
+  IExternalSignature,
+  IExternalPeriod
+} from '../interfaces/payroll-external-response.interface';
 
 export class OriginGeneralPayrollDataMapper {
   public static toDomainEntity(raw: IExternalPayrollData): PayrollReportEntity {
     return new PayrollReportEntity({
+      period: this.toPeriodEntity(raw.periodo), // 👈 Mapeado en la entidad padre
       general: raw.general.map(element => this.toGeneralEntity(element)),
       details: raw.detalle.map(element => this.toDetailEntity(element)),
       signatures: raw.firma.map(element => this.toSignatureEntity(element))
     })
+  }
+
+  private static toPeriodEntity(raw: IExternalPeriod): PeriodEntity {
+    return new PeriodEntity({
+      periodCode: raw.codigoPeriodo,
+      description: raw.descripcion,
+      payrollTypeCode: raw.codigoTipoNomina,
+      payrollTypeDescription: raw.descripcionTipoNomina,
+      payrollDate: raw.fechaNomina,
+      periodNumber: raw.periodo,
+      periodDescription: raw.descripcionPeriodo,
+      payrollCategory: raw.tipoNomina,
+      payrollCategoryDescription: raw.tipoNominaDescripcion
+    });
   }
 
   private static toGeneralEntity(raw: IExternalGeneralConcept): GeneralEntity {
@@ -64,6 +86,7 @@ export class OriginGeneralPayrollDataMapper {
   private static toSignatureEntity(raw: IExternalSignature): SignatureEntity {
     return new SignatureEntity({
       office: raw.oficina,
+      officeDescription: raw.descripcionOficina,
       order: raw.orden,
       personCode: raw.codigoPersona,
       name: raw.nombre,

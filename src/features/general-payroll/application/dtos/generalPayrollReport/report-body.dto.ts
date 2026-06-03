@@ -1,6 +1,7 @@
 import { IsNotEmpty, IsNumber, IsString, IsDateString, IsOptional } from 'class-validator';
+import { IDetail } from '../../../domain/interfaces/detail.interface';
 
-export class ReportBodyDto {
+export class ReportBodyDto implements IDetail {
   @IsNotEmpty()
   @IsDateString()
   payrollPeriodDate: string | null;

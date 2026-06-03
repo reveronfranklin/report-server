@@ -5,8 +5,8 @@ export const getCleanTableLayout = (): CustomTableLayout => {
     hLineWidth: (i, node) => (i === 0 || i === node.table.headerRows) ? 1 : 0.5,
     hLineColor: () => '#d3d3d3',
     vLineWidth: () => 0,
-    paddingTop: (i) => i === 0 ? 1.5 : 4,
-    paddingBottom: (i) => i === 0 ? 1.5 : 4,
+    paddingTop: (i) => i === 0 ? 1.5 : 2.5,
+    paddingBottom: (i) => i === 0 ? 1.5 : 2.5,
     paddingLeft: () => 5,
     paddingRight: () => 5
   }

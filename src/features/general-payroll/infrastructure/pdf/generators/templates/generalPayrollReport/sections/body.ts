@@ -5,7 +5,6 @@ import { getCleanTableLayout } from '../../../components/layout/clean-table.layo
 import {
   formatPrice,
   castRowSpans,
-  moventTypeOptions,
   getSmartTableWidths
 } from '@shared/utils';
 
@@ -37,7 +36,7 @@ const buildConceptRows = (employee: any): TableCell[][] => {
     totalDeduction  += concept.deduction || 0
 
     const conceptDescriptionRow: TableCell[] = [
-      { text: `${moventTypeOptions[concept.conceptType]}` || '', style: 'descriptionBodyVariant', colSpan: 1, border: noHorizontalBorders },
+      { text: `${concept.conceptTransactionType}` || '', style: 'descriptionBodyVariant', colSpan: 1, border: noHorizontalBorders },
       { text: concept.conceptNumber || '', style: 'descriptionBody', colSpan: 1, border: noHorizontalBorders },
       { text: concept.percentage?.toString() || null, style: 'descriptionBody', colSpan: 1, border: noHorizontalBorders },
       { text: concept.conceptDenomination.toUpperCase(), style: 'descriptionBodyVariant', colSpan: 3, border: noHorizontalBorders },

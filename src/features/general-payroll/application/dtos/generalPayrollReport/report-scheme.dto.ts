@@ -1,13 +1,20 @@
 import { IsString, IsNotEmpty, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
+import { ReportStaticHeaderDto } from './report-static-header.dto';
 import { ReportHeaderDto } from './report-header.dto';
 import { ReportBodyDto } from './report-body.dto';
 import { ReportFooterDto } from './report-footer.dto';
+import { IReportScheme } from '../../../domain/interfaces/report-scheme.interface';
 
-export class ReportSchemeDto {
+export class ReportSchemeDto implements IReportScheme {
   @IsString()
   @IsNotEmpty()
   name: string;
+
+  @IsNotEmpty()
+  @ValidateNested()
+  @Type(() => ReportStaticHeaderDto)
+  staticHeader: ReportStaticHeaderDto;
 
   @ValidateNested()
   @Type(() => ReportHeaderDto)

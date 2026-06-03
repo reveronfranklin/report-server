@@ -1,15 +1,26 @@
 import type { Content } from 'pdfmake/interfaces';
-import { castRowSpans } from '@shared/utils';
 import getLogoSection from '../logo';
+import { ReportStaticHeaderDto } from '../../../../../application/dtos/generalPayrollReport/report-static-header.dto';
 
-const getStaticHeaderSection = (currentPage: number, pageCount: number): Content => {
-  const logo = getLogoSection()
+import {
+    castRowSpans,
+    formatPayrollDate,
+    getSmartTableWidths
+} from '@shared/utils';
+
+const getStaticHeaderSection = (currentPage: number, pageCount: number, staticHeader: ReportStaticHeaderDto): Content => {
+  const logo            = getLogoSection()
+  const formattedDate   = formatPayrollDate(staticHeader.payrollDate);
 
   const contentStaticHeader: Content = {
     layout: 'noBorders',
     style: 'staticHeader',
     table: {
-      widths: ['auto', '*', '*', '*'],
+      widths: getSmartTableWidths({
+        totalColumns: 4,
+        strategy: 'flexible',
+        starColumns: [1, 2, 3]
+      }),
       heights: ['auto', 10, 10],
       body: [
         [
@@ -33,11 +44,11 @@ const getStaticHeaderSection = (currentPage: number, pageCount: number): Content
         ],
         [
           {
-            text: 'NÓMINA ALTO NIVEL',
+            text: `${staticHeader.payrollTypeDescription}`,
             style: 'headerText'
           },
           {
-            text: '1ra Quincena de MAYO de 2026',
+            text: `${staticHeader.periodDescription} ${formattedDate}`,
             colSpan: 2,
             style: 'headerTitle'
           },

@@ -2,9 +2,11 @@ import { PayrollReportEntity } from '../../../domain/entities/payroll-report.ent
 import { GeneralEntity } from '../../../domain/entities/general.entity';
 import { DetailEntity } from '../../../domain/entities/detail.entity';
 import { SignatureEntity } from '../../../domain/entities/signature.entity';
+import { PeriodEntity } from '../../../domain/entities/period.entity';
 
 import { ReportSchemeDto } from '../../../application/dtos/generalPayrollReport/report-scheme.dto';
 import { ReportHeaderDto } from '../../../application/dtos/generalPayrollReport/report-header.dto';
+import { ReportStaticHeaderDto } from '../../../application/dtos/generalPayrollReport/report-static-header.dto';
 import { ReportBodyDto } from '../../../application/dtos/generalPayrollReport/report-body.dto';
 import { ReportFooterDto } from '../../../application/dtos/generalPayrollReport/report-footer.dto';
 
@@ -20,7 +22,6 @@ export class GeneralPayrollReportMapper {
       headers.push(this.mapToReportHeader(general))
     }
 
-    // CORRECCIÓN AQUÍ: Desestructuramos para obtener directamente el array interno
     const { officeGroups } = groupPayrollByOfficeAndEmployee(
       reportEntity.details.map((detail) => this.mapToReportBody(detail))
     )
@@ -35,12 +36,27 @@ export class GeneralPayrollReportMapper {
 
     const reportScheme: ReportSchemeDto = {
       name: 'general-payroll-report',
+      staticHeader: this.mapToStaticHeader(reportEntity.period),
       header: headers,
       body: bodies,
       footer: footers
     }
 
     return reportScheme
+  }
+
+  private static mapToStaticHeader(period: PeriodEntity): ReportStaticHeaderDto {
+    return {
+      periodCode: period.periodCode,
+      description: period.description ? period.description.trim() : '',
+      payrollTypeCode: period.payrollTypeCode,
+      payrollTypeDescription: period.payrollTypeDescription ? period.payrollTypeDescription.trim() : '',
+      payrollDate: period.payrollDate,
+      periodNumber: period.periodNumber,
+      periodDescription: period.periodDescription ? period.periodDescription.trim() : '',
+      payrollCategory: period.payrollCategory,
+      payrollCategoryDescription: period.payrollCategoryDescription ? period.payrollCategoryDescription.trim() : '',
+    }
   }
 
   private static mapToReportHeader(general: GeneralEntity): ReportHeaderDto {
@@ -94,6 +110,7 @@ export class GeneralPayrollReportMapper {
   private static mapToReportFooter(signature: SignatureEntity): ReportFooterDto {
     return {
       office: signature.office,
+      officeDescription: signature.officeDescription.trim(),
       order: signature.order,
       personCode: signature.personCode,
       name: signature.name.trim(),
