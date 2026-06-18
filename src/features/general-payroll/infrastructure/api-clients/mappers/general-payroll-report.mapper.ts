@@ -103,7 +103,11 @@ export class GeneralPayrollReportMapper {
       conceptCode: detail.conceptCode,
       module: detail.module,
       identifierCode: detail.identifierCode,
-      salary: detail.salary
+      salary: detail.salary,
+      active: detail.active,
+      leave: detail.leave,
+      vacation: detail.vacation,
+      sickLeave: detail.sickLeave
     }
   }
 

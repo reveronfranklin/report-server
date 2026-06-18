@@ -79,7 +79,11 @@ export class OriginGeneralPayrollDataMapper {
       conceptCode: raw.codigoConcepto,
       module: raw.modulo || null,
       identifierCode: raw.codigoIdentificador || null,
-      salary: raw.salario || null
+      salary: raw.salario || null,
+      active: raw.activos,
+      leave: raw.permisos,
+      vacation: raw.vacaciones,
+      sickLeave: raw.reposos
     })
   }
 
