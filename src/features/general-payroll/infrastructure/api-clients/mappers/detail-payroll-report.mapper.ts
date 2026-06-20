@@ -32,7 +32,7 @@ const groupPayrollByOfficeAndEmployee = (
         activeEmployeesCount: 0,
         permissionEmployeesCount: 0,
         sickLeaveEmployeesCount: 0,
-        vacationEmployeesCount: 0,
+        vacationEmployeesCount: 0
       });
     }
 
@@ -58,19 +58,16 @@ const groupPayrollByOfficeAndEmployee = (
 
       office.employees.push(employee);
 
-      const empStatus = item.status?.toUpperCase() || '';
-      const empDesc = item.statusDescription?.toUpperCase() || '';
-
-      if (empStatus === 'A' || empDesc.includes('ACTIVO')) {
+      if (item.active === 1) {
         office.activeEmployeesCount++;
         generalTotals.activeGeneralCount++;
-      } else if (empStatus === 'P' || empDesc.includes('PERMISO')) {
+      } else if (item.leave === 1) {
         office.permissionEmployeesCount++;
         generalTotals.permissionGeneralCount++;
-      } else if (empStatus === 'R' || empDesc.includes('REPOSO')) {
+      } else if (item.sickLeave === 1) {
         office.sickLeaveEmployeesCount++;
         generalTotals.sickLeaveGeneralCount++;
-      } else if (empStatus === 'V' || empDesc.includes('VACACIO')) {
+      } else if (item.vacation === 1) {
         office.vacationEmployeesCount++;
         generalTotals.vacationGeneralCount++;
       }

@@ -29,4 +29,8 @@ export interface IDetail {
   module: string;
   identifierCode: string;
   salary: number | null;
+  active: number;
+  leave: number;
+  vacation: number;
+  sickLeave: number;
 }

@@ -121,4 +121,20 @@ export class ReportBodyDto implements IDetail {
   @IsOptional()
   @IsNumber()
   salary: number | null;
+
+  @IsNotEmpty()
+  @IsNumber()
+  active: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  leave: number;
+  
+  @IsNotEmpty()
+  @IsNumber()
+  vacation: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  sickLeave: number;
 }

@@ -31,6 +31,10 @@ export class DetailEntity implements IDetail {
   public module: string | null                 = null;
   public identifierCode: string | null         = null;
   public salary: number | null                 = null;
+  public active: number                        = null;
+  public leave: number                         = null;
+  public vacation: number                      = null;
+  public sickLeave: number                     = null;
 
   constructor(data: IDetail) {
     Object.assign(this, data);

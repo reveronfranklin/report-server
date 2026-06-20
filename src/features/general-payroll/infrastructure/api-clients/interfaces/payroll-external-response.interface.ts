@@ -74,6 +74,10 @@ export interface IExternalPayrollDetail {
   modulo: string;
   codigoIdentificador: string;
   salario: number | null;
+  activos: 1,
+  permisos: 0,
+  vacaciones: 0,
+  reposos: 0,
 }
 
 export interface IExternalSignature {
