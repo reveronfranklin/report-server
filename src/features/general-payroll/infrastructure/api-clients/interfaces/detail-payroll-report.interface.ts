@@ -1,5 +1,6 @@
 export interface GroupedConcept {
   conceptType: string;
+  conceptTransactionType: string;
   conceptNumber: string;
   percentage: number | null;
   conceptDenomination: string;

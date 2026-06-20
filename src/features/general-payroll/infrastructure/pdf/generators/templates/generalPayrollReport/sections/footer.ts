@@ -14,7 +14,7 @@ export default function getFooterSignatures(footers: ReportFooterDto[]): Content
   }
 
   const groupedFooters = footers.reduce((accumulator, currentFooter) => {
-    const officeName = currentFooter.office || 'GERENCIA GENERAL'
+    const officeName = currentFooter.officeDescription || 'GERENCIA GENERAL'
     if (!accumulator[officeName]) {
       accumulator[officeName] = []
     }

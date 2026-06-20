@@ -1,6 +1,7 @@
 import { IsNotEmpty, IsNumber, IsString, IsDateString, IsOptional } from 'class-validator';
+import { IDetail } from '../../../domain/interfaces/detail.interface';
 
-export class ReportBodyDto {
+export class ReportBodyDto implements IDetail {
   @IsNotEmpty()
   @IsDateString()
   payrollPeriodDate: string | null;
@@ -120,4 +121,20 @@ export class ReportBodyDto {
   @IsOptional()
   @IsNumber()
   salary: number | null;
+
+  @IsNotEmpty()
+  @IsNumber()
+  active: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  leave: number;
+  
+  @IsNotEmpty()
+  @IsNumber()
+  vacation: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  sickLeave: number;
 }
